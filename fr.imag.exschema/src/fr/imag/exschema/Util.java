@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
  * 
@@ -25,10 +26,21 @@ public class Util {
      * @throws JavaModelException
      */
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
-        AnnotationVisitor annotationVisitor;
+        Util.discoverRepositories(project);
+        Util.discoverMongoObjects(project);
+    }
+
+    /**
+     * Spring-based repositories.
+     * 
+     * @param project
+     * @throws JavaModelException
+     */
+    private static void discoverRepositories(final IJavaProject project) throws JavaModelException {
+        RepositoryVisitor annotationVisitor;
 
         // Identify model classes
-        annotationVisitor = new AnnotationVisitor();
+        annotationVisitor = new RepositoryVisitor();
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
@@ -52,6 +64,31 @@ public class Util {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 
+     * @param project
+     * @throws JavaModelException
+     */
+    private static void discoverMongoObjects(final IJavaProject project) throws JavaModelException {
+        MongoVisitor mongoVisitor;
+
+        // Identify when objects are being saved
+        mongoVisitor = new MongoVisitor();
+        for (IPackageFragment aPackage : project.getPackageFragments()) {
+            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
+                    Util.analyzeCompilationUnit(compilationUnit, mongoVisitor);
+                }
+            }
+        }
+
+        // Analyze save invocations
+        System.out.println("Invocations: ");
+        for (MethodInvocation methodInvocation : mongoVisitor.getSaveInvocations()) {
+            System.out.println(methodInvocation.getExpression());
         }
     }
 
