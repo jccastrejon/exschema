@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
@@ -30,6 +31,26 @@ public class Util {
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
         Util.discoverRepositories(project);
         Util.discoverMongoObjects(project);
+    }
+
+    /**
+     * 
+     * @param node
+     * @return
+     */
+    public static Block getInvocationBlock(final ASTNode node) {
+        Block returnValue;
+
+        returnValue = null;
+        if (node != null) {
+            if (Block.class.isAssignableFrom(node.getClass())) {
+                returnValue = (Block) node;
+            } else {
+                returnValue = Util.getInvocationBlock(node.getParent());
+            }
+        }
+
+        return returnValue;
     }
 
     /**
@@ -88,8 +109,8 @@ public class Util {
                     argumentName = argument.toString();
                     // Only work with variables
                     if (argumentName.matches("^[a-zA-Z][a-zA-Z0-9]*?$")) {
-                        if (Block.class.isAssignableFrom(methodInvocation.getParent().getParent().getClass())) {
-                            invocationBlock = (Block) methodInvocation.getParent().getParent();
+                        invocationBlock = Util.getInvocationBlock(methodInvocation);
+                        if (invocationBlock != null) {
                             updateVisitor = new MongoUpdateVisitor(argumentName);
                             invocationBlock.accept(updateVisitor);
 
@@ -97,6 +118,12 @@ public class Util {
                             System.out.println("\n Document: " + argumentName);
                             for (String field : updateVisitor.getFields()) {
                                 System.out.println("Field: " + field);
+
+                                if (updateVisitor.getInnerFields().get(field) != null) {
+                                    for (String innerField : updateVisitor.getInnerFields().get(field)) {
+                                        System.out.println("--inner field: " + innerField);
+                                    }
+                                }
                             }
                         }
                     }
