@@ -67,7 +67,7 @@ public class Util {
         Util.analyzeJavaProject(project, annotationVisitor);
 
         // Analyze model classes
-        System.out.println("Data model classes: ");
+        System.out.println("Spring-based repository classes: ");
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
@@ -101,7 +101,7 @@ public class Util {
         Util.analyzeJavaProject(project, insertVisitor);
 
         // Analyze save invocations
-        System.out.println("Invocations: ");
+        System.out.println("\nMongoDB documents (based on inserts): ");
         for (MethodInvocation methodInvocation : insertVisitor.getSaveInvocations()) {
             for (Object argument : methodInvocation.arguments()) {
                 argumentClass = ((Expression) argument).resolveTypeBinding().getQualifiedName();
