@@ -118,12 +118,6 @@ public class Util {
                             System.out.println("\n Document: " + argumentName);
                             for (String field : updateVisitor.getFields()) {
                                 System.out.println("Field: " + field);
-
-                                if (updateVisitor.getInnerFields().get(field) != null) {
-                                    for (String innerField : updateVisitor.getInnerFields().get(field)) {
-                                        System.out.println("--inner field: " + innerField);
-                                    }
-                                }
                             }
                         }
                     }

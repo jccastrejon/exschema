@@ -1,14 +1,11 @@
 package fr.imag.exschema;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
@@ -19,12 +16,10 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 public class MongoUpdateVisitor extends ASTVisitor {
     private String variableName;
     private List<String> fields;
-    private Map<String, List<String>> innerFields;
 
     public MongoUpdateVisitor(final String variableName) {
         this.variableName = variableName;
         this.fields = new ArrayList<String>();
-        this.innerFields = new HashMap<String, List<String>>();
     }
 
     @Override
@@ -36,7 +31,7 @@ public class MongoUpdateVisitor extends ASTVisitor {
 
         if (this.isUpdateMethod(invocation)) {
             fieldName = invocation.arguments().get(0).toString();
-            this.fields.add(fieldName);
+            this.addField(fieldName);
 
             // Look for inner fields
             qualifiedName = ((Expression) invocation.arguments().get(1)).resolveTypeBinding().getQualifiedName();
@@ -47,14 +42,22 @@ public class MongoUpdateVisitor extends ASTVisitor {
                 // TODO: Save more than one level...
                 if (invocationBlock != null) {
                     invocationBlock.accept(innerUpdateVisitor);
-                    if (innerUpdateVisitor.getFields().size() > 0) {
-                        this.innerFields.put(fieldName, innerUpdateVisitor.getFields());
+                    for (String innerField : innerUpdateVisitor.getFields()) {
+                        this.addField(fieldName + "." + innerField);
                     }
                 }
             }
         }
 
         return super.visit(invocation);
+    }
+
+    /**
+     * 
+     * @param field
+     */
+    private void addField(final String field) {
+        this.fields.add(field.replace("\"", ""));
     }
 
     /**
@@ -105,13 +108,5 @@ public class MongoUpdateVisitor extends ASTVisitor {
      */
     public List<String> getFields() {
         return this.fields;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public Map<String, List<String>> getInnerFields() {
-        return this.innerFields;
     }
 }
