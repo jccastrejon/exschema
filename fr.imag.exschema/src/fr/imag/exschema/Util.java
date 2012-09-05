@@ -10,7 +10,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
@@ -67,16 +69,39 @@ public class Util {
      * @throws JavaModelException
      */
     private static void discoverMongoObjects(final IJavaProject project) throws JavaModelException {
-        MongoVisitor mongoVisitor;
+        String argumentName;
+        String argumentClass;
+        Block invocationBlock;
+        MongoInsertVisitor insertVisitor;
+        MongoUpdateVisitor updateVisitor;
 
         // Identify when objects are being saved
-        mongoVisitor = new MongoVisitor();
-        Util.analyzeJavaProject(project, mongoVisitor);
+        insertVisitor = new MongoInsertVisitor();
+        Util.analyzeJavaProject(project, insertVisitor);
 
         // Analyze save invocations
         System.out.println("Invocations: ");
-        for (MethodInvocation methodInvocation : mongoVisitor.getSaveInvocations()) {
-            System.out.println(methodInvocation.getExpression());
+        for (MethodInvocation methodInvocation : insertVisitor.getSaveInvocations()) {
+            for (Object argument : methodInvocation.arguments()) {
+                argumentClass = ((Expression) argument).resolveTypeBinding().getQualifiedName();
+                if (argumentClass.equals("com.mongodb.BasicDBObject")) {
+                    argumentName = argument.toString();
+                    // Only work with variables
+                    if (argumentName.matches("^[a-zA-Z][a-zA-Z0-9]*?$")) {
+                        if (Block.class.isAssignableFrom(methodInvocation.getParent().getParent().getClass())) {
+                            invocationBlock = (Block) methodInvocation.getParent().getParent();
+                            updateVisitor = new MongoUpdateVisitor(argumentName);
+                            invocationBlock.accept(updateVisitor);
+
+                            // TODO: Real analysis
+                            System.out.println("\n Document: " + argumentName);
+                            for (String field : updateVisitor.getFields()) {
+                                System.out.println("Field: " + field);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -86,21 +111,23 @@ public class Util {
      * @throws JavaModelException
      */
     private static void analyzeModelType(IType type) throws JavaModelException {
+        // TODO: Real analysis...
         System.out.println("Fields:");
         for (IField field : type.getFields()) {
             System.out.println(field.getElementName() + ":" + field.getTypeSignature());
         }
     }
-    
+
     /**
      * 
      * @param project
      * @param visitor
      * @throws JavaModelException
      */
-    private static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor) throws JavaModelException {
+    private static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor)
+            throws JavaModelException {
         CompilationUnit parsedUnit;
-        
+
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
@@ -116,7 +143,7 @@ public class Util {
      * @param compilationUnit
      * @return
      */
-    private static CompilationUnit parse(ICompilationUnit compilationUnit) {
+    private static CompilationUnit parse(final ICompilationUnit compilationUnit) {
         ASTParser parser;
 
         parser = ASTParser.newParser(AST.JLS4);

@@ -12,10 +12,10 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
  * @author jccastrejon
  * 
  */
-public class MongoVisitor extends ASTVisitor {
+public class MongoInsertVisitor extends ASTVisitor {
     private List<MethodInvocation> saveInvocations;
 
-    public MongoVisitor() {
+    public MongoInsertVisitor() {
         this.saveInvocations = new ArrayList<MethodInvocation>();
     }
 
