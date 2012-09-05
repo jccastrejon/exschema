@@ -41,13 +41,7 @@ public class Util {
 
         // Identify model classes
         annotationVisitor = new RepositoryVisitor();
-        for (IPackageFragment aPackage : project.getPackageFragments()) {
-            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
-                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
-                    Util.analyzeCompilationUnit(compilationUnit, annotationVisitor);
-                }
-            }
-        }
+        Util.analyzeJavaProject(project, annotationVisitor);
 
         // Analyze model classes
         System.out.println("Data model classes: ");
@@ -77,13 +71,7 @@ public class Util {
 
         // Identify when objects are being saved
         mongoVisitor = new MongoVisitor();
-        for (IPackageFragment aPackage : project.getPackageFragments()) {
-            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
-                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
-                    Util.analyzeCompilationUnit(compilationUnit, mongoVisitor);
-                }
-            }
-        }
+        Util.analyzeJavaProject(project, mongoVisitor);
 
         // Analyze save invocations
         System.out.println("Invocations: ");
@@ -103,18 +91,24 @@ public class Util {
             System.out.println(field.getElementName() + ":" + field.getTypeSignature());
         }
     }
-
+    
     /**
      * 
-     * @param type
+     * @param project
+     * @param visitor
      * @throws JavaModelException
      */
-    private static void analyzeCompilationUnit(final ICompilationUnit compilationUnit,
-            final ASTVisitor annotationVisitor) throws JavaModelException {
+    private static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor) throws JavaModelException {
         CompilationUnit parsedUnit;
-
-        parsedUnit = Util.parse(compilationUnit);
-        parsedUnit.accept(annotationVisitor);
+        
+        for (IPackageFragment aPackage : project.getPackageFragments()) {
+            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
+                    parsedUnit = Util.parse(compilationUnit);
+                    parsedUnit.accept(visitor);
+                }
+            }
+        }
     }
 
     /**
