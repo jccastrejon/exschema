@@ -17,10 +17,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * @author jccastrejon
  * 
  */
-public class RepositoryVisitor extends ASTVisitor {
+public class SpringRepositoryVisitor extends ASTVisitor {
     List<String> domainClasses;
 
-    public RepositoryVisitor() {
+    public SpringRepositoryVisitor() {
         this.domainClasses = new ArrayList<String>();
     }
 

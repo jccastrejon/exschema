@@ -39,10 +39,10 @@ public class Util {
      * @throws JavaModelException
      */
     private static void discoverRepositories(final IJavaProject project) throws JavaModelException {
-        RepositoryVisitor annotationVisitor;
+        SpringRepositoryVisitor annotationVisitor;
 
         // Identify model classes
-        annotationVisitor = new RepositoryVisitor();
+        annotationVisitor = new SpringRepositoryVisitor();
         Util.analyzeJavaProject(project, annotationVisitor);
 
         // Analyze model classes
