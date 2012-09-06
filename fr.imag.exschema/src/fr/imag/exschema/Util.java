@@ -18,7 +18,13 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+
+import fr.imag.exschema.mongodb.MongoCollectionVisitor;
+import fr.imag.exschema.mongodb.MongoInsertVisitor;
+import fr.imag.exschema.mongodb.MongoUpdateVisitor;
+import fr.imag.exschema.neo4j.NodeEntityVisitor;
 
 /**
  * 
@@ -33,8 +39,14 @@ public class Util {
      * @throws JavaModelException
      */
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
+        // Document
         Util.discoverRepositories(project);
         Util.discoverMongoObjects(project);
+
+        // Graph
+        Util.discoverNeo4JNodes(project);
+
+        // Column
     }
 
     /**
@@ -112,6 +124,28 @@ public class Util {
                 for (String field : mongoCollections.get(collection).get(document)) {
                     System.out.println("------Field: " + field);
                 }
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param project
+     * @throws JavaModelException
+     */
+    private static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
+        NodeEntityVisitor entityVisitor;
+
+        // Identify node entities
+        entityVisitor = new NodeEntityVisitor();
+        Util.analyzeJavaProject(project, entityVisitor);
+
+        // TODO: Real analysis...
+        System.out.println("Neo4J nodes: ");
+        for (String node : entityVisitor.getNodeEntities().keySet()) {
+            System.out.println("\n--Node: " + node);
+            for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
+                System.out.println("----Field: " + field.fragments().get(0));
             }
         }
     }

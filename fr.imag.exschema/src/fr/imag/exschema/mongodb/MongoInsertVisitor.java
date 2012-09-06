@@ -1,4 +1,4 @@
-package fr.imag.exschema;
+package fr.imag.exschema.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package fr.imag.exschema;
+package fr.imag.exschema.mongodb;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodInvocation;

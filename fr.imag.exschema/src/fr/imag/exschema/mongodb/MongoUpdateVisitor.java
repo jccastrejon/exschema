@@ -1,4 +1,4 @@
-package fr.imag.exschema;
+package fr.imag.exschema.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+
+import fr.imag.exschema.Util;
 
 /**
  * 

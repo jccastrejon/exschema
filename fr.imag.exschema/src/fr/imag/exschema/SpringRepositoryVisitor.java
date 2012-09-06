@@ -94,7 +94,10 @@ public class SpringRepositoryVisitor extends ASTVisitor {
             qualifiedName = qualifiedName.substring(0, qualifiedName.indexOf('<'));
         }
 
-        return ((qualifiedName.startsWith("org.springframework.")) && (qualifiedName.endsWith("Repository")));
+        // Consider Spring data repositories, except for the Neo4J repository,
+        // that needs special handling
+        return ((qualifiedName.startsWith("org.springframework.")) && (qualifiedName.endsWith("Repository")) && (!qualifiedName
+                .contains("neo4j")));
     }
 
     /**

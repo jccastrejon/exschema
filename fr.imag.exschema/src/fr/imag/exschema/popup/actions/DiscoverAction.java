@@ -57,7 +57,8 @@ public class DiscoverAction implements IObjectActionDelegate {
                 Util.discoverSchemas(project);
                 outputMessage = "The project schemas have been discovered";
             } catch (Exception e) {
-                outputMessage = "The project schemas have been discovered";
+                e.printStackTrace();
+                outputMessage = "An error ocurred while discovering the schemas";
             }
         } else {
             outputMessage = "An error ocurred while discovering the schemas";
