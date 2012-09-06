@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
 
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
@@ -146,8 +147,34 @@ public class Util {
             System.out.println("\n--Node: " + node);
             for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
                 System.out.println("----Field: " + field.fragments().get(0));
+                if (Util.hasRelatedToAnnotation(field.modifiers())) {
+                    System.out.println("------Related to: " + field.getType());
+                }
             }
         }
+    }
+
+    /**
+     * 
+     * @param modifier
+     * @return
+     */
+    private static boolean hasRelatedToAnnotation(final List<?> modifiers) {
+        boolean returnValue;
+        String annotationName;
+
+        returnValue = false;
+        for (Object modifier : modifiers) {
+            if (NormalAnnotation.class.isAssignableFrom(modifier.getClass())) {
+                annotationName = ((NormalAnnotation) modifier).resolveTypeBinding().getQualifiedName();
+                if (annotationName.equals("org.springframework.data.neo4j.annotation.RelatedTo")) {
+                    returnValue = true;
+                    break;
+                }
+            }
+        }
+
+        return returnValue;
     }
 
     /**
