@@ -1,5 +1,6 @@
 package fr.imag.exschema;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +22,15 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
 import fr.imag.exschema.mongodb.MongoUpdateVisitor;
+import fr.imag.exschema.neo4j.NodeDeclareVisitor;
 import fr.imag.exschema.neo4j.NodeEntityVisitor;
+import fr.imag.exschema.neo4j.NodeUpdateVisitor;
 
 /**
  * 
@@ -45,6 +50,7 @@ public class Util {
         Util.discoverMongoObjects(project);
 
         // Graph
+        Util.discoverNeo4JNodeEntities(project);
         Util.discoverNeo4JNodes(project);
 
         // Column
@@ -134,7 +140,7 @@ public class Util {
      * @param project
      * @throws JavaModelException
      */
-    private static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
+    private static void discoverNeo4JNodeEntities(final IJavaProject project) throws JavaModelException {
         NodeEntityVisitor entityVisitor;
 
         // Identify node entities
@@ -142,7 +148,7 @@ public class Util {
         Util.analyzeJavaProject(project, entityVisitor);
 
         // TODO: Real analysis...
-        System.out.println("Neo4J nodes: ");
+        System.out.println("Neo4J node entities: ");
         for (String node : entityVisitor.getNodeEntities().keySet()) {
             System.out.println("\n--Node: " + node);
             for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
@@ -150,6 +156,54 @@ public class Util {
                 if (Util.hasRelatedToAnnotation(field.modifiers())) {
                     System.out.println("------Related to: " + field.getType());
                 }
+            }
+        }
+    }
+
+    private static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
+        String fragmentKey;
+        String fragmentRoot;
+        String invocationRoot;
+        List<String> currentFields;
+        NodeUpdateVisitor updateVisitor;
+        Map<String, List<String>> nodes;
+        NodeDeclareVisitor declareVisitor;
+
+        // Identify when nodes are being declared
+        declareVisitor = new NodeDeclareVisitor();
+        Util.analyzeJavaProject(project, declareVisitor);
+
+        // Identify when nodes are assigned properties
+        updateVisitor = new NodeUpdateVisitor();
+        Util.analyzeJavaProject(project, updateVisitor);
+
+        // Match the updates to the corresponding nodes
+        nodes = new HashMap<String, List<String>>();
+        for (VariableDeclarationFragment fragment : declareVisitor.getVariableDeclarations()) {
+            currentFields = new ArrayList<String>();
+            fragmentRoot = ((CompilationUnit) fragment.getRoot()).getTypeRoot().getElementName();
+            for (MethodInvocation invocation : updateVisitor.getUpdateInvocations()) {
+                invocationRoot = ((CompilationUnit) invocation.getRoot()).getTypeRoot().getElementName();
+                // Match name of declare and update variables, in the same file
+                if (fragmentRoot.equals(invocationRoot)) {
+                    if (fragment.getName().toString().equals(invocation.getExpression().toString())) {
+                        currentFields.add(((SimpleName) invocation.arguments().get(0)).toString());
+                    }
+                }
+            }
+
+            fragmentKey = fragmentRoot + "." + fragment.toString();
+            if ((currentFields.size() > 0) && (nodes.get(fragmentKey) == null)) {
+                nodes.put(fragmentKey, currentFields);
+            }
+        }
+
+        // TODO: Real analysis...
+        System.out.println("Neo4J nodes: ");
+        for (String node : nodes.keySet()) {
+            System.out.println("\n--Node: " + node);
+            for (String field : nodes.get(node)) {
+                System.out.println("\n----Field: " + field);
             }
         }
     }
