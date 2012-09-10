@@ -31,6 +31,7 @@ import fr.imag.exschema.mongodb.MongoUpdateVisitor;
 import fr.imag.exschema.neo4j.NodeDeclareVisitor;
 import fr.imag.exschema.neo4j.NodeEntityVisitor;
 import fr.imag.exschema.neo4j.NodeUpdateVisitor;
+import fr.imag.exschema.neo4j.RelationshipVisitor;
 
 /**
  * 
@@ -160,14 +161,30 @@ public class Util {
         }
     }
 
+    /**
+     * 
+     * @param project
+     * @throws JavaModelException
+     */
     private static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
+        String endNode;
+        String nodeClass;
+        String startNode;
+        String node2Class;
         String fragmentKey;
         String fragmentRoot;
         String invocationRoot;
         List<String> currentFields;
+        List<String> currentRelations;
         NodeUpdateVisitor updateVisitor;
         Map<String, List<String>> nodes;
         NodeDeclareVisitor declareVisitor;
+        RelationshipVisitor relationVisitor;
+        Map<String, List<String>> relationships;
+        VariableDeclarationFragment endDeclaration;
+        Map<String, String> currentRelationshipType;
+        VariableDeclarationFragment startDeclaration;
+        Map<String, Map<String, String>> relationshipTypes;
 
         // Identify when nodes are being declared
         declareVisitor = new NodeDeclareVisitor();
@@ -177,11 +194,17 @@ public class Util {
         updateVisitor = new NodeUpdateVisitor();
         Util.analyzeJavaProject(project, updateVisitor);
 
-        // Match the updates to the corresponding nodes
+        // Identify when nodes are being related
+        relationVisitor = new RelationshipVisitor();
+        Util.analyzeJavaProject(project, relationVisitor);
+
+        // Match nodes to their corresponding fields and relations
         nodes = new HashMap<String, List<String>>();
         for (VariableDeclarationFragment fragment : declareVisitor.getVariableDeclarations()) {
             currentFields = new ArrayList<String>();
             fragmentRoot = ((CompilationUnit) fragment.getRoot()).getTypeRoot().getElementName();
+
+            // Fields
             for (MethodInvocation invocation : updateVisitor.getUpdateInvocations()) {
                 invocationRoot = ((CompilationUnit) invocation.getRoot()).getTypeRoot().getElementName();
                 // Match name of declare and update variables, in the same file
@@ -198,14 +221,91 @@ public class Util {
             }
         }
 
+        // Identify relations between the identified nodes
+        relationships = new HashMap<String, List<String>>();
+        relationshipTypes = new HashMap<String, Map<String, String>>();
+        for (MethodInvocation invocation : relationVisitor.getCreateInvocations()) {
+            // TODO: Consider operations that don't rely on variables
+            // Only work with variables
+            startNode = invocation.getExpression().toString();
+            endNode = invocation.arguments().get(0).toString();
+            if (Util.isVariableName(startNode) && Util.isVariableName(endNode)) {
+                endDeclaration = Util.getVariableDeclaration(Util.getInvocationBlock(invocation), endNode);
+                startDeclaration = Util.getVariableDeclaration(Util.getInvocationBlock(invocation), startNode);
+                if ((endDeclaration != null) && (startDeclaration != null)) {
+                    // Try to match the previously identified nodes with the
+                    // relationships' nodes
+                    for (String node : nodes.keySet()) {
+                        nodeClass = node.substring(0, node.indexOf('.'));
+                        // Match startNode
+                        if (startDeclaration.getInitializer().toString().contains(nodeClass)) {
+                            currentRelations = relationships.get(node);
+                            if (currentRelations == null) {
+                                currentRelations = new ArrayList<String>();
+                            }
+
+                            // Match endNode
+                            for (String node2 : nodes.keySet()) {
+                                node2Class = node2.substring(0, node2.indexOf('.'));
+                                if (endDeclaration.getInitializer().toString().contains(node2Class)) {
+                                    currentRelationshipType = relationshipTypes.get(node);
+                                    if (currentRelationshipType == null) {
+                                        currentRelationshipType = new HashMap<String, String>();
+                                        relationshipTypes.put(node, currentRelationshipType);
+                                    }
+
+                                    // Add the relation and its type
+                                    currentRelations.add(node2);
+                                    currentRelationshipType.put(node2, invocation.arguments().get(1).toString());
+                                    break;
+                                }
+                            }
+
+                            // Save relationships (if any)
+                            if (currentRelations.size() > 0) {
+                                relationships.put(node, currentRelations);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // TODO: Real analysis...
-        System.out.println("Neo4J nodes: ");
+        System.out.println("\nNeo4J nodes: ");
         for (String node : nodes.keySet()) {
             System.out.println("\n--Node: " + node);
             for (String field : nodes.get(node)) {
                 System.out.println("\n----Field: " + field);
             }
+
+            if (relationships.get(node) != null) {
+                for (String relationship : relationships.get(node)) {
+                    System.out.println("\n----Relationship: " + relationship + " ["
+                            + relationshipTypes.get(node).get(relationship) + "]");
+                }
+            }
         }
+    }
+
+    /**
+     * 
+     * @param block
+     * @param variableName
+     * @return
+     */
+    private static VariableDeclarationFragment getVariableDeclaration(final Block block, final String variableName) {
+        VariableDeclarationFragment returnValue;
+        NodeDeclareVisitor variableDeclareVisitor;
+
+        variableDeclareVisitor = new NodeDeclareVisitor(variableName);
+        block.accept(variableDeclareVisitor);
+        returnValue = null;
+        if (!variableDeclareVisitor.getVariableDeclarations().isEmpty()) {
+            returnValue = variableDeclareVisitor.getVariableDeclarations().get(0);
+        }
+
+        return returnValue;
     }
 
     /**
@@ -259,7 +359,7 @@ public class Util {
                     argumentName = argument.toString();
                     // TODO: Consider operations that don't rely on variables
                     // Only work with variables
-                    if (argumentName.matches("^[a-zA-Z][a-zA-Z0-9]*?$")) {
+                    if (Util.isVariableName(argumentName)) {
                         invocationBlock = Util.getInvocationBlock(methodInvocation);
                         if (invocationBlock != null) {
                             updateVisitor = new MongoUpdateVisitor(argumentName);
@@ -338,5 +438,14 @@ public class Util {
         parser.setSource(compilationUnit);
         parser.setResolveBindings(true);
         return (CompilationUnit) parser.createAST(null);
+    }
+
+    /**
+     * 
+     * @param name
+     * @return
+     */
+    private static boolean isVariableName(final String name) {
+        return name.matches("^[a-zA-Z][a-zA-Z0-9]*?$");
     }
 }

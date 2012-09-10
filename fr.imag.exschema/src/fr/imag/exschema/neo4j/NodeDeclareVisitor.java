@@ -15,12 +15,24 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
  * 
  */
 public class NodeDeclareVisitor extends ASTVisitor {
+    private String variableName;
     private List<VariableDeclarationFragment> variableDeclarations;
 
     /**
-     * 
+     * All declarations.
      */
     public NodeDeclareVisitor() {
+        this.variableDeclarations = new ArrayList<VariableDeclarationFragment>();
+    }
+
+    /**
+     * When we're interested in finding the declaration of a particular
+     * variable.
+     * 
+     * @param variableName
+     */
+    public NodeDeclareVisitor(final String variableName) {
+        this.variableName = variableName;
         this.variableDeclarations = new ArrayList<VariableDeclarationFragment>();
     }
 
@@ -32,6 +44,11 @@ public class NodeDeclareVisitor extends ASTVisitor {
         return super.visit(variableDeclaration);
     }
 
+    /**
+     * 
+     * @param variableDeclaration
+     * @return
+     */
     private boolean isNeo4JNode(final VariableDeclarationFragment variableDeclaration) {
         boolean returnValue;
         ASTNode parentNode;
@@ -46,8 +63,16 @@ public class NodeDeclareVisitor extends ASTVisitor {
             qualifiedName = ((FieldDeclaration) parentNode).getType().resolveBinding().getQualifiedName();
         }
 
+        // If a variable name was provided, the declarations that we're looking
+        // for should match that name
         if ("org.neo4j.graphdb.Node".equals(qualifiedName)) {
-            returnValue = true;
+            if (this.variableName != null) {
+                if (this.variableName.equals(variableDeclaration.getName().toString())) {
+                    returnValue = true;
+                }
+            } else {
+                returnValue = true;
+            }
         }
 
         return returnValue;
