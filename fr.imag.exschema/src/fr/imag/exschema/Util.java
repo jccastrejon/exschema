@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -28,10 +29,13 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
 import fr.imag.exschema.mongodb.MongoUpdateVisitor;
+import fr.imag.exschema.neo4j.ContainerUpdateVisitor;
 import fr.imag.exschema.neo4j.NodeDeclareVisitor;
 import fr.imag.exschema.neo4j.NodeEntityVisitor;
-import fr.imag.exschema.neo4j.NodeUpdateVisitor;
-import fr.imag.exschema.neo4j.RelationshipVisitor;
+import fr.imag.exschema.neo4j.RelationshipCreateVisitor;
+import fr.imag.exschema.neo4j.RelationshipDeclareVisitor;
+import fr.imag.exschema.neo4j.RelationshipEndNodeVisitor;
+import fr.imag.exschema.neo4j.RelationshipStartNodeVisitor;
 
 /**
  * 
@@ -171,58 +175,47 @@ public class Util {
         String nodeClass;
         String startNode;
         String node2Class;
-        String fragmentKey;
-        String fragmentRoot;
-        String invocationRoot;
-        List<String> currentFields;
         List<String> currentRelations;
-        NodeUpdateVisitor updateVisitor;
+        ContainerUpdateVisitor updateVisitor;
         Map<String, List<String>> nodes;
         NodeDeclareVisitor declareVisitor;
-        RelationshipVisitor relationVisitor;
         Map<String, List<String>> relationships;
+        RelationshipCreateVisitor relationVisitor;
         VariableDeclarationFragment endDeclaration;
         Map<String, String> currentRelationshipType;
+        Map<String, List<String>> nodesRelationships;
         VariableDeclarationFragment startDeclaration;
         Map<String, Map<String, String>> relationshipTypes;
+        Map<String, List<String>> currentRelationshipFields;
+        RelationshipDeclareVisitor relationshipDeclareVisitor;
+        Map<String, Map<String, List<String>>> relationshipFields;
 
         // Identify when nodes are being declared
         declareVisitor = new NodeDeclareVisitor();
         Util.analyzeJavaProject(project, declareVisitor);
 
         // Identify when nodes are assigned properties
-        updateVisitor = new NodeUpdateVisitor();
+        updateVisitor = new ContainerUpdateVisitor();
         Util.analyzeJavaProject(project, updateVisitor);
 
         // Identify when nodes are being related
-        relationVisitor = new RelationshipVisitor();
+        relationVisitor = new RelationshipCreateVisitor();
         Util.analyzeJavaProject(project, relationVisitor);
 
+        // Identify when relationships are declared
+        relationshipDeclareVisitor = new RelationshipDeclareVisitor();
+        Util.analyzeJavaProject(project, relationshipDeclareVisitor);
+
         // Match nodes to their corresponding fields and relations
-        nodes = new HashMap<String, List<String>>();
-        for (VariableDeclarationFragment fragment : declareVisitor.getVariableDeclarations()) {
-            currentFields = new ArrayList<String>();
-            fragmentRoot = ((CompilationUnit) fragment.getRoot()).getTypeRoot().getElementName();
+        nodes = Util.associateContainersFields(declareVisitor.getVariableDeclarations(),
+                updateVisitor.getUpdateInvocations());
 
-            // Fields
-            for (MethodInvocation invocation : updateVisitor.getUpdateInvocations()) {
-                invocationRoot = ((CompilationUnit) invocation.getRoot()).getTypeRoot().getElementName();
-                // Match name of declare and update variables, in the same file
-                if (fragmentRoot.equals(invocationRoot)) {
-                    if (fragment.getName().toString().equals(invocation.getExpression().toString())) {
-                        currentFields.add(((SimpleName) invocation.arguments().get(0)).toString());
-                    }
-                }
-            }
-
-            fragmentKey = fragmentRoot + "." + fragment.toString();
-            if ((currentFields.size() > 0) && (nodes.get(fragmentKey) == null)) {
-                nodes.put(fragmentKey, currentFields);
-            }
-        }
+        // Match relationships to their corresponding fields and relations
+        relationships = Util.associateContainersFields(relationshipDeclareVisitor.getVariableDeclarations(),
+                updateVisitor.getUpdateInvocations());
 
         // Identify relations between the identified nodes
-        relationships = new HashMap<String, List<String>>();
+        nodesRelationships = new HashMap<String, List<String>>();
         relationshipTypes = new HashMap<String, Map<String, String>>();
         for (MethodInvocation invocation : relationVisitor.getCreateInvocations()) {
             // TODO: Consider operations that don't rely on variables
@@ -239,7 +232,7 @@ public class Util {
                         nodeClass = node.substring(0, node.indexOf('.'));
                         // Match startNode
                         if (startDeclaration.getInitializer().toString().contains(nodeClass)) {
-                            currentRelations = relationships.get(node);
+                            currentRelations = nodesRelationships.get(node);
                             if (currentRelations == null) {
                                 currentRelations = new ArrayList<String>();
                             }
@@ -263,7 +256,44 @@ public class Util {
 
                             // Save relationships (if any)
                             if (currentRelations.size() > 0) {
-                                relationships.put(node, currentRelations);
+                                nodesRelationships.put(node, currentRelations);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Associate relationships found between nodes and the combinations of
+        // relationships-fields
+        relationshipFields = new HashMap<String, Map<String, List<String>>>();
+        for (String relationStart : nodes.keySet()) {
+            if (nodesRelationships.get(relationStart) != null) {
+                for (String relationEnd : nodesRelationships.get(relationStart)) {
+                    for (String relationship : relationships.keySet()) {
+                        // Look for references to the start and end nodes for
+                        // the relationship
+                        RelationshipStartNodeVisitor startNodeVisitor = new RelationshipStartNodeVisitor(
+                                relationship.substring(relationship.lastIndexOf('.') + 1));
+                        RelationshipEndNodeVisitor endNodeVisitor = new RelationshipEndNodeVisitor(
+                                relationship.substring(relationship.lastIndexOf('.') + 1));
+                        Util.analyzeJavaProject(project, startNodeVisitor);
+                        Util.analyzeJavaProject(project, endNodeVisitor);
+
+                        // Look for classes between the classes associated to
+                        // the start and end nodes of the relation, and
+                        // previously discovered nodes
+                        if ((startNodeVisitor.getUpdateInvocations().size() > 0)
+                                && (endNodeVisitor.getUpdateInvocations().size() > 0)) {
+                            if ((Util.isMatchingClass(startNodeVisitor.getUpdateInvocations().get(0), relationStart))
+                                    && (Util.isMatchingClass(endNodeVisitor.getUpdateInvocations().get(0), relationEnd))) {
+                                currentRelationshipFields = relationshipFields.get(relationStart);
+                                if (currentRelationshipFields == null) {
+                                    currentRelationshipFields = new HashMap<String, List<String>>();
+                                    relationshipFields.put(relationStart, currentRelationshipFields);
+                                }
+
+                                currentRelationshipFields.put(relationEnd, relationships.get(relationship));
                             }
                         }
                     }
@@ -279,13 +309,78 @@ public class Util {
                 System.out.println("\n----Field: " + field);
             }
 
-            if (relationships.get(node) != null) {
-                for (String relationship : relationships.get(node)) {
+            if (nodesRelationships.get(node) != null) {
+                for (String relationship : nodesRelationships.get(node)) {
                     System.out.println("\n----Relationship: " + relationship + " ["
                             + relationshipTypes.get(node).get(relationship) + "]");
+                    if (relationshipFields.get(node).get(relationship) != null) {
+                        for (String relationField : relationshipFields.get(node).get(relationship)) {
+                            System.out.println("\n------Relationship field: " + relationField);
+                        }
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * 
+     * @param invocation
+     * @param className
+     * @return
+     */
+    private static boolean isMatchingClass(final MethodInvocation invocation, final String className) {
+        boolean returnValue;
+
+        // TODO: Support more cases, not only instantiation
+        returnValue = false;
+        if (ClassInstanceCreation.class.isAssignableFrom(invocation.getParent().getClass())) {
+            if (className.contains(((ClassInstanceCreation) invocation.getParent()).resolveTypeBinding().getName())) {
+                returnValue = true;
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param declarations
+     * @param updateInvocations
+     * @return
+     */
+    private static Map<String, List<String>> associateContainersFields(
+            final List<VariableDeclarationFragment> declarations, List<MethodInvocation> updateInvocations) {
+        String fragmentKey;
+        String fragmentRoot;
+        String invocationRoot;
+        List<String> currentFields;
+        Map<String, List<String>> returnValue;
+
+        returnValue = new HashMap<String, List<String>>();
+        // Declarations
+        for (VariableDeclarationFragment fragment : declarations) {
+            currentFields = new ArrayList<String>();
+            fragmentRoot = ((CompilationUnit) fragment.getRoot()).getTypeRoot().getElementName();
+
+            // Fields
+            for (MethodInvocation invocation : updateInvocations) {
+                invocationRoot = ((CompilationUnit) invocation.getRoot()).getTypeRoot().getElementName();
+                // Match name of declare and update variables, in the same file
+                if (fragmentRoot.equals(invocationRoot)) {
+                    if (fragment.getName().toString().equals(invocation.getExpression().toString())) {
+                        currentFields.add(((SimpleName) invocation.arguments().get(0)).toString());
+                    }
+                }
+            }
+
+            fragmentKey = fragmentRoot + "." + fragment.toString();
+            if ((currentFields.size() > 0) && (returnValue.get(fragmentKey) == null)) {
+                returnValue.put(fragmentKey, currentFields);
+            }
+        }
+
+        return returnValue;
     }
 
     /**

@@ -11,13 +11,13 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
  * @author jccastrejon
  * 
  */
-public class RelationshipVisitor extends ASTVisitor {
+public class RelationshipCreateVisitor extends ASTVisitor {
     List<MethodInvocation> createInvocations;
 
     /**
      * 
      */
-    public RelationshipVisitor() {
+    public RelationshipCreateVisitor() {
         this.createInvocations = new ArrayList<MethodInvocation>();
     }
 

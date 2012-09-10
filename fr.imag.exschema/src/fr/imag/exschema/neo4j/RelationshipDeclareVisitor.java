@@ -7,11 +7,11 @@ import fr.imag.exschema.DeclareVisitor;
  * @author jccastrejon
  * 
  */
-public class NodeDeclareVisitor extends DeclareVisitor {
+public class RelationshipDeclareVisitor extends DeclareVisitor {
     /**
      * 
      */
-    public NodeDeclareVisitor() {
+    public RelationshipDeclareVisitor() {
         super();
     }
 
@@ -19,12 +19,12 @@ public class NodeDeclareVisitor extends DeclareVisitor {
      * 
      * @param variableName
      */
-    public NodeDeclareVisitor(final String variableName) {
+    public RelationshipDeclareVisitor(final String variableName) {
         super(variableName);
     }
 
     @Override
     protected String getExpectedQualifiedName() {
-        return "org.neo4j.graphdb.Node";
+        return "org.neo4j.graphdb.Relationship";
     }
 }
