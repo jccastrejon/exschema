@@ -26,6 +26,9 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import fr.imag.exschema.hbase.FamilyAddVisitor;
+import fr.imag.exschema.hbase.TableCreateVisitor;
+import fr.imag.exschema.hbase.TableDeclareVisitor;
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
 import fr.imag.exschema.mongodb.MongoUpdateVisitor;
@@ -59,6 +62,7 @@ public class Util {
         Util.discoverNeo4JNodes(project);
 
         // Column
+        Util.discoverHbaseTables(project);
     }
 
     /**
@@ -325,6 +329,43 @@ public class Util {
 
     /**
      * 
+     * @param project
+     * @throws JavaModelException
+     */
+    private static void discoverHbaseTables(final IJavaProject project) throws JavaModelException {
+        String tableDescriptor;
+        FamilyAddVisitor addVisitor;
+        TableCreateVisitor createVisitor;
+        TableDeclareVisitor declareVisitor;
+
+        // Identify when tables are created
+        createVisitor = new TableCreateVisitor();
+        Util.analyzeJavaProject(project, createVisitor);
+
+        // Get tables data
+        System.out.println("\n\nHBase tables:");
+        for (MethodInvocation createInvocation : createVisitor.getUpdateInvocations()) {
+            tableDescriptor = createInvocation.arguments().get(0).toString();
+
+            // Table name
+            declareVisitor = new TableDeclareVisitor(tableDescriptor);
+            createInvocation.getRoot().accept(declareVisitor);
+            if (declareVisitor.getVariableDeclarations().size() > 0) {
+                System.out.println("\n--Table: "
+                        + Util.getHBaseTableName(declareVisitor.getVariableDeclarations().get(0)));
+            }
+
+            // Column families
+            addVisitor = new FamilyAddVisitor(tableDescriptor);
+            createInvocation.getRoot().accept(addVisitor);
+            for (MethodInvocation invocation : addVisitor.getUpdateInvocations()) {
+                System.out.println("\n----Family: " + invocation.arguments().get(0));
+            }
+        }
+    }
+
+    /**
+     * 
      * @param invocation
      * @param className
      * @return
@@ -338,6 +379,23 @@ public class Util {
             if (className.contains(((ClassInstanceCreation) invocation.getParent()).resolveTypeBinding().getName())) {
                 returnValue = true;
             }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param tableDeclaration
+     * @return
+     */
+    private static String getHBaseTableName(final VariableDeclarationFragment tableDeclaration) {
+        String returnValue;
+
+        // TODO: Support more cases, not only instantiation
+        returnValue = null;
+        if (ClassInstanceCreation.class.isAssignableFrom(tableDeclaration.getInitializer().getClass())) {
+            returnValue = ((ClassInstanceCreation) tableDeclaration.getInitializer()).arguments().get(0).toString();
         }
 
         return returnValue;
