@@ -217,7 +217,7 @@ public class Util {
         // Identify relations between the identified nodes
         nodesRelationships = new HashMap<String, List<String>>();
         relationshipTypes = new HashMap<String, Map<String, String>>();
-        for (MethodInvocation invocation : relationVisitor.getCreateInvocations()) {
+        for (MethodInvocation invocation : relationVisitor.getUpdateInvocations()) {
             // TODO: Consider operations that don't rely on variables
             // Only work with variables
             startNode = invocation.getExpression().toString();

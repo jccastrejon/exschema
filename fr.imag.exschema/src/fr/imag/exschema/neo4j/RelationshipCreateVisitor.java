@@ -1,58 +1,20 @@
 package fr.imag.exschema.neo4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.MethodInvocation;
+import fr.imag.exschema.UpdateVisitor;
 
 /**
  * 
  * @author jccastrejon
  * 
  */
-public class RelationshipCreateVisitor extends ASTVisitor {
-    List<MethodInvocation> createInvocations;
-
-    /**
-     * 
-     */
-    public RelationshipCreateVisitor() {
-        this.createInvocations = new ArrayList<MethodInvocation>();
+public class RelationshipCreateVisitor extends UpdateVisitor {
+    @Override
+    protected String getMethodBinding() {
+        return "org.neo4j.graphdb.Node";
     }
 
     @Override
-    public boolean visit(final MethodInvocation invocation) {
-        if (this.isCreateRelationshipMethod(invocation)) {
-            this.createInvocations.add(invocation);
-        }
-
-        return super.visit(invocation);
-    }
-
-    /**
-     * 
-     * @param invocation
-     * @return
-     */
-    private boolean isCreateRelationshipMethod(final MethodInvocation invocation) {
-        boolean returnValue;
-
-        returnValue = false;
-        if ("org.neo4j.graphdb.Node".equals(invocation.resolveMethodBinding().getDeclaringClass().getQualifiedName())) {
-            if (invocation.getName().toString().equals("createRelationshipTo")) {
-                returnValue = true;
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public List<MethodInvocation> getCreateInvocations() {
-        return this.createInvocations;
+    protected String getMethodName() {
+        return "createRelationshipTo";
     }
 }
