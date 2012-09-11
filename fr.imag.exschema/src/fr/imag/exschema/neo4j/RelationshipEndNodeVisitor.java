@@ -8,14 +8,6 @@ import fr.imag.exschema.UpdateVisitor;
  * 
  */
 public class RelationshipEndNodeVisitor extends UpdateVisitor {
-    /**
-     * 
-     * @param variableName
-     */
-    public RelationshipEndNodeVisitor(final String variableName) {
-        super(variableName);
-    }
-    
     @Override
     protected String getMethodBinding() {
         return "org.neo4j.graphdb.Relationship";

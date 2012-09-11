@@ -8,14 +8,6 @@ import fr.imag.exschema.UpdateVisitor;
  * 
  */
 public class FamilyAddVisitor extends UpdateVisitor {
-    /**
-     * 
-     * @param variableName
-     */
-    public FamilyAddVisitor(final String variableName) {
-        super(variableName);
-    }
-
     @Override
     protected String getMethodBinding() {
         return "org.apache.hadoop.hbase.HTableDescriptor";

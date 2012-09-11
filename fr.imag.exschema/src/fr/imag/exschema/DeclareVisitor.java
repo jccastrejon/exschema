@@ -84,13 +84,21 @@ public abstract class DeclareVisitor extends ASTVisitor {
 
         return returnValue;
     }
-    
+
     /**
      * 
      * @return
      */
     public List<VariableDeclarationFragment> getVariableDeclarations() {
         return this.variableDeclarations;
+    }
+
+    /**
+     * 
+     * @param variableName
+     */
+    public void setVariableName(final String variableName) {
+        this.variableName = variableName;
     }
 
     /**

@@ -282,10 +282,10 @@ public class Util {
                     for (String relationship : relationships.keySet()) {
                         // Look for references to the start and end nodes for
                         // the relationship
-                        RelationshipStartNodeVisitor startNodeVisitor = new RelationshipStartNodeVisitor(
-                                relationship.substring(relationship.lastIndexOf('.') + 1));
-                        RelationshipEndNodeVisitor endNodeVisitor = new RelationshipEndNodeVisitor(
-                                relationship.substring(relationship.lastIndexOf('.') + 1));
+                        RelationshipStartNodeVisitor startNodeVisitor = new RelationshipStartNodeVisitor();
+                        startNodeVisitor.setVariableName(relationship.substring(relationship.lastIndexOf('.') + 1));
+                        RelationshipEndNodeVisitor endNodeVisitor = new RelationshipEndNodeVisitor();
+                        endNodeVisitor.setVariableName(relationship.substring(relationship.lastIndexOf('.') + 1));
                         Util.analyzeJavaProject(project, startNodeVisitor);
                         Util.analyzeJavaProject(project, endNodeVisitor);
 
@@ -367,17 +367,20 @@ public class Util {
             tableDescriptor = createInvocation.arguments().get(0).toString();
 
             // Table name
-            declareVisitor = new TableDeclareVisitor(tableDescriptor);
+            declareVisitor = new TableDeclareVisitor();
+            declareVisitor.setVariableName(tableDescriptor);
             tableName = Util.getHBaseName(createInvocation.getRoot(), declareVisitor);
             if (tableName != null) {
                 System.out.println("\n--Table: " + tableName);
 
                 // Column families
-                addVisitor = new FamilyAddVisitor(tableDescriptor);
+                addVisitor = new FamilyAddVisitor();
+                addVisitor.setVariableName(tableDescriptor);
                 createInvocation.getRoot().accept(addVisitor);
                 for (MethodInvocation invocation : addVisitor.getUpdateInvocations()) {
                     columnFamilyName = invocation.arguments().get(0).toString();
-                    columnFamilyDeclareVisitor = new ColumnFamilyDeclareVisitor(columnFamilyName);
+                    columnFamilyDeclareVisitor = new ColumnFamilyDeclareVisitor();
+                    columnFamilyDeclareVisitor.setVariableName(columnFamilyName);
                     columnFamilyName = Util.getHBaseName(createInvocation.getRoot(), columnFamilyDeclareVisitor);
                     if (columnFamilyName != null) {
                         System.out.println("\n----Family: " + columnFamilyName);
@@ -554,7 +557,8 @@ public class Util {
         VariableDeclarationFragment returnValue;
         NodeDeclareVisitor variableDeclareVisitor;
 
-        variableDeclareVisitor = new NodeDeclareVisitor(variableName);
+        variableDeclareVisitor = new NodeDeclareVisitor();
+        variableDeclareVisitor.setVariableName(variableName);
         block.accept(variableDeclareVisitor);
         returnValue = null;
         if (!variableDeclareVisitor.getVariableDeclarations().isEmpty()) {
