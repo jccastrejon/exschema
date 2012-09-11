@@ -18,10 +18,10 @@ import fr.imag.exschema.Util;
 /**
  * 
  * @author jccastrejon
- *
+ * 
  */
 public class HBaseUtil {
-    
+
     /**
      * 
      * @param project
@@ -78,12 +78,13 @@ public class HBaseUtil {
                         // Columns
                         if ((tableName != null) && (columnFamilyName != null)) {
                             // put(family, qualifier, value)
-                            columns = HBaseUtil.getHBaseColumns(createInvocation.getRoot(), new PutAddVisitor(),
-                                    columnFamilyName, putVisitor.getUpdateInvocations());
+                            columns = new ArrayList<String>();
+                            columns.addAll(HBaseUtil.getHBaseColumns(tableName, createInvocation.getRoot(),
+                                    new PutAddVisitor(), columnFamilyName, putVisitor.getUpdateInvocations()));
 
                             // addColumn(family, qualifier, amount)
-                            columns.addAll(HBaseUtil.getHBaseColumns(createInvocation.getRoot(), new AddColumnVisitor(),
-                                    columnFamilyName, incrementVisitor.getUpdateInvocations()));
+                            columns.addAll(HBaseUtil.getHBaseColumns(tableName, createInvocation.getRoot(),
+                                    new AddColumnVisitor(), columnFamilyName, incrementVisitor.getUpdateInvocations()));
 
                             for (String column : columns) {
                                 System.out.println("\n------Column: " + column);
@@ -97,28 +98,31 @@ public class HBaseUtil {
 
     /**
      * 
+     * @param tableName
      * @param rootNode
      * @param updateVisitor
      * @param columnFamilyName
      * @param updateInvocations
      * @return
      */
-    private static List<String> getHBaseColumns(final ASTNode rootNode, UpdateVisitor updateVisitor,
-            final String columnFamilyName, final List<MethodInvocation> updateInvocations) {
+    private static List<String> getHBaseColumns(final String tableName, final ASTNode rootNode,
+            UpdateVisitor updateVisitor, final String columnFamilyName, final List<MethodInvocation> updateInvocations) {
         String putName;
         List<String> arguments;
         List<String> returnValue;
 
         returnValue = new ArrayList<String>();
         for (MethodInvocation putInvocation : updateInvocations) {
-            putName = putInvocation.arguments().get(0).toString();
-            if (Util.isVariableName(putName)) {
-                updateVisitor.setVariableName(putName);
-                rootNode.accept(updateVisitor);
-                for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
-                    arguments = HBaseUtil.getHBaseAddArguments(addInvocation);
-                    if (arguments.get(0).equals(columnFamilyName)) {
-                        returnValue.add(arguments.get(1));
+            if (HBaseUtil.isMatchingTable(tableName, putInvocation)) {
+                putName = putInvocation.arguments().get(0).toString();
+                if (Util.isVariableName(putName)) {
+                    updateVisitor.setVariableName(putName);
+                    rootNode.accept(updateVisitor);
+                    for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
+                        arguments = HBaseUtil.getHBaseAddArguments(addInvocation);
+                        if (arguments.get(0).equals(columnFamilyName)) {
+                            returnValue.add(arguments.get(1));
+                        }
                     }
                 }
             }
@@ -126,7 +130,56 @@ public class HBaseUtil {
 
         return returnValue;
     }
-    
+
+    /**
+     * 
+     * @param expectedTable
+     * @param updateInvocation
+     * @return
+     */
+    private static boolean isMatchingTable(final String expectedTable, final MethodInvocation updateInvocation) {
+        boolean returnValue;
+        MethodInvocation templateExecution;
+
+        returnValue = false;
+        templateExecution = HBaseUtil.getSpringTemplateExecution(updateInvocation);
+        if (templateExecution != null) {
+            returnValue = (templateExecution.arguments().get(0).toString().equals(expectedTable));
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param node
+     * @return
+     */
+    private static MethodInvocation getSpringTemplateExecution(final ASTNode node) {
+        MethodInvocation returnValue;
+        MethodInvocation updateInvocation;
+
+        returnValue = null;
+        if (node != null) {
+            if (MethodInvocation.class.isAssignableFrom(node.getClass())) {
+                updateInvocation = (MethodInvocation) node;
+                if ((updateInvocation.getName().toString().equals("execute"))
+                        && (updateInvocation.getExpression().resolveTypeBinding().getQualifiedName()
+                                .equals("org.springframework.data.hadoop.hbase.HbaseTemplate"))) {
+                    returnValue = updateInvocation;
+                }
+            }
+
+            if (returnValue == null) {
+                if (node.getParent() != null) {
+                    returnValue = HBaseUtil.getSpringTemplateExecution(node.getParent());
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
     /**
      * 
      * @param putInvocation
