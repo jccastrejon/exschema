@@ -26,9 +26,12 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import fr.imag.exschema.hbase.ColumnFamilyDeclareVisitor;
 import fr.imag.exschema.hbase.FamilyAddVisitor;
+import fr.imag.exschema.hbase.PutAddVisitor;
 import fr.imag.exschema.hbase.TableCreateVisitor;
 import fr.imag.exschema.hbase.TableDeclareVisitor;
+import fr.imag.exschema.hbase.TablePutVisitor;
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
 import fr.imag.exschema.mongodb.MongoUpdateVisitor;
@@ -333,14 +336,25 @@ public class Util {
      * @throws JavaModelException
      */
     private static void discoverHbaseTables(final IJavaProject project) throws JavaModelException {
+        String putName;
+        String tableName;
         String tableDescriptor;
+        String columnFamilyName;
+        List<String> putArguments;
+        TablePutVisitor putVisitor;
+        PutAddVisitor putAddVisitor;
         FamilyAddVisitor addVisitor;
         TableCreateVisitor createVisitor;
         TableDeclareVisitor declareVisitor;
+        ColumnFamilyDeclareVisitor columnFamilyDeclareVisitor;
 
         // Identify when tables are created
         createVisitor = new TableCreateVisitor();
         Util.analyzeJavaProject(project, createVisitor);
+
+        // Identify when data is inserted in a table
+        putVisitor = new TablePutVisitor();
+        Util.analyzeJavaProject(project, putVisitor);
 
         // Get tables data
         System.out.println("\n\nHBase tables:");
@@ -349,17 +363,39 @@ public class Util {
 
             // Table name
             declareVisitor = new TableDeclareVisitor(tableDescriptor);
-            createInvocation.getRoot().accept(declareVisitor);
-            if (declareVisitor.getVariableDeclarations().size() > 0) {
-                System.out.println("\n--Table: "
-                        + Util.getHBaseTableName(declareVisitor.getVariableDeclarations().get(0)));
-            }
+            tableName = Util.getHBaseName(createInvocation.getRoot(), declareVisitor);
+            if (tableName != null) {
+                System.out.println("\n--Table: " + tableName);
 
-            // Column families
-            addVisitor = new FamilyAddVisitor(tableDescriptor);
-            createInvocation.getRoot().accept(addVisitor);
-            for (MethodInvocation invocation : addVisitor.getUpdateInvocations()) {
-                System.out.println("\n----Family: " + invocation.arguments().get(0));
+                // Column families
+                addVisitor = new FamilyAddVisitor(tableDescriptor);
+                createInvocation.getRoot().accept(addVisitor);
+                for (MethodInvocation invocation : addVisitor.getUpdateInvocations()) {
+                    columnFamilyName = invocation.arguments().get(0).toString();
+                    columnFamilyDeclareVisitor = new ColumnFamilyDeclareVisitor(columnFamilyName);
+                    columnFamilyName = Util.getHBaseName(createInvocation.getRoot(), columnFamilyDeclareVisitor);
+                    if (columnFamilyName != null) {
+                        System.out.println("\n----Family: " + columnFamilyName);
+
+                        // Columns and data
+                        if ((tableName != null) && (columnFamilyName != null)) {
+                            for (MethodInvocation putInvocation : putVisitor.getUpdateInvocations()) {
+                                putName = putInvocation.arguments().get(0).toString();
+                                if (Util.isVariableName(putName)) {
+                                    putAddVisitor = new PutAddVisitor(putName);
+                                    createInvocation.getRoot().accept(putAddVisitor);
+                                    for (MethodInvocation addInvocation : putAddVisitor.getUpdateInvocations()) {
+                                        // put.add(family, qualifier, value)
+                                        putArguments = Util.getHBaseAddArguments(addInvocation);
+                                        if (putArguments.get(0).equals(columnFamilyName)) {
+                                            System.out.println("\n------Column: " + putArguments.get(1));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -386,16 +422,49 @@ public class Util {
 
     /**
      * 
+     * @param putInvocation
+     * @return
+     */
+    private static List<String> getHBaseAddArguments(final MethodInvocation putInvocation) {
+        String currentArgument;
+        List<String> returnValue;
+
+        returnValue = new ArrayList<String>(putInvocation.arguments().size());
+        for (Object argument : putInvocation.arguments()) {
+            currentArgument = ((Expression) argument).toString();
+            // TODO: Consider operations that don't rely on variables
+            // TODO: Consider operations that don't rely on method invocations
+            if (currentArgument.contains("(")) {
+                returnValue.add(currentArgument.substring(currentArgument.indexOf('(') + 1,
+                        currentArgument.indexOf(')')));
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
      * @param tableDeclaration
      * @return
      */
-    private static String getHBaseTableName(final VariableDeclarationFragment tableDeclaration) {
+    private static String getHBaseName(final ASTNode rootNode, final DeclareVisitor declareVisitor) {
         String returnValue;
+        VariableDeclarationFragment declaration;
 
-        // TODO: Support more cases, not only instantiation
         returnValue = null;
-        if (ClassInstanceCreation.class.isAssignableFrom(tableDeclaration.getInitializer().getClass())) {
-            returnValue = ((ClassInstanceCreation) tableDeclaration.getInitializer()).arguments().get(0).toString();
+        rootNode.accept(declareVisitor);
+        if (declareVisitor.getVariableDeclarations().size() > 0) {
+            declaration = declareVisitor.getVariableDeclarations().get(0);
+            // TODO: Support more cases, not only instantiation
+            if (ClassInstanceCreation.class.isAssignableFrom(declaration.getInitializer().getClass())) {
+                // TODO: Consider operations that don't rely on variables
+                // Only work with variables
+                returnValue = ((ClassInstanceCreation) declaration.getInitializer()).arguments().get(0).toString();
+                if (!Util.isVariableName(returnValue)) {
+                    returnValue = null;
+                }
+            }
         }
 
         return returnValue;
