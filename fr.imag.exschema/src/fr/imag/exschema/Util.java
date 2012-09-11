@@ -1,10 +1,5 @@
 package fr.imag.exschema;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -19,31 +14,11 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import fr.imag.exschema.hbase.AddColumnVisitor;
-import fr.imag.exschema.hbase.ColumnFamilyDeclareVisitor;
-import fr.imag.exschema.hbase.FamilyAddVisitor;
-import fr.imag.exschema.hbase.PutAddVisitor;
-import fr.imag.exschema.hbase.TableCreateVisitor;
-import fr.imag.exschema.hbase.TableDeclareVisitor;
-import fr.imag.exschema.hbase.TableIncrementVisitor;
-import fr.imag.exschema.hbase.TablePutVisitor;
-import fr.imag.exschema.mongodb.MongoCollectionVisitor;
-import fr.imag.exschema.mongodb.MongoInsertVisitor;
-import fr.imag.exschema.mongodb.MongoUpdateVisitor;
-import fr.imag.exschema.neo4j.ContainerUpdateVisitor;
-import fr.imag.exschema.neo4j.NodeDeclareVisitor;
-import fr.imag.exschema.neo4j.NodeEntityVisitor;
-import fr.imag.exschema.neo4j.RelationshipCreateVisitor;
-import fr.imag.exschema.neo4j.RelationshipDeclareVisitor;
-import fr.imag.exschema.neo4j.RelationshipEndNodeVisitor;
-import fr.imag.exschema.neo4j.RelationshipStartNodeVisitor;
+import fr.imag.exschema.hbase.HBaseUtil;
+import fr.imag.exschema.mongodb.MongoDBUtil;
+import fr.imag.exschema.neo4j.Neo4jUtil;
 
 /**
  * 
@@ -60,14 +35,14 @@ public class Util {
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
         // Document
         Util.discoverRepositories(project);
-        Util.discoverMongoObjects(project);
+        MongoDBUtil.discoverMongoObjects(project);
 
         // Graph
-        Util.discoverNeo4JNodeEntities(project);
-        Util.discoverNeo4JNodes(project);
+        Neo4jUtil.discoverNeo4JNodeEntities(project);
+        Neo4jUtil.discoverNeo4JNodes(project);
 
         // Column
-        Util.discoverHbaseTables(project);
+        HBaseUtil.discoverHbaseTables(project);
     }
 
     /**
@@ -88,6 +63,55 @@ public class Util {
         }
 
         return returnValue;
+    }
+
+    /**
+     * 
+     * @param invocation
+     * @param className
+     * @return
+     */
+    public static boolean isMatchingClass(final MethodInvocation invocation, final String className) {
+        boolean returnValue;
+
+        // TODO: Support more cases, not only instantiation
+        returnValue = false;
+        if (ClassInstanceCreation.class.isAssignableFrom(invocation.getParent().getClass())) {
+            if (className.contains(((ClassInstanceCreation) invocation.getParent()).resolveTypeBinding().getName())) {
+                returnValue = true;
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param project
+     * @param visitor
+     * @throws JavaModelException
+     */
+    public static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor)
+            throws JavaModelException {
+        CompilationUnit parsedUnit;
+
+        for (IPackageFragment aPackage : project.getPackageFragments()) {
+            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
+                    parsedUnit = Util.parse(compilationUnit);
+                    parsedUnit.accept(visitor);
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param name
+     * @return
+     */
+    public static boolean isVariableName(final String name) {
+        return name.matches("^[a-zA-Z][a-zA-Z0-9]*?$");
     }
 
     /**
@@ -123,537 +147,6 @@ public class Util {
 
     /**
      * 
-     * @param project
-     * @throws JavaModelException
-     */
-    private static void discoverMongoObjects(final IJavaProject project) throws JavaModelException {
-        MongoInsertVisitor insertVisitor;
-        Map<String, Map<String, List<String>>> mongoCollections;
-
-        // Identify when objects are being saved
-        insertVisitor = new MongoInsertVisitor();
-        Util.analyzeJavaProject(project, insertVisitor);
-
-        // Analyze save invocations
-        // TODO: Real analysis...
-        System.out.println("\nMongoDB documents (based on inserts): ");
-        mongoCollections = Util.getMongoCollections(insertVisitor.getSaveInvocations());
-        for (String collection : mongoCollections.keySet()) {
-            System.out.println("--Collection: " + collection);
-            for (String document : mongoCollections.get(collection).keySet()) {
-                System.out.println("----Document: " + document);
-                for (String field : mongoCollections.get(collection).get(document)) {
-                    System.out.println("------Field: " + field);
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param project
-     * @throws JavaModelException
-     */
-    private static void discoverNeo4JNodeEntities(final IJavaProject project) throws JavaModelException {
-        NodeEntityVisitor entityVisitor;
-
-        // Identify node entities
-        entityVisitor = new NodeEntityVisitor();
-        Util.analyzeJavaProject(project, entityVisitor);
-
-        // TODO: Real analysis...
-        System.out.println("Neo4J node entities: ");
-        for (String node : entityVisitor.getNodeEntities().keySet()) {
-            System.out.println("\n--Node: " + node);
-            for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
-                System.out.println("----Field: " + field.fragments().get(0));
-                if (Util.hasRelatedToAnnotation(field.modifiers())) {
-                    System.out.println("------Related to: " + field.getType());
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param project
-     * @throws JavaModelException
-     */
-    private static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
-        String endNode;
-        String nodeClass;
-        String startNode;
-        String node2Class;
-        List<String> currentRelations;
-        ContainerUpdateVisitor updateVisitor;
-        Map<String, List<String>> nodes;
-        NodeDeclareVisitor declareVisitor;
-        Map<String, List<String>> relationships;
-        RelationshipCreateVisitor relationVisitor;
-        VariableDeclarationFragment endDeclaration;
-        Map<String, String> currentRelationshipType;
-        Map<String, List<String>> nodesRelationships;
-        VariableDeclarationFragment startDeclaration;
-        Map<String, Map<String, String>> relationshipTypes;
-        Map<String, List<String>> currentRelationshipFields;
-        RelationshipDeclareVisitor relationshipDeclareVisitor;
-        Map<String, Map<String, List<String>>> relationshipFields;
-
-        // Identify when nodes are being declared
-        declareVisitor = new NodeDeclareVisitor();
-        Util.analyzeJavaProject(project, declareVisitor);
-
-        // Identify when nodes are assigned properties
-        updateVisitor = new ContainerUpdateVisitor();
-        Util.analyzeJavaProject(project, updateVisitor);
-
-        // Identify when nodes are being related
-        relationVisitor = new RelationshipCreateVisitor();
-        Util.analyzeJavaProject(project, relationVisitor);
-
-        // Identify when relationships are declared
-        relationshipDeclareVisitor = new RelationshipDeclareVisitor();
-        Util.analyzeJavaProject(project, relationshipDeclareVisitor);
-
-        // Match nodes to their corresponding fields and relations
-        nodes = Util.associateContainersFields(declareVisitor.getVariableDeclarations(),
-                updateVisitor.getUpdateInvocations());
-
-        // Match relationships to their corresponding fields and relations
-        relationships = Util.associateContainersFields(relationshipDeclareVisitor.getVariableDeclarations(),
-                updateVisitor.getUpdateInvocations());
-
-        // Identify relations between the identified nodes
-        nodesRelationships = new HashMap<String, List<String>>();
-        relationshipTypes = new HashMap<String, Map<String, String>>();
-        for (MethodInvocation invocation : relationVisitor.getUpdateInvocations()) {
-            // TODO: Consider operations that don't rely on variables
-            // Only work with variables
-            startNode = invocation.getExpression().toString();
-            endNode = invocation.arguments().get(0).toString();
-            if (Util.isVariableName(startNode) && Util.isVariableName(endNode)) {
-                endDeclaration = Util.getVariableDeclaration(Util.getInvocationBlock(invocation), endNode);
-                startDeclaration = Util.getVariableDeclaration(Util.getInvocationBlock(invocation), startNode);
-                if ((endDeclaration != null) && (startDeclaration != null)) {
-                    // Try to match the previously identified nodes with the
-                    // relationships' nodes
-                    for (String node : nodes.keySet()) {
-                        nodeClass = node.substring(0, node.indexOf('.'));
-                        // Match startNode
-                        if (startDeclaration.getInitializer().toString().contains(nodeClass)) {
-                            currentRelations = nodesRelationships.get(node);
-                            if (currentRelations == null) {
-                                currentRelations = new ArrayList<String>();
-                            }
-
-                            // Match endNode
-                            for (String node2 : nodes.keySet()) {
-                                node2Class = node2.substring(0, node2.indexOf('.'));
-                                if (endDeclaration.getInitializer().toString().contains(node2Class)) {
-                                    currentRelationshipType = relationshipTypes.get(node);
-                                    if (currentRelationshipType == null) {
-                                        currentRelationshipType = new HashMap<String, String>();
-                                        relationshipTypes.put(node, currentRelationshipType);
-                                    }
-
-                                    // Add the relation and its type
-                                    currentRelations.add(node2);
-                                    currentRelationshipType.put(node2, invocation.arguments().get(1).toString());
-                                    break;
-                                }
-                            }
-
-                            // Save relationships (if any)
-                            if (currentRelations.size() > 0) {
-                                nodesRelationships.put(node, currentRelations);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Associate relationships found between nodes and the combinations of
-        // relationships-fields
-        relationshipFields = new HashMap<String, Map<String, List<String>>>();
-        for (String relationStart : nodes.keySet()) {
-            if (nodesRelationships.get(relationStart) != null) {
-                for (String relationEnd : nodesRelationships.get(relationStart)) {
-                    for (String relationship : relationships.keySet()) {
-                        // Look for references to the start and end nodes for
-                        // the relationship
-                        RelationshipStartNodeVisitor startNodeVisitor = new RelationshipStartNodeVisitor();
-                        startNodeVisitor.setVariableName(relationship.substring(relationship.lastIndexOf('.') + 1));
-                        RelationshipEndNodeVisitor endNodeVisitor = new RelationshipEndNodeVisitor();
-                        endNodeVisitor.setVariableName(relationship.substring(relationship.lastIndexOf('.') + 1));
-                        Util.analyzeJavaProject(project, startNodeVisitor);
-                        Util.analyzeJavaProject(project, endNodeVisitor);
-
-                        // Look for classes between the classes associated to
-                        // the start and end nodes of the relation, and
-                        // previously discovered nodes
-                        if ((startNodeVisitor.getUpdateInvocations().size() > 0)
-                                && (endNodeVisitor.getUpdateInvocations().size() > 0)) {
-                            if ((Util.isMatchingClass(startNodeVisitor.getUpdateInvocations().get(0), relationStart))
-                                    && (Util.isMatchingClass(endNodeVisitor.getUpdateInvocations().get(0), relationEnd))) {
-                                currentRelationshipFields = relationshipFields.get(relationStart);
-                                if (currentRelationshipFields == null) {
-                                    currentRelationshipFields = new HashMap<String, List<String>>();
-                                    relationshipFields.put(relationStart, currentRelationshipFields);
-                                }
-
-                                currentRelationshipFields.put(relationEnd, relationships.get(relationship));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // TODO: Real analysis...
-        System.out.println("\nNeo4J nodes: ");
-        for (String node : nodes.keySet()) {
-            System.out.println("\n--Node: " + node);
-            for (String field : nodes.get(node)) {
-                System.out.println("\n----Field: " + field);
-            }
-
-            if (nodesRelationships.get(node) != null) {
-                for (String relationship : nodesRelationships.get(node)) {
-                    System.out.println("\n----Relationship: " + relationship + " ["
-                            + relationshipTypes.get(node).get(relationship) + "]");
-                    if (relationshipFields.get(node).get(relationship) != null) {
-                        for (String relationField : relationshipFields.get(node).get(relationship)) {
-                            System.out.println("\n------Relationship field: " + relationField);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param project
-     * @throws JavaModelException
-     */
-    private static void discoverHbaseTables(final IJavaProject project) throws JavaModelException {
-        String tableName;
-        List<String> columns;
-        String tableDescriptor;
-        String columnFamilyName;
-        TablePutVisitor putVisitor;
-        FamilyAddVisitor addVisitor;
-        TableCreateVisitor createVisitor;
-        TableDeclareVisitor declareVisitor;
-        TableIncrementVisitor incrementVisitor;
-        ColumnFamilyDeclareVisitor columnFamilyDeclareVisitor;
-
-        // Identify when tables are created
-        createVisitor = new TableCreateVisitor();
-        Util.analyzeJavaProject(project, createVisitor);
-
-        // Identify when data is inserted in a table
-        putVisitor = new TablePutVisitor();
-        Util.analyzeJavaProject(project, putVisitor);
-
-        // Identify when columns are added to a column family
-        incrementVisitor = new TableIncrementVisitor();
-        Util.analyzeJavaProject(project, incrementVisitor);
-
-        // Get tables data
-        System.out.println("\n\nHBase tables:");
-        for (MethodInvocation createInvocation : createVisitor.getUpdateInvocations()) {
-            tableDescriptor = createInvocation.arguments().get(0).toString();
-
-            // Table name
-            declareVisitor = new TableDeclareVisitor();
-            declareVisitor.setVariableName(tableDescriptor);
-            tableName = Util.getHBaseName(createInvocation.getRoot(), declareVisitor);
-            if (tableName != null) {
-                System.out.println("\n--Table: " + tableName);
-
-                // Column families
-                addVisitor = new FamilyAddVisitor();
-                addVisitor.setVariableName(tableDescriptor);
-                createInvocation.getRoot().accept(addVisitor);
-                for (MethodInvocation invocation : addVisitor.getUpdateInvocations()) {
-                    columnFamilyName = invocation.arguments().get(0).toString();
-                    columnFamilyDeclareVisitor = new ColumnFamilyDeclareVisitor();
-                    columnFamilyDeclareVisitor.setVariableName(columnFamilyName);
-                    columnFamilyName = Util.getHBaseName(createInvocation.getRoot(), columnFamilyDeclareVisitor);
-                    if (columnFamilyName != null) {
-                        System.out.println("\n----Family: " + columnFamilyName);
-
-                        // Columns
-                        if ((tableName != null) && (columnFamilyName != null)) {
-                            // put(family, qualifier, value)
-                            columns = Util.getHBaseColumns(createInvocation.getRoot(), new PutAddVisitor(),
-                                    columnFamilyName, putVisitor.getUpdateInvocations());
-
-                            // addColumn(family, qualifier, amount)
-                            columns.addAll(Util.getHBaseColumns(createInvocation.getRoot(), new AddColumnVisitor(),
-                                    columnFamilyName, incrementVisitor.getUpdateInvocations()));
-
-                            for (String column : columns) {
-                                System.out.println("\n------Column: " + column);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param rootNode
-     * @param updateVisitor
-     * @param columnFamilyName
-     * @param updateInvocations
-     * @return
-     */
-    private static List<String> getHBaseColumns(final ASTNode rootNode, UpdateVisitor updateVisitor,
-            final String columnFamilyName, final List<MethodInvocation> updateInvocations) {
-        String putName;
-        List<String> arguments;
-        List<String> returnValue;
-
-        returnValue = new ArrayList<String>();
-        for (MethodInvocation putInvocation : updateInvocations) {
-            putName = putInvocation.arguments().get(0).toString();
-            if (Util.isVariableName(putName)) {
-                updateVisitor.setVariableName(putName);
-                rootNode.accept(updateVisitor);
-                for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
-                    arguments = Util.getHBaseAddArguments(addInvocation);
-                    if (arguments.get(0).equals(columnFamilyName)) {
-                        returnValue.add(arguments.get(1));
-                    }
-                }
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param invocation
-     * @param className
-     * @return
-     */
-    private static boolean isMatchingClass(final MethodInvocation invocation, final String className) {
-        boolean returnValue;
-
-        // TODO: Support more cases, not only instantiation
-        returnValue = false;
-        if (ClassInstanceCreation.class.isAssignableFrom(invocation.getParent().getClass())) {
-            if (className.contains(((ClassInstanceCreation) invocation.getParent()).resolveTypeBinding().getName())) {
-                returnValue = true;
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param putInvocation
-     * @return
-     */
-    private static List<String> getHBaseAddArguments(final MethodInvocation putInvocation) {
-        String currentArgument;
-        List<String> returnValue;
-
-        returnValue = new ArrayList<String>(putInvocation.arguments().size());
-        for (Object argument : putInvocation.arguments()) {
-            currentArgument = ((Expression) argument).toString();
-            // TODO: Consider operations that don't rely on variables
-            // TODO: Consider operations that don't rely on method invocations
-            if (currentArgument.contains("(")) {
-                returnValue.add(currentArgument.substring(currentArgument.indexOf('(') + 1,
-                        currentArgument.indexOf(')')));
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param tableDeclaration
-     * @return
-     */
-    private static String getHBaseName(final ASTNode rootNode, final DeclareVisitor declareVisitor) {
-        String returnValue;
-        VariableDeclarationFragment declaration;
-
-        returnValue = null;
-        rootNode.accept(declareVisitor);
-        if (declareVisitor.getVariableDeclarations().size() > 0) {
-            declaration = declareVisitor.getVariableDeclarations().get(0);
-            // TODO: Support more cases, not only instantiation
-            if (ClassInstanceCreation.class.isAssignableFrom(declaration.getInitializer().getClass())) {
-                // TODO: Consider operations that don't rely on variables
-                // Only work with variables
-                returnValue = ((ClassInstanceCreation) declaration.getInitializer()).arguments().get(0).toString();
-                if (!Util.isVariableName(returnValue)) {
-                    returnValue = null;
-                }
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param declarations
-     * @param updateInvocations
-     * @return
-     */
-    private static Map<String, List<String>> associateContainersFields(
-            final List<VariableDeclarationFragment> declarations, List<MethodInvocation> updateInvocations) {
-        String fragmentKey;
-        String fragmentRoot;
-        String invocationRoot;
-        List<String> currentFields;
-        Map<String, List<String>> returnValue;
-
-        returnValue = new HashMap<String, List<String>>();
-        // Declarations
-        for (VariableDeclarationFragment fragment : declarations) {
-            currentFields = new ArrayList<String>();
-            fragmentRoot = ((CompilationUnit) fragment.getRoot()).getTypeRoot().getElementName();
-
-            // Fields
-            for (MethodInvocation invocation : updateInvocations) {
-                invocationRoot = ((CompilationUnit) invocation.getRoot()).getTypeRoot().getElementName();
-                // Match name of declare and update variables, in the same file
-                if (fragmentRoot.equals(invocationRoot)) {
-                    if (fragment.getName().toString().equals(invocation.getExpression().toString())) {
-                        currentFields.add(((SimpleName) invocation.arguments().get(0)).toString());
-                    }
-                }
-            }
-
-            fragmentKey = fragmentRoot + "." + fragment.toString();
-            if ((currentFields.size() > 0) && (returnValue.get(fragmentKey) == null)) {
-                returnValue.put(fragmentKey, currentFields);
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param block
-     * @param variableName
-     * @return
-     */
-    private static VariableDeclarationFragment getVariableDeclaration(final Block block, final String variableName) {
-        VariableDeclarationFragment returnValue;
-        NodeDeclareVisitor variableDeclareVisitor;
-
-        variableDeclareVisitor = new NodeDeclareVisitor();
-        variableDeclareVisitor.setVariableName(variableName);
-        block.accept(variableDeclareVisitor);
-        returnValue = null;
-        if (!variableDeclareVisitor.getVariableDeclarations().isEmpty()) {
-            returnValue = variableDeclareVisitor.getVariableDeclarations().get(0);
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param modifier
-     * @return
-     */
-    private static boolean hasRelatedToAnnotation(final List<?> modifiers) {
-        boolean returnValue;
-        String annotationName;
-
-        returnValue = false;
-        for (Object modifier : modifiers) {
-            if (NormalAnnotation.class.isAssignableFrom(modifier.getClass())) {
-                annotationName = ((NormalAnnotation) modifier).resolveTypeBinding().getQualifiedName();
-                if (annotationName.equals("org.springframework.data.neo4j.annotation.RelatedTo")) {
-                    returnValue = true;
-                    break;
-                }
-            }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
-     * @param invocations
-     * @return
-     */
-    private static Map<String, Map<String, List<String>>> getMongoCollections(final List<MethodInvocation> invocations) {
-        String argumentName;
-        String argumentClass;
-        Block invocationBlock;
-        String currentCollectionName;
-        MongoUpdateVisitor updateVisitor;
-        MongoCollectionVisitor collectionVisitor;
-        Map<String, Block> collectionsBlocks;
-        Map<String, List<String>> currentCollection;
-        Map<String, Map<String, List<String>>> returnValue;
-        Map<String, Map<String, List<String>>> collectionsData;
-
-        // TODO: Consider what would happen if the same collection variable is
-        // initialized more than once (coll=db.getCollection()) in a same block
-        collectionsBlocks = new HashMap<String, Block>();
-        collectionsData = new HashMap<String, Map<String, List<String>>>();
-        for (MethodInvocation methodInvocation : invocations) {
-            for (Object argument : methodInvocation.arguments()) {
-                argumentClass = ((Expression) argument).resolveTypeBinding().getQualifiedName();
-                if (argumentClass.equals("com.mongodb.BasicDBObject")) {
-                    argumentName = argument.toString();
-                    // TODO: Consider operations that don't rely on variables
-                    // Only work with variables
-                    if (Util.isVariableName(argumentName)) {
-                        invocationBlock = Util.getInvocationBlock(methodInvocation);
-                        if (invocationBlock != null) {
-                            updateVisitor = new MongoUpdateVisitor(argumentName);
-                            invocationBlock.accept(updateVisitor);
-
-                            // Build {collections {documents {fields}}}
-                            currentCollectionName = methodInvocation.getExpression().toString();
-                            currentCollection = collectionsData.get(currentCollectionName);
-                            if (currentCollection == null) {
-                                currentCollection = new HashMap<String, List<String>>();
-                                collectionsData.put(currentCollectionName, currentCollection);
-                                collectionsBlocks.put(currentCollectionName, invocationBlock);
-                            }
-
-                            currentCollection.put(argumentName, updateVisitor.getFields());
-                        }
-                    }
-                }
-            }
-        }
-
-        // Get collections name
-        returnValue = new HashMap<String, Map<String, List<String>>>();
-        for (String collection : collectionsBlocks.keySet()) {
-            collectionVisitor = new MongoCollectionVisitor(collection);
-            collectionsBlocks.get(collection).accept(collectionVisitor);
-            returnValue.put(collectionVisitor.getCollectionName(), collectionsData.get(collection));
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * 
      * @param type
      * @throws JavaModelException
      */
@@ -662,26 +155,6 @@ public class Util {
         System.out.println("Fields:");
         for (IField field : type.getFields()) {
             System.out.println(field.getElementName() + ":" + field.getTypeSignature());
-        }
-    }
-
-    /**
-     * 
-     * @param project
-     * @param visitor
-     * @throws JavaModelException
-     */
-    private static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor)
-            throws JavaModelException {
-        CompilationUnit parsedUnit;
-
-        for (IPackageFragment aPackage : project.getPackageFragments()) {
-            if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
-                for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
-                    parsedUnit = Util.parse(compilationUnit);
-                    parsedUnit.accept(visitor);
-                }
-            }
         }
     }
 
@@ -698,14 +171,5 @@ public class Util {
         parser.setSource(compilationUnit);
         parser.setResolveBindings(true);
         return (CompilationUnit) parser.createAST(null);
-    }
-
-    /**
-     * 
-     * @param name
-     * @return
-     */
-    private static boolean isVariableName(final String name) {
-        return name.matches("^[a-zA-Z][a-zA-Z0-9]*?$");
     }
 }
