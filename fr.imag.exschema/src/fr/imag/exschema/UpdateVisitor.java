@@ -74,6 +74,14 @@ public abstract class UpdateVisitor extends ASTVisitor {
     public List<MethodInvocation> getUpdateInvocations() {
         return this.updateInvocations;
     }
+    
+    /**
+     * 
+     * @param variableName
+     */
+    public void setVariableName(final String variableName) {
+        this.variableName = variableName;
+    }
 
     /**
      * 

@@ -7,14 +7,14 @@ import fr.imag.exschema.UpdateVisitor;
  * @author jccastrejon
  * 
  */
-public class PutAddVisitor extends UpdateVisitor {
+public class TableIncrementVisitor extends UpdateVisitor {
     @Override
     protected String getMethodBinding() {
-        return "org.apache.hadoop.hbase.client.Put";
+        return "org.apache.hadoop.hbase.client.HTable";
     }
 
     @Override
     protected String getMethodName() {
-        return "add";
+        return "increment";
     }
 }

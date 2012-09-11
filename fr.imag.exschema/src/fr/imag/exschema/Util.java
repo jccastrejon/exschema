@@ -26,11 +26,13 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import fr.imag.exschema.hbase.AddColumnVisitor;
 import fr.imag.exschema.hbase.ColumnFamilyDeclareVisitor;
 import fr.imag.exschema.hbase.FamilyAddVisitor;
 import fr.imag.exschema.hbase.PutAddVisitor;
 import fr.imag.exschema.hbase.TableCreateVisitor;
 import fr.imag.exschema.hbase.TableDeclareVisitor;
+import fr.imag.exschema.hbase.TableIncrementVisitor;
 import fr.imag.exschema.hbase.TablePutVisitor;
 import fr.imag.exschema.mongodb.MongoCollectionVisitor;
 import fr.imag.exschema.mongodb.MongoInsertVisitor;
@@ -336,16 +338,15 @@ public class Util {
      * @throws JavaModelException
      */
     private static void discoverHbaseTables(final IJavaProject project) throws JavaModelException {
-        String putName;
         String tableName;
+        List<String> columns;
         String tableDescriptor;
         String columnFamilyName;
-        List<String> putArguments;
         TablePutVisitor putVisitor;
-        PutAddVisitor putAddVisitor;
         FamilyAddVisitor addVisitor;
         TableCreateVisitor createVisitor;
         TableDeclareVisitor declareVisitor;
+        TableIncrementVisitor incrementVisitor;
         ColumnFamilyDeclareVisitor columnFamilyDeclareVisitor;
 
         // Identify when tables are created
@@ -355,6 +356,10 @@ public class Util {
         // Identify when data is inserted in a table
         putVisitor = new TablePutVisitor();
         Util.analyzeJavaProject(project, putVisitor);
+
+        // Identify when columns are added to a column family
+        incrementVisitor = new TableIncrementVisitor();
+        Util.analyzeJavaProject(project, incrementVisitor);
 
         // Get tables data
         System.out.println("\n\nHBase tables:");
@@ -377,27 +382,56 @@ public class Util {
                     if (columnFamilyName != null) {
                         System.out.println("\n----Family: " + columnFamilyName);
 
-                        // Columns and data
+                        // Columns
                         if ((tableName != null) && (columnFamilyName != null)) {
-                            for (MethodInvocation putInvocation : putVisitor.getUpdateInvocations()) {
-                                putName = putInvocation.arguments().get(0).toString();
-                                if (Util.isVariableName(putName)) {
-                                    putAddVisitor = new PutAddVisitor(putName);
-                                    createInvocation.getRoot().accept(putAddVisitor);
-                                    for (MethodInvocation addInvocation : putAddVisitor.getUpdateInvocations()) {
-                                        // put.add(family, qualifier, value)
-                                        putArguments = Util.getHBaseAddArguments(addInvocation);
-                                        if (putArguments.get(0).equals(columnFamilyName)) {
-                                            System.out.println("\n------Column: " + putArguments.get(1));
-                                        }
-                                    }
-                                }
+                            // put(family, qualifier, value)
+                            columns = Util.getHBaseColumns(createInvocation.getRoot(), new PutAddVisitor(),
+                                    columnFamilyName, putVisitor.getUpdateInvocations());
+
+                            // addColumn(family, qualifier, amount)
+                            columns.addAll(Util.getHBaseColumns(createInvocation.getRoot(), new AddColumnVisitor(),
+                                    columnFamilyName, incrementVisitor.getUpdateInvocations()));
+
+                            for (String column : columns) {
+                                System.out.println("\n------Column: " + column);
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * 
+     * @param rootNode
+     * @param updateVisitor
+     * @param columnFamilyName
+     * @param updateInvocations
+     * @return
+     */
+    private static List<String> getHBaseColumns(final ASTNode rootNode, UpdateVisitor updateVisitor,
+            final String columnFamilyName, final List<MethodInvocation> updateInvocations) {
+        String putName;
+        List<String> arguments;
+        List<String> returnValue;
+
+        returnValue = new ArrayList<String>();
+        for (MethodInvocation putInvocation : updateInvocations) {
+            putName = putInvocation.arguments().get(0).toString();
+            if (Util.isVariableName(putName)) {
+                updateVisitor.setVariableName(putName);
+                rootNode.accept(updateVisitor);
+                for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
+                    arguments = Util.getHBaseAddArguments(addInvocation);
+                    if (arguments.get(0).equals(columnFamilyName)) {
+                        returnValue.add(arguments.get(1));
+                    }
+                }
+            }
+        }
+
+        return returnValue;
     }
 
     /**
