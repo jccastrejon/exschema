@@ -9,6 +9,12 @@ import java.util.List;
  * 
  */
 public class Set {
+
+    /**
+     * 
+     */
+    private List<Set> sets;
+
     /**
      * 
      */
@@ -23,6 +29,7 @@ public class Set {
      * 
      */
     public Set() {
+        this.sets = new ArrayList<Set>();
         this.structs = new ArrayList<Struct>();
         this.attributes = new ArrayList<Attribute>();
     }
@@ -31,9 +38,18 @@ public class Set {
      * 
      * @param structs
      */
-    public Set(final List<Struct> structs, final List<Attribute> attributes) {
+    public Set(final List<Set> sets, final List<Struct> structs, final List<Attribute> attributes) {
+        this.sets = sets;
         this.structs = structs;
         this.attributes = attributes;
+    }
+
+    /**
+     * 
+     * @param set
+     */
+    public void addSet(final Set set) {
+        this.sets.add(set);
     }
 
     /**
@@ -71,6 +87,14 @@ public class Set {
     }
 
     // Getters-setters
+
+    public List<Set> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
+    }
 
     public List<Struct> getStructs() {
         return structs;

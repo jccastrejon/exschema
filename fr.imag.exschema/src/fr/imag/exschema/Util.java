@@ -42,7 +42,7 @@ public class Util {
         schemas = new ArrayList<Set>();
         // Document
         Util.discoverRepositories(project);
-        MongoDBUtil.discoverMongoObjects(project);
+        schemas.addAll(new MongoDBUtil().discoverSchemas(project));
 
         // Graph
         schemas.addAll(new Neo4jUtil().discoverSchemas(project));

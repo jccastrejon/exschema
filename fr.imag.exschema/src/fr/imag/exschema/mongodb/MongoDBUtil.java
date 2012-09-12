@@ -1,5 +1,6 @@
 package fr.imag.exschema.mongodb;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,20 +11,31 @@ import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
+import fr.imag.exschema.SchemaFinder;
 import fr.imag.exschema.Util;
+import fr.imag.exschema.model.Attribute;
+import fr.imag.exschema.model.Set;
+import fr.imag.exschema.model.Struct;
 
 /**
  * 
  * @author jccastrejon
- *
+ * 
  */
-public class MongoDBUtil {
+public class MongoDBUtil implements SchemaFinder {
+
     /**
      * 
      * @param project
      * @throws JavaModelException
      */
-    public static void discoverMongoObjects(final IJavaProject project) throws JavaModelException {
+    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+        Set currentFields;
+        Struct currentField;
+        Set currentDatabase;
+        List<Set> returnValue;
+        Set currentCollection;
+        Struct currentDocument;
         MongoInsertVisitor insertVisitor;
         Map<String, Map<String, List<String>>> mongoCollections;
 
@@ -33,19 +45,39 @@ public class MongoDBUtil {
 
         // Analyze save invocations
         // TODO: Real analysis...
-        System.out.println("\nMongoDB documents (based on inserts): ");
+        returnValue = new ArrayList<Set>();
         mongoCollections = MongoDBUtil.getMongoCollections(insertVisitor.getSaveInvocations());
-        for (String collection : mongoCollections.keySet()) {
-            System.out.println("--Collection: " + collection);
-            for (String document : mongoCollections.get(collection).keySet()) {
-                System.out.println("----Document: " + document);
-                for (String field : mongoCollections.get(collection).get(document)) {
-                    System.out.println("------Field: " + field);
+        if (!mongoCollections.isEmpty()) {
+            currentDatabase = new Set();
+            returnValue.add(currentDatabase);
+            System.out.println("\nMongoDB documents (based on inserts): ");
+            for (String collection : mongoCollections.keySet()) {
+                currentCollection = new Set();
+                currentDatabase.addSet(currentCollection);
+                currentCollection.addAttribute(new Attribute("name", collection));
+                System.out.println("--Collection: " + collection);
+                for (String document : mongoCollections.get(collection).keySet()) {
+                    currentDocument = new Struct();
+                    currentCollection.addStruct(currentDocument);
+                    currentDocument.addAttribute(new Attribute("name", document));
+                    System.out.println("----Document: " + document);
+                    if (!mongoCollections.get(collection).isEmpty()) {
+                        currentFields = new Set();
+                        currentDocument.addSet(currentFields);
+                        for (String field : mongoCollections.get(collection).get(document)) {
+                            currentField = new Struct();
+                            currentFields.addStruct(currentField);
+                            currentField.addAttribute(new Attribute("name", field));
+                            System.out.println("------Field: " + field);
+                        }
+                    }
                 }
             }
         }
+
+        return returnValue;
     }
-    
+
     /**
      * 
      * @param invocations
