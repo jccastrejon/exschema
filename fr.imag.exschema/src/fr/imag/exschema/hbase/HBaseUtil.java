@@ -12,26 +12,35 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import fr.imag.exschema.DeclareVisitor;
+import fr.imag.exschema.SchemaFinder;
 import fr.imag.exschema.UpdateVisitor;
 import fr.imag.exschema.Util;
+import fr.imag.exschema.model.Attribute;
+import fr.imag.exschema.model.Set;
+import fr.imag.exschema.model.Struct;
 
 /**
  * 
  * @author jccastrejon
  * 
  */
-public class HBaseUtil {
+public class HBaseUtil implements SchemaFinder {
 
     /**
      * 
      * @param project
      * @throws JavaModelException
      */
-    public static void discoverHbaseTables(final IJavaProject project) throws JavaModelException {
+    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+
         String tableName;
+        Set currentTableSet;
         List<String> columns;
+        List<Set> returnValue;
         String tableDescriptor;
         String columnFamilyName;
+        Struct currentFamilyStruct;
+        Struct currentColumnStruct;
         TablePutVisitor putVisitor;
         FamilyAddVisitor addVisitor;
         TableCreateVisitor createVisitor;
@@ -52,6 +61,7 @@ public class HBaseUtil {
         Util.analyzeJavaProject(project, incrementVisitor);
 
         // Get tables data
+        returnValue = new ArrayList<Set>();
         System.out.println("\n\nHBase tables:");
         for (MethodInvocation createInvocation : createVisitor.getUpdateInvocations()) {
             tableDescriptor = createInvocation.arguments().get(0).toString();
@@ -61,6 +71,10 @@ public class HBaseUtil {
             declareVisitor.setVariableName(tableDescriptor);
             tableName = HBaseUtil.getHBaseName(createInvocation.getRoot(), declareVisitor);
             if (tableName != null) {
+                currentTableSet = new Set();
+                returnValue.add(currentTableSet);
+                currentTableSet.addAttribute(new Attribute("name", tableName));
+                currentTableSet.addAttribute(new Attribute("implementation", "HBase"));
                 System.out.println("\n--Table: " + tableName);
 
                 // Column families
@@ -73,6 +87,9 @@ public class HBaseUtil {
                     columnFamilyDeclareVisitor.setVariableName(columnFamilyName);
                     columnFamilyName = HBaseUtil.getHBaseName(createInvocation.getRoot(), columnFamilyDeclareVisitor);
                     if (columnFamilyName != null) {
+                        currentFamilyStruct = new Struct();
+                        currentTableSet.addStruct(currentFamilyStruct);
+                        currentFamilyStruct.addAttribute(new Attribute("name", columnFamilyName));
                         System.out.println("\n----Family: " + columnFamilyName);
 
                         // Columns
@@ -87,6 +104,9 @@ public class HBaseUtil {
                                     new AddColumnVisitor(), columnFamilyName, incrementVisitor.getUpdateInvocations()));
 
                             for (String column : columns) {
+                                currentColumnStruct = new Struct();
+                                currentFamilyStruct.addStruct(currentColumnStruct);
+                                currentColumnStruct.addAttribute(new Attribute("name", column));
                                 System.out.println("\n------Column: " + column);
                             }
                         }
@@ -94,6 +114,8 @@ public class HBaseUtil {
                 }
             }
         }
+
+        return returnValue;
     }
 
     /**

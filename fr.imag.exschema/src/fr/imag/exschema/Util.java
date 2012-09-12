@@ -1,5 +1,8 @@
 package fr.imag.exschema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -17,6 +20,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.hbase.HBaseUtil;
+import fr.imag.exschema.model.Set;
 import fr.imag.exschema.mongodb.MongoDBUtil;
 import fr.imag.exschema.neo4j.Neo4jUtil;
 
@@ -33,6 +37,9 @@ public class Util {
      * @throws JavaModelException
      */
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
+        List<Set> schemas;
+
+        schemas = new ArrayList<Set>();
         // Document
         Util.discoverRepositories(project);
         MongoDBUtil.discoverMongoObjects(project);
@@ -42,7 +49,9 @@ public class Util {
         Neo4jUtil.discoverNeo4JNodes(project);
 
         // Column
-        HBaseUtil.discoverHbaseTables(project);
+        schemas.addAll(new HBaseUtil().discoverSchemas(project));
+
+        System.out.println("\n\nDiscovered schemas:" + schemas);
     }
 
     /**
