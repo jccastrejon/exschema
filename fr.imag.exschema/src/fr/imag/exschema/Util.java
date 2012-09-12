@@ -20,7 +20,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.hbase.HBaseUtil;
+import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Set;
+import fr.imag.exschema.model.Struct;
 import fr.imag.exschema.mongodb.MongoDBUtil;
 import fr.imag.exschema.neo4j.Neo4jUtil;
 
@@ -39,9 +41,11 @@ public class Util {
     public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
         List<Set> schemas;
 
+        // Generic Spring-based repositories
         schemas = new ArrayList<Set>();
+        schemas.addAll(Util.discoverSpringRepositories(project));
+
         // Document
-        Util.discoverRepositories(project);
         schemas.addAll(new MongoDBUtil().discoverSchemas(project));
 
         // Graph
@@ -128,7 +132,12 @@ public class Util {
      * @param project
      * @throws JavaModelException
      */
-    private static void discoverRepositories(final IJavaProject project) throws JavaModelException {
+    private static List<Set> discoverSpringRepositories(final IJavaProject project) throws JavaModelException {
+        Set currentClass;
+        Set currentFields;
+        Struct currentField;
+        Set currentCollection;
+        List<Set> returnValue;
         SpringRepositoryVisitor annotationVisitor;
 
         // Identify model classes
@@ -136,6 +145,9 @@ public class Util {
         Util.analyzeJavaProject(project, annotationVisitor);
 
         // Analyze model classes
+        returnValue = new ArrayList<Set>();
+        currentCollection = new Set();
+        returnValue.add(currentCollection);
         System.out.println("Spring-based repository classes: ");
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
@@ -143,27 +155,28 @@ public class Util {
                     for (IType type : compilationUnit.getAllTypes()) {
                         for (String domainClass : annotationVisitor.getDomainClasses()) {
                             if (type.getFullyQualifiedName().equals(domainClass)) {
+                                currentClass = new Set();
+                                currentCollection.addSet(currentClass);
+                                currentClass.addAttribute(new Attribute("name", domainClass));
                                 System.out.println("\n" + domainClass);
-                                Util.analyzeModelType(type);
+                                // TODO: Real analysis...
+                                currentFields = new Set();
+                                currentClass.addSet(currentFields);
+                                System.out.println("Fields:");
+                                for (IField field : type.getFields()) {
+                                    currentField = new Struct();
+                                    currentFields.addStruct(currentField);
+                                    currentField.addAttribute(new Attribute("name", field.getElementName()));
+                                    System.out.println(field.getElementName() + ":" + field.getTypeSignature());
+                                }
                             }
                         }
                     }
                 }
             }
         }
-    }
 
-    /**
-     * 
-     * @param type
-     * @throws JavaModelException
-     */
-    private static void analyzeModelType(IType type) throws JavaModelException {
-        // TODO: Real analysis...
-        System.out.println("Fields:");
-        for (IField field : type.getFields()) {
-            System.out.println(field.getElementName() + ":" + field.getTypeSignature());
-        }
+        return returnValue;
     }
 
     /**
