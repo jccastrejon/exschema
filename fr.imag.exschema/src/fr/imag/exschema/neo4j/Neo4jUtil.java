@@ -15,37 +15,30 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
+import fr.imag.exschema.SchemaFinder;
 import fr.imag.exschema.Util;
+import fr.imag.exschema.model.Attribute;
+import fr.imag.exschema.model.Relationship;
+import fr.imag.exschema.model.Set;
+import fr.imag.exschema.model.Struct;
 
 /**
  * 
  * @author jccastrejon
- *
+ * 
  */
-public class Neo4jUtil {
+public class Neo4jUtil implements SchemaFinder {
+
     /**
      * 
-     * @param project
-     * @throws JavaModelException
      */
-    public static void discoverNeo4JNodeEntities(final IJavaProject project) throws JavaModelException {
-        NodeEntityVisitor entityVisitor;
+    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+        List<Set> returnValue;
 
-        // Identify node entities
-        entityVisitor = new NodeEntityVisitor();
-        Util.analyzeJavaProject(project, entityVisitor);
+        returnValue = Neo4jUtil.discoverNodeEntitiesSchemas(project);
+        returnValue.addAll(Neo4jUtil.discoverNodesSchemas(project));
 
-        // TODO: Real analysis...
-        System.out.println("Neo4J node entities: ");
-        for (String node : entityVisitor.getNodeEntities().keySet()) {
-            System.out.println("\n--Node: " + node);
-            for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
-                System.out.println("----Field: " + field.fragments().get(0));
-                if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
-                    System.out.println("------Related to: " + field.getType());
-                }
-            }
-        }
+        return returnValue;
     }
 
     /**
@@ -53,15 +46,83 @@ public class Neo4jUtil {
      * @param project
      * @throws JavaModelException
      */
-    public static void discoverNeo4JNodes(final IJavaProject project) throws JavaModelException {
+    private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws JavaModelException {
+        Set currentGraph;
+        Set currentFields;
+        Struct currentNode;
+        Struct currentField;
+        List<Set> returnValue;
+        NodeEntityVisitor entityVisitor;
+        List<Relationship> relationships;
+        Relationship currentRelationship;
+
+        // Identify node entities
+        returnValue = new ArrayList<Set>();
+        entityVisitor = new NodeEntityVisitor();
+        relationships = new ArrayList<Relationship>();
+        Util.analyzeJavaProject(project, entityVisitor);
+
+        // TODO: Real analysis...
+        if (!entityVisitor.getNodeEntities().isEmpty()) {
+            currentGraph = new Set();
+            returnValue.add(currentGraph);
+            currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
+            System.out.println("Neo4J node entities: ");
+            for (String node : entityVisitor.getNodeEntities().keySet()) {
+                currentNode = new Struct();
+                currentFields = new Set();
+                currentNode.addSet(currentFields);
+                currentGraph.addStruct(currentNode);
+                currentNode.addAttribute(new Attribute("name", node));
+                System.out.println("\n--Node: " + node);
+                for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
+                    currentField = new Struct();
+                    currentFields.addStruct(currentField);
+                    currentField.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
+                    System.out.println("----Field: " + field.fragments().get(0));
+                    if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
+                        currentRelationship = new Relationship();
+                        // We set only the name of the endingStruct, and once
+                        // all of the nodes have been identified, we'll update
+                        // the end node with the appropriate reference
+                        currentRelationship.setEndStruct(new Struct());
+                        currentRelationship.getEndStruct().addAttribute(
+                                new Attribute("name", field.getType().toString()));
+                        currentRelationship.setStartStruct(currentNode);
+                        relationships.add(currentRelationship);
+                        System.out.println("------Related to: " + field.getType());
+                    }
+                }
+            }
+
+            // Update relationships' endStruct references
+            Neo4jUtil.updateEndStructReferences(relationships, currentGraph);
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param project
+     * @throws JavaModelException
+     */
+    private static List<Set> discoverNodesSchemas(final IJavaProject project) throws JavaModelException {
         String endNode;
+        Set currentGraph;
         String nodeClass;
         String startNode;
         String node2Class;
+        Set currentFields;
+        Struct currentNode;
+        Struct currentField;
+        List<Set> returnValue;
         List<String> currentRelations;
-        ContainerUpdateVisitor updateVisitor;
         Map<String, List<String>> nodes;
+        Relationship currentRelationship;
         NodeDeclareVisitor declareVisitor;
+        ContainerUpdateVisitor updateVisitor;
+        List<Relationship> structRelationships;
         Map<String, List<String>> relationships;
         RelationshipCreateVisitor relationVisitor;
         VariableDeclarationFragment endDeclaration;
@@ -185,20 +246,85 @@ public class Neo4jUtil {
         }
 
         // TODO: Real analysis...
-        System.out.println("\nNeo4J nodes: ");
-        for (String node : nodes.keySet()) {
-            System.out.println("\n--Node: " + node);
-            for (String field : nodes.get(node)) {
-                System.out.println("\n----Field: " + field);
+        returnValue = new ArrayList<Set>();
+        currentGraph = new Set();
+        returnValue.add(currentGraph);
+        structRelationships = new ArrayList<Relationship>();
+        currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
+
+        if (!nodes.isEmpty()) {
+            System.out.println("\nNeo4J nodes: ");
+            for (String node : nodes.keySet()) {
+                currentNode = new Struct();
+                currentFields = new Set();
+                currentNode.addSet(currentFields);
+                currentGraph.addStruct(currentNode);
+                currentNode.addAttribute(new Attribute("name", node));
+                System.out.println("\n--Node: " + node);
+                for (String field : nodes.get(node)) {
+                    currentField = new Struct();
+                    currentFields.addStruct(currentField);
+                    currentField.addAttribute(new Attribute("name", field));
+                    System.out.println("\n----Field: " + field);
+                }
+
+                if (nodesRelationships.get(node) != null) {
+                    for (String relationship : nodesRelationships.get(node)) {
+                        currentRelationship = new Relationship();
+                        currentNode.addRelationship(currentRelationship);
+                        currentRelationship.addAttribute(new Attribute("type", relationshipTypes.get(node).get(
+                                relationship)));
+                        currentRelationship.setStartStruct(currentNode);
+                        currentRelationship.setEndStruct(new Struct());
+                        // We set only the name of the endingStruct, and once
+                        // all of the nodes have been identified, we'll update
+                        // the end node with the appropriate reference
+                        currentRelationship.getEndStruct().addAttribute(new Attribute("name", relationship));
+                        structRelationships.add(currentRelationship);
+                        System.out.println("\n----Relationship: " + relationship + " ["
+                                + relationshipTypes.get(node).get(relationship) + "]");
+                        if (relationshipFields.get(node).get(relationship) != null) {
+                            for (String relationField : relationshipFields.get(node).get(relationship)) {
+                                System.out.println("\n------Relationship field: " + relationField);
+                            }
+                        }
+                    }
+                }
             }
 
-            if (nodesRelationships.get(node) != null) {
-                for (String relationship : nodesRelationships.get(node)) {
-                    System.out.println("\n----Relationship: " + relationship + " ["
-                            + relationshipTypes.get(node).get(relationship) + "]");
-                    if (relationshipFields.get(node).get(relationship) != null) {
-                        for (String relationField : relationshipFields.get(node).get(relationship)) {
-                            System.out.println("\n------Relationship field: " + relationField);
+            // Update relationships' endStruct references
+            Neo4jUtil.updateEndStructReferences(structRelationships, currentGraph);
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param relationships
+     * @param graph
+     */
+    private static void updateEndStructReferences(final List<Relationship> relationships, final Set graph) {
+        String currentName;
+
+        // Update relationships' endStruct references
+        for (Relationship relationship : relationships) {
+            // Get the structName to look for
+            currentName = null;
+            for (Attribute attribute : relationship.getEndStruct().getAttributes()) {
+                if (attribute.getName().equals("name")) {
+                    currentName = attribute.getValue();
+                    break;
+                }
+            }
+
+            // Update the reference with the appropriate struct
+            if (currentName != null) {
+                for (Struct node : graph.getStructs()) {
+                    for (Attribute attribute : node.getAttributes()) {
+                        if ((attribute.getName().equals("name")) && (attribute.getValue().equals(currentName))) {
+                            relationship.setEndStruct(node);
+                            break;
                         }
                     }
                 }

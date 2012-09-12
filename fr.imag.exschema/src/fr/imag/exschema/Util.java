@@ -45,8 +45,7 @@ public class Util {
         MongoDBUtil.discoverMongoObjects(project);
 
         // Graph
-        Neo4jUtil.discoverNeo4JNodeEntities(project);
-        Neo4jUtil.discoverNeo4JNodes(project);
+        schemas.addAll(new Neo4jUtil().discoverSchemas(project));
 
         // Column
         schemas.addAll(new HBaseUtil().discoverSchemas(project));

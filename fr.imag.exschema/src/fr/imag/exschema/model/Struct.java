@@ -12,6 +12,11 @@ public class Struct {
     /**
      * 
      */
+    private List<Set> sets;
+
+    /**
+     * 
+     */
     private List<Struct> structs;
 
     /**
@@ -28,6 +33,7 @@ public class Struct {
      * 
      */
     public Struct() {
+        this.sets = new ArrayList<Set>();
         this.structs = new ArrayList<Struct>();
         this.attributes = new ArrayList<Attribute>();
         this.relationships = new ArrayList<Relationship>();
@@ -39,10 +45,20 @@ public class Struct {
      * @param attributes
      * @param relationships
      */
-    public Struct(final List<Struct> structs, final List<Attribute> attributes, final List<Relationship> relationships) {
+    public Struct(final List<Set> sets, final List<Struct> structs, final List<Attribute> attributes,
+            final List<Relationship> relationships) {
+        this.sets = sets;
         this.structs = structs;
         this.attributes = attributes;
         this.relationships = relationships;
+    }
+
+    /**
+     * 
+     * @param set
+     */
+    public void addSet(final Set set) {
+        this.sets.add(set);
     }
 
     /**
@@ -84,6 +100,11 @@ public class Struct {
             returnValue.append("\n" + struct);
         }
 
+        returnValue.append("\n\nSets:");
+        for (Set set : this.sets) {
+            returnValue.append("\n" + set);
+        }
+
         returnValue.append("\n\nRelationships:");
         for (Relationship relationship : this.relationships) {
             returnValue.append("\n" + relationship);
@@ -93,6 +114,14 @@ public class Struct {
     }
 
     // Getters-setters
+
+    public List<Set> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
+    }
 
     public List<Struct> getStructs() {
         return structs;
