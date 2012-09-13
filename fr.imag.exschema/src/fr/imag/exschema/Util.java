@@ -172,7 +172,6 @@ public class Util {
         // Analyze model classes
         returnValue = new ArrayList<Set>();
         currentCollection = new Set();
-        returnValue.add(currentCollection);
         System.out.println("Spring-based repository classes: ");
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
@@ -199,6 +198,11 @@ public class Util {
                     }
                 }
             }
+        }
+
+        // Verify if any repository was found
+        if (!currentCollection.getSets().isEmpty()) {
+            returnValue.add(currentCollection);
         }
 
         return returnValue;

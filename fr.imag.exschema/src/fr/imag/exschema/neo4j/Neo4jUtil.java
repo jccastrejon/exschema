@@ -62,7 +62,6 @@ public class Neo4jUtil implements SchemaFinder {
         relationships = new ArrayList<Relationship>();
         Util.analyzeJavaProject(project, entityVisitor);
 
-        // TODO: Real analysis...
         if (!entityVisitor.getNodeEntities().isEmpty()) {
             currentGraph = new Set();
             returnValue.add(currentGraph);
@@ -245,14 +244,12 @@ public class Neo4jUtil implements SchemaFinder {
             }
         }
 
-        // TODO: Real analysis...
         returnValue = new ArrayList<Set>();
-        currentGraph = new Set();
-        returnValue.add(currentGraph);
-        structRelationships = new ArrayList<Relationship>();
-        currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
-
         if (!nodes.isEmpty()) {
+            currentGraph = new Set();
+            returnValue.add(currentGraph);
+            structRelationships = new ArrayList<Relationship>();
+            currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
             System.out.println("\nNeo4J nodes: ");
             for (String node : nodes.keySet()) {
                 currentNode = new Struct();
