@@ -1,11 +1,13 @@
 package fr.imag.exschema.model;
 
+import fr.imag.exschema.GraphvizExporter;
+
 /**
  * 
  * @author jccastrejon
  * 
  */
-public class Attribute {
+public class Attribute implements GraphvizExporter {
     /**
      * 
      */
@@ -25,9 +27,23 @@ public class Attribute {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return name + ":" + value;
+    /**
+     * 
+     * @param parent
+     * @return
+     */
+    public String getDotNodes(final String parent) {
+        String identifier;
+        StringBuilder returnValue;
+
+        identifier = Long.toString(System.nanoTime());
+        returnValue = new StringBuilder(identifier + " [label=\"Attribute\\n" + name + " : " + value + "\"]\n");
+
+        if (parent != null) {
+            returnValue.append(parent + " -> " + identifier + "\n");
+        }
+
+        return returnValue.toString();
     }
 
     // Getters-setters

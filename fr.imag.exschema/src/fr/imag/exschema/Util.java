@@ -54,7 +54,7 @@ public class Util {
         // Column
         schemas.addAll(new HBaseUtil().discoverSchemas(project));
 
-        System.out.println("\n\nDiscovered schemas:" + schemas);
+        System.out.println("\n\nDiscovered schemas:" + Util.createDotGraph(schemas));
     }
 
     /**
@@ -124,6 +124,31 @@ public class Util {
      */
     public static boolean isVariableName(final String name) {
         return name.matches("^[a-zA-Z][a-zA-Z0-9]*?$");
+    }
+
+    /**
+     * 
+     * @param schemas
+     * @return
+     */
+    private static String createDotGraph(final List<Set> schemas) {
+        int index;
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder("digraph schema_" + System.nanoTime() + "_ {\n");
+
+        index = 0;
+        for (Set schema : schemas) {
+            index = index + 1;
+            returnValue.append("\nsubgraph cluster_" + System.nanoTime() + "_ {\n");
+            returnValue.append("color=lightgrey;\n");
+            returnValue.append("label=\"Schema" + index + "\";\n");
+            returnValue.append(schema.getDotNodes(null));
+            returnValue.append("\n}\n");
+        }
+
+        returnValue.append("\n}\n");
+        return returnValue.toString();
     }
 
     /**

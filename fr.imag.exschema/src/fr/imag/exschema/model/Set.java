@@ -3,12 +3,14 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.GraphvizExporter;
+
 /**
  * 
  * @author jccastrejon
  * 
  */
-public class Set {
+public class Set implements GraphvizExporter {
 
     /**
      * 
@@ -68,19 +70,27 @@ public class Set {
         this.attributes.add(attribute);
     }
 
-    @Override
-    public String toString() {
+    public String getDotNodes(final String parent) {
+        String identifier;
         StringBuilder returnValue;
 
-        returnValue = new StringBuilder();
-        returnValue.append("\n\nAttributes: ");
-        for (Attribute attribute : this.attributes) {
-            returnValue.append("\n" + attribute);
+        identifier = Long.toString(System.nanoTime());
+        returnValue = new StringBuilder(identifier + " [label=\"Set\"]\n");
+
+        if (parent != null) {
+            returnValue.append(parent + " -> " + identifier + "\n");
         }
 
-        returnValue.append("\n\nStructs:");
+        for (Attribute attribute : this.attributes) {
+            returnValue.append(attribute.getDotNodes(identifier));
+        }
+
+        for (Set set : this.sets) {
+            returnValue.append(set.getDotNodes(identifier));
+        }
+
         for (Struct struct : this.structs) {
-            returnValue.append("\n" + struct);
+            returnValue.append(struct.getDotNodes(identifier));
         }
 
         return returnValue.toString();

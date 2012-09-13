@@ -3,12 +3,14 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.GraphvizExporter;
+
 /**
  * 
  * @author jccastrejon
  * 
  */
-public class Struct {
+public class Struct implements GraphvizExporter {
     /**
      * 
      */
@@ -85,29 +87,27 @@ public class Struct {
         this.relationships.add(relationship);
     }
 
-    @Override
-    public String toString() {
+    public String getDotNodes(final String parent) {
+        String identifier;
         StringBuilder returnValue;
 
-        returnValue = new StringBuilder();
-        returnValue.append("\n\nAttributes:");
+        identifier = Long.toString(System.nanoTime());
+        returnValue = new StringBuilder(identifier + " [shape=\"box\", label=\"Struct\"]\n");
+
+        if (parent != null) {
+            returnValue.append(parent + " -> " + identifier + "\n");
+        }
+
         for (Attribute attribute : this.attributes) {
-            returnValue.append("\n" + attribute);
+            returnValue.append(attribute.getDotNodes(identifier));
         }
 
-        returnValue.append("\n\nStructs:");
         for (Struct struct : this.structs) {
-            returnValue.append("\n" + struct);
+            returnValue.append(struct.getDotNodes(identifier));
         }
 
-        returnValue.append("\n\nSets:");
         for (Set set : this.sets) {
-            returnValue.append("\n" + set);
-        }
-
-        returnValue.append("\n\nRelationships:");
-        for (Relationship relationship : this.relationships) {
-            returnValue.append("\n" + relationship);
+            returnValue.append(set.getDotNodes(identifier));
         }
 
         return returnValue.toString();
