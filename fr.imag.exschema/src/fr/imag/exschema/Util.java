@@ -1,8 +1,13 @@
 package fr.imag.exschema;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -36,9 +41,12 @@ public class Util {
     /**
      * 
      * @param project
-     * @throws JavaModelException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws CoreException
      */
-    public static void discoverSchemas(final IJavaProject project) throws JavaModelException {
+    public static void discoverSchemas(final IJavaProject project) throws IOException, InterruptedException,
+            CoreException {
         List<Set> schemas;
 
         // Generic Spring-based repositories
@@ -54,7 +62,8 @@ public class Util {
         // Column
         schemas.addAll(new HBaseUtil().discoverSchemas(project));
 
-        System.out.println("\n\nDiscovered schemas:" + Util.createDotGraph(schemas));
+        // Export discovered schemas
+        Util.exportDiscoveredSchemas(schemas, project);
     }
 
     /**
@@ -124,6 +133,71 @@ public class Util {
      */
     public static boolean isVariableName(final String name) {
         return name.matches("^[a-zA-Z][a-zA-Z0-9]*?$");
+    }
+
+    /**
+     * 
+     * @param schemas
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws CoreException
+     */
+    private static void exportDiscoveredSchemas(final List<Set> schemas, final IJavaProject project)
+            throws IOException, InterruptedException, CoreException {
+        File dotFile;
+        String dotGraph;
+
+        // Export a pdf graph with the discovered schemas, and reload
+        // workspace to reflect the changes
+        dotGraph = Util.createDotGraph(schemas);
+        dotFile = Util.saveDotGraph(dotGraph, project);
+        Util.executeDotCommand(dotFile);
+        project.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+    }
+
+    /**
+     * 
+     * @param dotFile
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private static File executeDotCommand(final File dotFile) throws IOException, InterruptedException {
+        Process process;
+        int processCode;
+        File returnValue;
+        String dotCommand;
+
+        returnValue = new File(dotFile.getParent(), "schemas.pdf");
+        dotCommand = "dot -Tpdf " + dotFile.getAbsolutePath() + " -o " + returnValue.getAbsolutePath();
+        process = Runtime.getRuntime().exec(dotCommand);
+        processCode = process.waitFor();
+        dotFile.delete();
+
+        if (processCode != 0) {
+            throw new RuntimeException("An error ocurred while executing: " + dotCommand);
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param dotGraph
+     * @param project
+     * @return
+     * @throws IOException
+     */
+    private static File saveDotGraph(final String dotGraph, final IJavaProject project) throws IOException {
+        File returnValue;
+        FileWriter fileWriter;
+
+        // Output content
+        returnValue = new File(project.getProject().getLocation().toOSString(), "schemas.dot");
+        fileWriter = new FileWriter(returnValue, false);
+        fileWriter.write(dotGraph);
+        fileWriter.close();
+
+        return returnValue;
     }
 
     /**
