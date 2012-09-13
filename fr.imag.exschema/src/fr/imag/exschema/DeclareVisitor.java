@@ -10,23 +10,26 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 /**
+ * Generic visitor for classes that need to identify declarations of variables
+ * with a given class name.
  * 
  * @author jccastrejon
  * 
  */
 public abstract class DeclareVisitor extends ASTVisitor {
+
     /**
-     * 
+     * Declaration's variable name.
      */
     private String variableName;
 
     /**
-     * 
+     * Matching declarations.
      */
     private List<VariableDeclarationFragment> variableDeclarations;
 
     /**
-     * All declarations.
+     * Look for all declarations.
      */
     public DeclareVisitor() {
         this.variableDeclarations = new ArrayList<VariableDeclarationFragment>();
@@ -52,6 +55,8 @@ public abstract class DeclareVisitor extends ASTVisitor {
     }
 
     /**
+     * Determine if the specified declaration fragment matches with the ones
+     * we're looking for.
      * 
      * @param variableDeclaration
      * @return
@@ -102,6 +107,7 @@ public abstract class DeclareVisitor extends ASTVisitor {
     }
 
     /**
+     * The class name of the declarations we're looking for.
      * 
      * @param qualifiedName
      * @return

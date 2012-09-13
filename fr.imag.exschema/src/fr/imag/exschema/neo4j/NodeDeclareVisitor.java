@@ -3,6 +3,7 @@ package fr.imag.exschema.neo4j;
 import fr.imag.exschema.DeclareVisitor;
 
 /**
+ * Identifies declarations of Neo4j nodes.
  * 
  * @author jccastrejon
  * 

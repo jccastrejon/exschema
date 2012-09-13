@@ -3,6 +3,7 @@ package fr.imag.exschema.neo4j;
 import fr.imag.exschema.UpdateVisitor;
 
 /**
+ * Identifies the creation of relationships between Neo4j nodes.
  * 
  * @author jccastrejon
  * 

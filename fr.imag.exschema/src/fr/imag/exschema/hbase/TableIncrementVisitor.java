@@ -3,6 +3,7 @@ package fr.imag.exschema.hbase;
 import fr.imag.exschema.UpdateVisitor;
 
 /**
+ * Identifies modification of HBase tables;
  * 
  * @author jccastrejon
  * 

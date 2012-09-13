@@ -32,6 +32,7 @@ import fr.imag.exschema.mongodb.MongoDBUtil;
 import fr.imag.exschema.neo4j.Neo4jUtil;
 
 /**
+ * Generic utility methods.
  * 
  * @author jccastrejon
  * 
@@ -39,6 +40,7 @@ import fr.imag.exschema.neo4j.Neo4jUtil;
 public class Util {
 
     /**
+     * Starting point for discovering schemas from non-relational applications.
      * 
      * @param project
      * @throws InterruptedException
@@ -67,6 +69,7 @@ public class Util {
     }
 
     /**
+     * Get the invocation block that contains the specified node.
      * 
      * @param node
      * @return
@@ -87,6 +90,7 @@ public class Util {
     }
 
     /**
+     * Determine whether the invocation matches with the expected class name.
      * 
      * @param invocation
      * @param className
@@ -107,6 +111,7 @@ public class Util {
     }
 
     /**
+     * Analyze the specified Java project with the specified AST visitor.
      * 
      * @param project
      * @param visitor
@@ -127,6 +132,7 @@ public class Util {
     }
 
     /**
+     * Determine whether the specified string is a valid Java variable name.
      * 
      * @param name
      * @return
@@ -136,6 +142,8 @@ public class Util {
     }
 
     /**
+     * Export the list of schemas into a Graphviz-generated pdf file, saved at
+     * the top of the specified project.
      * 
      * @param schemas
      * @throws IOException
@@ -156,6 +164,7 @@ public class Util {
     }
 
     /**
+     * Execute Graphviz dot's command to generate the pdf file.
      * 
      * @param dotFile
      * @throws IOException
@@ -181,6 +190,8 @@ public class Util {
     }
 
     /**
+     * Save the specified Graphviz's dot file at the top of the specified
+     * project.
      * 
      * @param dotGraph
      * @param project
@@ -201,6 +212,7 @@ public class Util {
     }
 
     /**
+     * Create a Graphviz's graph from the specified list of schemas.
      * 
      * @param schemas
      * @return
@@ -226,7 +238,7 @@ public class Util {
     }
 
     /**
-     * Spring-based repositories.
+     * Discover Spring-based repositories.
      * 
      * @param project
      * @throws JavaModelException
@@ -283,6 +295,7 @@ public class Util {
     }
 
     /**
+     * Parse the specified compilation unit.
      * 
      * @param compilationUnit
      * @return

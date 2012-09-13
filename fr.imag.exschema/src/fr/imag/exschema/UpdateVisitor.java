@@ -7,28 +7,36 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
+ * Generic visitor for classes that need to identify update operations,
+ * associated to a particular Method binding and with a specific name.
  * 
  * @author jccastrejon
  * 
  */
 public abstract class UpdateVisitor extends ASTVisitor {
+
     /**
-     * 
+     * Update's variable name.
      */
     private String variableName;
 
     /**
-     * 
+     * Matching invocations.
      */
     private List<MethodInvocation> updateInvocations;
 
     /**
-     * 
+     * Default constructor.
      */
     public UpdateVisitor() {
         this.updateInvocations = new ArrayList<MethodInvocation>();
     }
 
+    /**
+     * Full constructor.
+     * 
+     * @param variableName
+     */
     public UpdateVisitor(final String variableName) {
         this.variableName = variableName;
         this.updateInvocations = new ArrayList<MethodInvocation>();
@@ -44,6 +52,8 @@ public abstract class UpdateVisitor extends ASTVisitor {
     }
 
     /**
+     * Determine if the specified method matches with the ones we're looking
+     * for.
      * 
      * @param invocation
      * @return
@@ -74,7 +84,7 @@ public abstract class UpdateVisitor extends ASTVisitor {
     public List<MethodInvocation> getUpdateInvocations() {
         return this.updateInvocations;
     }
-    
+
     /**
      * 
      * @param variableName
@@ -84,12 +94,14 @@ public abstract class UpdateVisitor extends ASTVisitor {
     }
 
     /**
+     * The fully qualified name of the expected method binding.
      * 
      * @return
      */
     protected abstract String getMethodBinding();
 
     /**
+     * Expected method name.
      * 
      * @return
      */

@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
+ * Identifies Spring's NodeEntities.
  * 
  * @author jccastrejon
  * 
@@ -42,8 +43,9 @@ public class NodeEntityVisitor extends ASTVisitor {
         return annotation.resolveTypeBinding().getQualifiedName()
                 .equals("org.springframework.data.neo4j.annotation.NodeEntity");
     }
-    
+
     /**
+     * Get the identified node entities.
      * 
      * @return
      */

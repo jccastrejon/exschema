@@ -20,6 +20,7 @@ import fr.imag.exschema.model.Set;
 import fr.imag.exschema.model.Struct;
 
 /**
+ * HBase utility methods.
  * 
  * @author jccastrejon
  * 

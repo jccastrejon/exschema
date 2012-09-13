@@ -3,22 +3,25 @@ package fr.imag.exschema.model;
 import fr.imag.exschema.GraphvizExporter;
 
 /**
+ * Data model attribute.
  * 
  * @author jccastrejon
  * 
  */
 public class Attribute implements GraphvizExporter {
+
     /**
-     * 
+     * Attribute's name.
      */
     private String name;
 
     /**
-     * 
+     * Attribute's value.
      */
     private String value;
 
     /**
+     * Full constructor.
      * 
      * @param name
      */
@@ -27,11 +30,7 @@ public class Attribute implements GraphvizExporter {
         this.value = value;
     }
 
-    /**
-     * 
-     * @param parent
-     * @return
-     */
+    @Override
     public String getDotNodes(final String parent) {
         String identifier;
         StringBuilder returnValue;

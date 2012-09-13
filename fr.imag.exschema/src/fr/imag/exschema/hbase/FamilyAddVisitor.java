@@ -3,6 +3,7 @@ package fr.imag.exschema.hbase;
 import fr.imag.exschema.UpdateVisitor;
 
 /**
+ * Identifies when a column family is added to a HBase table.
  * 
  * @author jccastrejon
  * 

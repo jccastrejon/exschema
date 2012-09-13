@@ -8,12 +8,15 @@ import org.eclipse.jdt.core.JavaModelException;
 import fr.imag.exschema.model.Set;
 
 /**
+ * To be implemented by classes that can discover schemas from the source code
+ * of existing applications.
  * 
  * @author jccastrejon
  * 
  */
 public interface SchemaFinder {
     /**
+     * Discover schemas in the specified Java project.
      * 
      * @param project
      * @return

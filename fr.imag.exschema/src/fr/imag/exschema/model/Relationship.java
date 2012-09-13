@@ -4,34 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Data model relationship.
  * 
  * @author jccastrejon
  * 
  */
 public class Relationship {
+
     /**
-     * 
+     * Start point of the relationship.
      */
     private Struct endStruct;
 
     /**
-     * 
+     * End point of the relationship.
      */
     private Struct startStruct;
 
     /**
-     * 
+     * Attributes associated to the relationship.
      */
     private List<Attribute> attributes;
 
     /**
-     * 
+     * Default constructor.
      */
     public Relationship() {
         this.attributes = new ArrayList<Attribute>();
     }
 
     /**
+     * Full constructor.
      * 
      * @param endStruct
      * @param startStruct
@@ -44,6 +47,7 @@ public class Relationship {
     }
 
     /**
+     * Associate an attribute to this relation.
      * 
      * @param attribute
      */

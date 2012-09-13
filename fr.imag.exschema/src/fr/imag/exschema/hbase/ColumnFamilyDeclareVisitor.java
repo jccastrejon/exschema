@@ -3,6 +3,7 @@ package fr.imag.exschema.hbase;
 import fr.imag.exschema.DeclareVisitor;
 
 /**
+ * Identifies declarations of HBase column families.
  * 
  * @author jccastrejon
  * 

@@ -6,33 +6,35 @@ import java.util.List;
 import fr.imag.exschema.GraphvizExporter;
 
 /**
+ * Data model struct.
  * 
  * @author jccastrejon
  * 
  */
 public class Struct implements GraphvizExporter {
+
     /**
-     * 
+     * Inner sets.
      */
     private List<Set> sets;
 
     /**
-     * 
+     * Inner structs.
      */
     private List<Struct> structs;
 
     /**
-     * 
+     * Attributes associated to the struct.
      */
     private List<Attribute> attributes;
 
     /**
-     * 
+     * Relationships to other structs.
      */
     private List<Relationship> relationships;
 
     /**
-     * 
+     * Default constructor.
      */
     public Struct() {
         this.sets = new ArrayList<Set>();
@@ -42,6 +44,7 @@ public class Struct implements GraphvizExporter {
     }
 
     /**
+     * Full constructor.
      * 
      * @param structs
      * @param attributes
@@ -56,6 +59,7 @@ public class Struct implements GraphvizExporter {
     }
 
     /**
+     * Associate an inner set to this struct.
      * 
      * @param set
      */
@@ -64,6 +68,7 @@ public class Struct implements GraphvizExporter {
     }
 
     /**
+     * Associate an inner struct to this struct.
      * 
      * @param struct
      */
@@ -72,6 +77,7 @@ public class Struct implements GraphvizExporter {
     }
 
     /**
+     * Associate an attribute to this struct.
      * 
      * @param attribute
      */
@@ -80,6 +86,7 @@ public class Struct implements GraphvizExporter {
     }
 
     /**
+     * Add a relationship to this struct.
      * 
      * @param relationship
      */
@@ -87,6 +94,7 @@ public class Struct implements GraphvizExporter {
         this.relationships.add(relationship);
     }
 
+    @Override
     public String getDotNodes(final String parent) {
         String identifier;
         StringBuilder returnValue;

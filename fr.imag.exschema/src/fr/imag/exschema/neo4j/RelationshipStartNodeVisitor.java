@@ -3,6 +3,7 @@ package fr.imag.exschema.neo4j;
 import fr.imag.exschema.UpdateVisitor;
 
 /**
+ * Identifies references to start nodes of Neo4j relationships.
  * 
  * @author jccastrejon
  * 

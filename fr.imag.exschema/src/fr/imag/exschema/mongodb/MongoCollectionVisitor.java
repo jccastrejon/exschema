@@ -4,15 +4,25 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
+ * Identifies MongoDB collections.
  * 
  * @author jccastrejon
  * 
  */
 public class MongoCollectionVisitor extends ASTVisitor {
+
+    /**
+     * Collection's variable name.
+     */
     private String variableName;
+
+    /**
+     * Collection name.
+     */
     private String collectionName;
 
     /**
+     * Full constructor.
      * 
      * @param variableName
      */
@@ -30,6 +40,8 @@ public class MongoCollectionVisitor extends ASTVisitor {
     }
 
     /**
+     * Decide whether or not the given invocation resolves to a MongoDB
+     * collection.
      * 
      * @param invocation
      * @return
@@ -54,6 +66,7 @@ public class MongoCollectionVisitor extends ASTVisitor {
     }
 
     /**
+     * Get collection's name.
      * 
      * @return
      */

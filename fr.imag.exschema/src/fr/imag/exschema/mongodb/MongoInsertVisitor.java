@@ -8,13 +8,21 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 /**
+ * Identifies inserts to MongoDB collections.
  * 
  * @author jccastrejon
  * 
  */
 public class MongoInsertVisitor extends ASTVisitor {
+
+    /**
+     * Method invocations to MongoDB save operations.
+     */
     private List<MethodInvocation> saveInvocations;
 
+    /**
+     * Default constructor.
+     */
     public MongoInsertVisitor() {
         this.saveInvocations = new ArrayList<MethodInvocation>();
     }
@@ -29,6 +37,8 @@ public class MongoInsertVisitor extends ASTVisitor {
     }
 
     /**
+     * Decide whether or not the given invocation represents a MongoDB
+     * collection's insert operation.
      * 
      * @param invocation
      * @return
@@ -52,6 +62,7 @@ public class MongoInsertVisitor extends ASTVisitor {
     }
 
     /**
+     * Get the save invocations.
      * 
      * @return
      */

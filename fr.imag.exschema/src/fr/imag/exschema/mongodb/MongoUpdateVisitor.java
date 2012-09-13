@@ -11,14 +11,28 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import fr.imag.exschema.Util;
 
 /**
+ * Identifies updates to MongoDB collections.
  * 
  * @author jccastrejon
  * 
  */
 public class MongoUpdateVisitor extends ASTVisitor {
+
+    /**
+     * Update variable name.
+     */
     private String variableName;
+
+    /**
+     * Update fields.
+     */
     private List<String> fields;
 
+    /**
+     * Full constructor.
+     * 
+     * @param variableName
+     */
     public MongoUpdateVisitor(final String variableName) {
         this.variableName = variableName;
         this.fields = new ArrayList<String>();
@@ -55,6 +69,7 @@ public class MongoUpdateVisitor extends ASTVisitor {
     }
 
     /**
+     * Add an update field.
      * 
      * @param field
      */
@@ -85,6 +100,7 @@ public class MongoUpdateVisitor extends ASTVisitor {
     }
 
     /**
+     * Identify whether the specified class name represents a BSON object.
      * 
      * @param declaringClass
      * @return
@@ -105,6 +121,7 @@ public class MongoUpdateVisitor extends ASTVisitor {
     }
 
     /**
+     * Get the update fields.
      * 
      * @return
      */

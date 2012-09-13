@@ -65,6 +65,7 @@ public class SpringRepositoryVisitor extends ASTVisitor {
     }
 
     /**
+     * Return domain classes.
      * 
      * @return
      */
@@ -73,6 +74,7 @@ public class SpringRepositoryVisitor extends ASTVisitor {
     }
 
     /**
+     * Get the qualified name associated to the specified type.
      * 
      * @param type
      * @return
@@ -82,6 +84,8 @@ public class SpringRepositoryVisitor extends ASTVisitor {
     }
 
     /**
+     * Determine if the specified class name represents a Spring-based
+     * repository.
      * 
      * @param className
      * @return
@@ -101,6 +105,7 @@ public class SpringRepositoryVisitor extends ASTVisitor {
     }
 
     /**
+     * Extract Spring's interface type from the specified class name.
      * 
      * @param className
      * @return

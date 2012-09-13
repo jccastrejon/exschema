@@ -18,17 +18,14 @@ import fr.imag.exschema.model.Set;
 import fr.imag.exschema.model.Struct;
 
 /**
+ * MongoDB utility methods.
  * 
  * @author jccastrejon
  * 
  */
 public class MongoDBUtil implements SchemaFinder {
 
-    /**
-     * 
-     * @param project
-     * @throws JavaModelException
-     */
+    @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
         Set currentFields;
         Struct currentField;
@@ -79,6 +76,7 @@ public class MongoDBUtil implements SchemaFinder {
     }
 
     /**
+     * Identify MongoDB collections from the given list of invocations.
      * 
      * @param invocations
      * @return

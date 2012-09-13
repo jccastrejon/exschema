@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import fr.imag.exschema.Util;
 
 /**
+ * Discover schemas action
  * 
  * @author jccastrejon
  * 
@@ -23,17 +24,17 @@ import fr.imag.exschema.Util;
 public class DiscoverAction implements IObjectActionDelegate {
 
     /**
-     * 
+     * Eclipse shell.
      */
     private Shell shell;
 
     /**
-     * 
+     * Current selected project.
      */
     private IJavaProject project;
 
     /**
-     * Constructor for Action1.
+     * Default constructor.
      */
     public DiscoverAction() {
         super();
