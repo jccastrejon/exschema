@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -24,6 +25,11 @@ import fr.imag.exschema.model.Struct;
  * 
  */
 public class MongoDBUtil implements SchemaFinder {
+
+    /**
+     * Class logger.
+     */
+    private static Logger logger = Logger.getLogger(MongoDBUtil.class.getName());
 
     @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
@@ -47,17 +53,17 @@ public class MongoDBUtil implements SchemaFinder {
         if (!mongoCollections.isEmpty()) {
             currentDatabase = new Set();
             returnValue.add(currentDatabase);
-            System.out.println("\nMongoDB documents (based on inserts): ");
+            MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "\nMongoDB documents (based on inserts): ");
             for (String collection : mongoCollections.keySet()) {
                 currentCollection = new Set();
                 currentDatabase.addSet(currentCollection);
                 currentCollection.addAttribute(new Attribute("name", collection));
-                System.out.println("--Collection: " + collection);
+                MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "--Collection: " + collection);
                 for (String document : mongoCollections.get(collection).keySet()) {
                     currentDocument = new Struct();
                     currentCollection.addStruct(currentDocument);
                     currentDocument.addAttribute(new Attribute("name", document));
-                    System.out.println("----Document: " + document);
+                    MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "----Document: " + document);
                     if (!mongoCollections.get(collection).isEmpty()) {
                         currentFields = new Set();
                         currentDocument.addSet(currentFields);
@@ -65,7 +71,7 @@ public class MongoDBUtil implements SchemaFinder {
                             currentField = new Struct();
                             currentFields.addStruct(currentField);
                             currentField.addAttribute(new Attribute("name", field));
-                            System.out.println("------Field: " + field);
+                            MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "------Field: " + field);
                         }
                     }
                 }

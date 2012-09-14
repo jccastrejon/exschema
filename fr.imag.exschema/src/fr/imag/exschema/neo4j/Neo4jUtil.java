@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -29,6 +30,11 @@ import fr.imag.exschema.model.Struct;
  * 
  */
 public class Neo4jUtil implements SchemaFinder {
+
+    /**
+     * Class logger.
+     */
+    private static Logger logger = Logger.getLogger(Neo4jUtil.class.getName());
 
     @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
@@ -66,19 +72,19 @@ public class Neo4jUtil implements SchemaFinder {
             currentGraph = new Set();
             returnValue.add(currentGraph);
             currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
-            System.out.println("Neo4J node entities: ");
+            Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "Neo4J node entities: ");
             for (String node : entityVisitor.getNodeEntities().keySet()) {
                 currentNode = new Struct();
                 currentFields = new Set();
                 currentNode.addSet(currentFields);
                 currentGraph.addStruct(currentNode);
                 currentNode.addAttribute(new Attribute("name", node));
-                System.out.println("\n--Node: " + node);
+                Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
                 for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
                     currentField = new Struct();
                     currentFields.addStruct(currentField);
                     currentField.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
-                    System.out.println("----Field: " + field.fragments().get(0));
+                    Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.fragments().get(0));
                     if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
                         currentRelationship = new Relationship();
                         // We set only the name of the endingStruct, and once
@@ -89,7 +95,7 @@ public class Neo4jUtil implements SchemaFinder {
                                 new Attribute("name", field.getType().toString()));
                         currentRelationship.setStartStruct(currentNode);
                         relationships.add(currentRelationship);
-                        System.out.println("------Related to: " + field.getType());
+                        Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "------Related to: " + field.getType());
                     }
                 }
             }
@@ -251,19 +257,19 @@ public class Neo4jUtil implements SchemaFinder {
             returnValue.add(currentGraph);
             structRelationships = new ArrayList<Relationship>();
             currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
-            System.out.println("\nNeo4J nodes: ");
+            Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\nNeo4J nodes: ");
             for (String node : nodes.keySet()) {
                 currentNode = new Struct();
                 currentFields = new Set();
                 currentNode.addSet(currentFields);
                 currentGraph.addStruct(currentNode);
                 currentNode.addAttribute(new Attribute("name", node));
-                System.out.println("\n--Node: " + node);
+                Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
                 for (String field : nodes.get(node)) {
                     currentField = new Struct();
                     currentFields.addStruct(currentField);
                     currentField.addAttribute(new Attribute("name", field));
-                    System.out.println("\n----Field: " + field);
+                    Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n----Field: " + field);
                 }
 
                 if (nodesRelationships.get(node) != null) {
@@ -279,11 +285,11 @@ public class Neo4jUtil implements SchemaFinder {
                         // the end node with the appropriate reference
                         currentRelationship.getEndStruct().addAttribute(new Attribute("name", relationship));
                         structRelationships.add(currentRelationship);
-                        System.out.println("\n----Relationship: " + relationship + " ["
+                        Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n----Relationship: " + relationship + " ["
                                 + relationshipTypes.get(node).get(relationship) + "]");
                         if (relationshipFields.get(node).get(relationship) != null) {
                             for (String relationField : relationshipFields.get(node).get(relationship)) {
-                                System.out.println("\n------Relationship field: " + relationField);
+                                Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n------Relationship field: " + relationField);
                             }
                         }
                     }

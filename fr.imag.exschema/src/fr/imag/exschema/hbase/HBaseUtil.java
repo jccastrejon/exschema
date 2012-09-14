@@ -2,6 +2,7 @@ package fr.imag.exschema.hbase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -26,6 +27,11 @@ import fr.imag.exschema.model.Struct;
  * 
  */
 public class HBaseUtil implements SchemaFinder {
+
+    /**
+     * Class logger.
+     */
+    private static Logger logger = Logger.getLogger(HBaseUtil.class.getName());
 
     @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
@@ -59,7 +65,7 @@ public class HBaseUtil implements SchemaFinder {
 
         // Get tables data
         returnValue = new ArrayList<Set>();
-        System.out.println("\n\nHBase tables:");
+        HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n\nHBase tables:");
         for (MethodInvocation createInvocation : createVisitor.getUpdateInvocations()) {
             tableDescriptor = createInvocation.arguments().get(0).toString();
 
@@ -72,7 +78,7 @@ public class HBaseUtil implements SchemaFinder {
                 returnValue.add(currentTableSet);
                 currentTableSet.addAttribute(new Attribute("name", tableName));
                 currentTableSet.addAttribute(new Attribute("implementation", "HBase"));
-                System.out.println("\n--Table: " + tableName);
+                HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n--Table: " + tableName);
 
                 // Column families
                 addVisitor = new FamilyAddVisitor();
@@ -87,7 +93,7 @@ public class HBaseUtil implements SchemaFinder {
                         currentFamilyStruct = new Struct();
                         currentTableSet.addStruct(currentFamilyStruct);
                         currentFamilyStruct.addAttribute(new Attribute("name", columnFamilyName));
-                        System.out.println("\n----Family: " + columnFamilyName);
+                        HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n----Family: " + columnFamilyName);
 
                         // Columns
                         if ((tableName != null) && (columnFamilyName != null)) {
@@ -104,7 +110,7 @@ public class HBaseUtil implements SchemaFinder {
                                 currentColumnStruct = new Struct();
                                 currentFamilyStruct.addStruct(currentColumnStruct);
                                 currentColumnStruct.addAttribute(new Attribute("name", column));
-                                System.out.println("\n------Column: " + column);
+                                HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n------Column: " + column);
                             }
                         }
                     }

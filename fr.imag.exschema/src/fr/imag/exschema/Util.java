@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -38,6 +40,16 @@ import fr.imag.exschema.neo4j.Neo4jUtil;
  * 
  */
 public class Util {
+
+    /**
+     * Default logging level.
+     */
+    public static Level LOGGING_LEVEL = Level.FINE;
+
+    /**
+     * Class logger.
+     */
+    private static Logger logger = Logger.getLogger(Util.class.getName());
 
     /**
      * Starting point for discovering schemas from non-relational applications.
@@ -258,7 +270,7 @@ public class Util {
         // Analyze model classes
         returnValue = new ArrayList<Set>();
         currentCollection = new Set();
-        System.out.println("Spring-based repository classes: ");
+        Util.logger.log(Util.LOGGING_LEVEL, "Spring-based repository classes: ");
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
@@ -268,16 +280,17 @@ public class Util {
                                 currentClass = new Set();
                                 currentCollection.addSet(currentClass);
                                 currentClass.addAttribute(new Attribute("name", domainClass));
-                                System.out.println("\n" + domainClass);
+                                Util.logger.log(Util.LOGGING_LEVEL, "\n" + domainClass);
                                 // TODO: Real analysis...
                                 currentFields = new Set();
                                 currentClass.addSet(currentFields);
-                                System.out.println("Fields:");
+                                Util.logger.log(Util.LOGGING_LEVEL, "Fields:");
                                 for (IField field : type.getFields()) {
                                     currentField = new Struct();
                                     currentFields.addStruct(currentField);
                                     currentField.addAttribute(new Attribute("name", field.getElementName()));
-                                    System.out.println(field.getElementName() + ":" + field.getTypeSignature());
+                                    Util.logger.log(Util.LOGGING_LEVEL,
+                                            field.getElementName() + ":" + field.getTypeSignature());
                                 }
                             }
                         }
