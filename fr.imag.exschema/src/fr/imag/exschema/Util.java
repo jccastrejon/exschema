@@ -257,8 +257,7 @@ public class Util {
      */
     private static List<Set> discoverSpringRepositories(final IJavaProject project) throws JavaModelException {
         Set currentClass;
-        Set currentFields;
-        Struct currentField;
+        Struct currentFields;
         Set currentCollection;
         List<Set> returnValue;
         SpringRepositoryVisitor annotationVisitor;
@@ -283,13 +282,11 @@ public class Util {
                                 currentClass.addAttribute(new Attribute("name", domainClass));
                                 Util.logger.log(Util.LOGGING_LEVEL, "\n" + domainClass);
                                 // TODO: Real analysis...
-                                currentFields = new Set();
-                                currentClass.addSet(currentFields);
+                                currentFields = new Struct();
+                                currentClass.addStruct(currentFields);
                                 Util.logger.log(Util.LOGGING_LEVEL, "Fields:");
                                 for (IField field : type.getFields()) {
-                                    currentField = new Struct();
-                                    currentFields.addStruct(currentField);
-                                    currentField.addAttribute(new Attribute("name", field.getElementName()));
+                                    currentFields.addAttribute(new Attribute("name", field.getElementName()));
                                     Util.logger.log(Util.LOGGING_LEVEL,
                                             field.getElementName() + ":" + field.getTypeSignature());
                                 }
