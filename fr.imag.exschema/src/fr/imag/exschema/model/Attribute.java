@@ -36,7 +36,7 @@ public class Attribute implements GraphvizExporter {
         StringBuilder returnValue;
 
         identifier = Long.toString(System.nanoTime());
-        returnValue = new StringBuilder(identifier + " [label=\"Attribute \\n " + name + " : " + value + "\"]\n");
+        returnValue = new StringBuilder(identifier + " [shape=\"box\", label=\"Attribute \\n " + name + " : " + value + "\"]\n");
 
         if (parent != null) {
             returnValue.append(parent + " -> " + identifier + "\n");
