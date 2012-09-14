@@ -8,9 +8,10 @@
             objectClass="org.eclipse.core.resources.IProject"
             id="fr.imag.exschema.contribution1">
          <menu
+               icon="hadas.ico"
+               id="fr.imag.exschema.menu1"
                label="ExSchema"
-               path="additions"
-               id="fr.imag.exschema.menu1">
+               path="additions">
             <separator
                   name="group1">
             </separator>
