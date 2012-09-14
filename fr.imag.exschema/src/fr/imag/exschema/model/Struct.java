@@ -94,26 +94,6 @@ public class Struct implements GraphvizExporter {
         this.relationships.add(relationship);
     }
 
-    /**
-     * The name associated to this struct is represented by an attribute with
-     * key "name".
-     * 
-     * @return
-     */
-    public String getName() {
-        String returnValue;
-
-        returnValue = null;
-        for (Attribute attribute : this.attributes) {
-            if ("name".equals(attribute.getName())) {
-                returnValue = attribute.getValue();
-                break;
-            }
-        }
-
-        return returnValue;
-    }
-
     @Override
     public String getDotNodes(final String parent) {
         String identifier;
