@@ -35,7 +35,6 @@ public class HBaseUtil implements SchemaFinder {
 
     @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
-
         String tableName;
         Set currentTableSet;
         List<String> columns;
