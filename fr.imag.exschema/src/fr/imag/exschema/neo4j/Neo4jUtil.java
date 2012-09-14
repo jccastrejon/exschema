@@ -30,9 +30,7 @@ import fr.imag.exschema.model.Struct;
  */
 public class Neo4jUtil implements SchemaFinder {
 
-    /**
-     * 
-     */
+    @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
         List<Set> returnValue;
 
@@ -43,6 +41,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Discover Spring's NodeEntities.
      * 
      * @param project
      * @throws JavaModelException
@@ -103,6 +102,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Discover Neo4j nodes.
      * 
      * @param project
      * @throws JavaModelException
@@ -298,6 +298,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Update an end side of a relationship with the correct struct reference.
      * 
      * @param relationships
      * @param graph
@@ -331,6 +332,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Associate fields to their corresponding Neo4j's containers.
      * 
      * @param declarations
      * @param updateInvocations
@@ -371,6 +373,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Get the corresponding variable declarations.
      * 
      * @param block
      * @param variableName
@@ -392,6 +395,7 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
+     * Identify if the list of modifiers contain Spring's RelatedTo annotation.
      * 
      * @param modifier
      * @return

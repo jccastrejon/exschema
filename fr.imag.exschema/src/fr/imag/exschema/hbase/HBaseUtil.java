@@ -27,11 +27,7 @@ import fr.imag.exschema.model.Struct;
  */
 public class HBaseUtil implements SchemaFinder {
 
-    /**
-     * 
-     * @param project
-     * @throws JavaModelException
-     */
+    @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
 
         String tableName;
@@ -120,6 +116,7 @@ public class HBaseUtil implements SchemaFinder {
     }
 
     /**
+     * Get the HBase columns associated to the given update invocations.
      * 
      * @param tableName
      * @param rootNode
@@ -155,6 +152,7 @@ public class HBaseUtil implements SchemaFinder {
     }
 
     /**
+     * Determine if the update invocation refers to the expected HBase table.
      * 
      * @param expectedTable
      * @param updateInvocation
@@ -174,6 +172,7 @@ public class HBaseUtil implements SchemaFinder {
     }
 
     /**
+     * Get Spring's HBase template method execution.
      * 
      * @param node
      * @return
@@ -204,6 +203,7 @@ public class HBaseUtil implements SchemaFinder {
     }
 
     /**
+     * Get the list of arguments used in an HBase add operation.
      * 
      * @param putInvocation
      * @return
@@ -227,6 +227,8 @@ public class HBaseUtil implements SchemaFinder {
     }
 
     /**
+     * Get the name of the HBase table by analyzing the given declaration
+     * definitions.
      * 
      * @param tableDeclaration
      * @return
