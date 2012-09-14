@@ -270,6 +270,7 @@ public class Util {
         // Analyze model classes
         returnValue = new ArrayList<Set>();
         currentCollection = new Set();
+        currentCollection.addAttribute(new Attribute("implementation", "Spring Repository"));
         Util.logger.log(Util.LOGGING_LEVEL, "Spring-based repository classes: ");
         for (IPackageFragment aPackage : project.getPackageFragments()) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {

@@ -52,6 +52,7 @@ public class MongoDBUtil implements SchemaFinder {
         mongoCollections = MongoDBUtil.getMongoCollections(insertVisitor.getSaveInvocations());
         if (!mongoCollections.isEmpty()) {
             currentDatabase = new Set();
+            currentDatabase.addAttribute(new Attribute("implementation", "MongoDB"));
             returnValue.add(currentDatabase);
             MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "\nMongoDB documents (based on inserts): ");
             for (String collection : mongoCollections.keySet()) {
