@@ -54,9 +54,8 @@ public class Neo4jUtil implements SchemaFinder {
      */
     private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws JavaModelException {
         Set currentGraph;
-        Set currentFields;
         Struct currentNode;
-        Struct currentField;
+        Struct currentFields;
         List<Set> returnValue;
         NodeEntityVisitor entityVisitor;
         List<Relationship> relationships;
@@ -75,15 +74,13 @@ public class Neo4jUtil implements SchemaFinder {
             Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "Neo4J node entities: ");
             for (String node : entityVisitor.getNodeEntities().keySet()) {
                 currentNode = new Struct();
-                currentFields = new Set();
-                currentNode.addSet(currentFields);
+                currentFields = new Struct();
+                currentNode.addStruct(currentFields);
                 currentGraph.addStruct(currentNode);
                 currentNode.addAttribute(new Attribute("name", node));
                 Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
                 for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
-                    currentField = new Struct();
-                    currentFields.addStruct(currentField);
-                    currentField.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
+                    currentFields.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
                     Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.fragments().get(0));
                     if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
                         currentRelationship = new Relationship();
@@ -119,9 +116,8 @@ public class Neo4jUtil implements SchemaFinder {
         String nodeClass;
         String startNode;
         String node2Class;
-        Set currentFields;
         Struct currentNode;
-        Struct currentField;
+        Struct currentFields;
         List<Set> returnValue;
         List<String> currentRelations;
         Map<String, List<String>> nodes;
@@ -260,15 +256,13 @@ public class Neo4jUtil implements SchemaFinder {
             Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\nNeo4J nodes: ");
             for (String node : nodes.keySet()) {
                 currentNode = new Struct();
-                currentFields = new Set();
-                currentNode.addSet(currentFields);
+                currentFields = new Struct();
+                currentNode.addStruct(currentFields);
                 currentGraph.addStruct(currentNode);
                 currentNode.addAttribute(new Attribute("name", node));
                 Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
                 for (String field : nodes.get(node)) {
-                    currentField = new Struct();
-                    currentFields.addStruct(currentField);
-                    currentField.addAttribute(new Attribute("name", field));
+                    currentFields.addAttribute(new Attribute("name", field));
                     Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n----Field: " + field);
                 }
 
@@ -289,7 +283,8 @@ public class Neo4jUtil implements SchemaFinder {
                                 + relationshipTypes.get(node).get(relationship) + "]");
                         if (relationshipFields.get(node).get(relationship) != null) {
                             for (String relationField : relationshipFields.get(node).get(relationship)) {
-                                Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n------Relationship field: " + relationField);
+                                Neo4jUtil.logger
+                                        .log(Util.LOGGING_LEVEL, "\n------Relationship field: " + relationField);
                             }
                         }
                     }
