@@ -3,13 +3,15 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.GraphvizExporter;
+
 /**
  * Data model relationship.
  * 
  * @author jccastrejon
  * 
  */
-public class Relationship {
+public class Relationship implements GraphvizExporter {
 
     /**
      * Start point of the relationship.
@@ -44,6 +46,31 @@ public class Relationship {
         this.endStruct = endStruct;
         this.startStruct = startStruct;
         this.attributes = attributes;
+    }
+
+    @Override
+    public String getDotNodes(final String parent) {
+        String identifier;
+        StringBuilder returnValue;
+
+        identifier = Long.toString(System.nanoTime());
+        returnValue = new StringBuilder("subgraph cluster_relationship_" + identifier + "{\n");
+        returnValue.append("label=\"\"\n");
+        returnValue.append("color=\"lightgrey\";\n");
+        returnValue.append(identifier + " [label=\"Relationship\"]\n");
+
+        for (Attribute attribute : this.attributes) {
+            returnValue.append(attribute.getDotNodes(identifier));
+        }
+
+        // Associate to start and end structs
+        returnValue.append(identifier + " -> " + "struct" + this.startStruct.hashCode()
+                + " [label=\"start\", style=\"dotted\"]\n");
+        returnValue.append(identifier + " -> " + "struct" + this.endStruct.hashCode()
+                + " [label=\"end\", style=\"dotted\"]\n");
+
+        returnValue.append("}\n");
+        return returnValue.toString();
     }
 
     /**

@@ -94,12 +94,32 @@ public class Struct implements GraphvizExporter {
         this.relationships.add(relationship);
     }
 
+    /**
+     * The name associated to this struct is represented by an attribute with
+     * key "name".
+     * 
+     * @return
+     */
+    public String getName() {
+        String returnValue;
+
+        returnValue = null;
+        for (Attribute attribute : this.attributes) {
+            if ("name".equals(attribute.getName())) {
+                returnValue = attribute.getValue();
+                break;
+            }
+        }
+
+        return returnValue;
+    }
+
     @Override
     public String getDotNodes(final String parent) {
         String identifier;
         StringBuilder returnValue;
 
-        identifier = Long.toString(System.nanoTime());
+        identifier = "struct" + this.hashCode();
         returnValue = new StringBuilder(identifier + " [shape=\"box\", label=\"Struct\"]\n");
 
         if (parent != null) {
@@ -116,6 +136,10 @@ public class Struct implements GraphvizExporter {
 
         for (Set set : this.sets) {
             returnValue.append(set.getDotNodes(identifier));
+        }
+
+        for (Relationship relationship : this.relationships) {
+            returnValue.append(relationship.getDotNodes(identifier));
         }
 
         return returnValue.toString();
