@@ -13,7 +13,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import fr.imag.exschema.SchemaFinder;
@@ -57,6 +59,8 @@ public class Neo4jUtil implements SchemaFinder {
         Struct currentNode;
         Struct currentFields;
         List<Set> returnValue;
+        String relationshipName;
+        Type relationshipEndType;
         NodeEntityVisitor entityVisitor;
         List<Relationship> relationships;
         Relationship currentRelationship;
@@ -80,19 +84,41 @@ public class Neo4jUtil implements SchemaFinder {
                 currentNode.addAttribute(new Attribute("name", node));
                 Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
                 for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
-                    currentFields.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
-                    Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.fragments().get(0));
+                    // Try to identify relationships:
+                    // We set only the name of the endingStruct, and once
+                    // all of the nodes have been identified, we'll update
+                    // the end node with the appropriate reference
+                    // Identify relationships by the use of Annotations
+                    relationshipEndType = null;
+                    relationshipName = null;
                     if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
+                        relationshipEndType = field.getType();
+                        relationshipName = Util.getValidName(field.fragments().get(0).toString());
+                    }
+
+                    // Identify relationships by the use of collections
+                    else if (field.getType().isParameterizedType()) {
+                        relationshipEndType = (Type) ((ParameterizedType) field.getType()).typeArguments().get(0);
+                        relationshipName = Util.getValidName(field.fragments().get(0).toString());
+                    }
+
+                    // Decide whether to save a relationship or just a field
+                    if (relationshipEndType != null) {
+                        // Relationship data
                         currentRelationship = new Relationship();
-                        // We set only the name of the endingStruct, and once
-                        // all of the nodes have been identified, we'll update
-                        // the end node with the appropriate reference
                         currentRelationship.setEndStruct(new Struct());
                         currentRelationship.getEndStruct().addAttribute(
-                                new Attribute("name", field.getType().toString()));
+                                new Attribute("name", relationshipEndType.toString()));
                         currentRelationship.setStartStruct(currentNode);
+                        currentRelationship.addAttribute(new Attribute("name", relationshipName));
+
+                        // Save relationship
+                        currentNode.addRelationship(currentRelationship);
                         relationships.add(currentRelationship);
                         Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "------Related to: " + field.getType());
+                    } else {
+                        currentFields.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
+                        Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.fragments().get(0));
                     }
                 }
             }

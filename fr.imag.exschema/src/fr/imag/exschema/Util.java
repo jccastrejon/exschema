@@ -154,6 +154,23 @@ public class Util {
     }
 
     /**
+     * Get a valid String name.
+     * 
+     * @param name
+     * @return
+     */
+    public static String getValidName(final String name) {
+        String returnValue;
+
+        returnValue = name;
+        if (returnValue.contains("=")) {
+            returnValue = returnValue.substring(0, returnValue.indexOf('='));
+        }
+
+        return returnValue;
+    }
+
+    /**
      * Export the list of schemas into a Graphviz-generated pdf file, saved at
      * the top of the specified project.
      * 
