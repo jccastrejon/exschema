@@ -27,10 +27,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.hbase.HBaseUtil;
+import fr.imag.exschema.jpa.SpringJpaRepositoryVisitor;
 import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Set;
 import fr.imag.exschema.model.Struct;
 import fr.imag.exschema.mongodb.MongoDBUtil;
+import fr.imag.exschema.mongodb.SpringDocumentRepositoryVisitor;
 import fr.imag.exschema.neo4j.Neo4jUtil;
 
 /**
@@ -63,9 +65,12 @@ public class Util {
             CoreException {
         List<Set> schemas;
 
-        // Generic Spring-based repositories
+        // JPA repositories
         schemas = new ArrayList<Set>();
-        schemas.addAll(Util.discoverSpringRepositories(project));
+        schemas.addAll(Util.discoverSpringRepositories(project, new SpringJpaRepositoryVisitor()));
+
+        // Document repositories
+        schemas.addAll(Util.discoverSpringRepositories(project, new SpringDocumentRepositoryVisitor()));
 
         // Document
         schemas.addAll(new MongoDBUtil().discoverSchemas(project));
@@ -270,17 +275,18 @@ public class Util {
      * Discover Spring-based repositories.
      * 
      * @param project
+     * @param annotationVisitor
+     * @return
      * @throws JavaModelException
      */
-    private static List<Set> discoverSpringRepositories(final IJavaProject project) throws JavaModelException {
+    private static List<Set> discoverSpringRepositories(final IJavaProject project,
+            final SpringRepositoryVisitor annotationVisitor) throws JavaModelException {
         Set currentClass;
         Struct currentFields;
         Set currentCollection;
         List<Set> returnValue;
-        SpringRepositoryVisitor annotationVisitor;
 
         // Identify model classes
-        annotationVisitor = new SpringRepositoryVisitor();
         Util.analyzeJavaProject(project, annotationVisitor);
 
         // Analyze model classes

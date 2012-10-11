@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * @author jccastrejon
  * 
  */
-public class SpringRepositoryVisitor extends ASTVisitor {
+public abstract class SpringRepositoryVisitor extends ASTVisitor {
     List<String> domainClasses;
 
     public SpringRepositoryVisitor() {
@@ -94,6 +94,31 @@ public class SpringRepositoryVisitor extends ASTVisitor {
     public List<String> getDomainClasses() {
         return this.domainClasses;
     }
+    
+    /**
+     * Determine if the specified class name represents a Spring-based
+     * repository.
+     * 
+     * @param className
+     * @return
+     */
+    protected abstract boolean isSpringRepository(final String className);
+    
+    /**
+     * 
+     * @param className
+     * @return
+     */
+    protected String getQualifiedName(final String className) {
+        String returnValue;
+
+        returnValue = className;
+        if (returnValue.contains("<")) {
+            returnValue = returnValue.substring(0, returnValue.indexOf('<'));
+        }
+        
+        return returnValue;
+    }
 
     /**
      * Get the qualified name associated to the specified type.
@@ -103,39 +128,6 @@ public class SpringRepositoryVisitor extends ASTVisitor {
      */
     private String getQualifiedName(ITypeBinding type) {
         return type.getQualifiedName().replace("java.lang.Class<", "").replace(">", "").trim();
-    }
-
-    /**
-     * Determine if the specified class name represents a Spring-based
-     * repository.
-     * 
-     * @param className
-     * @return
-     */
-    private boolean isSpringRepository(final String className) {
-        boolean returnValue;
-        String qualifiedName;
-
-        qualifiedName = className;
-        if (qualifiedName.contains("<")) {
-            qualifiedName = qualifiedName.substring(0, qualifiedName.indexOf('<'));
-        }
-
-        // Consider Spring data repositories, except for the Neo4J repository,
-        // that needs special handling
-        returnValue = false;
-        if (qualifiedName.startsWith("org.springframework.")) {
-            // Document
-            if ((qualifiedName.endsWith("Repository")) && (!qualifiedName.contains("neo4j"))) {
-                returnValue = true;
-            }
-            // JPA
-            else if (qualifiedName.endsWith("ActiveRecord")) {
-                returnValue = true;
-            }
-        }
-
-        return returnValue;
     }
 
     /**
