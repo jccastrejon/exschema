@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.Type;
@@ -26,6 +27,27 @@ public class SpringRepositoryVisitor extends ASTVisitor {
 
     /**
      * Identify classes annotated with a spring-based Repository annotation.
+     * (JPA)
+     */
+    @Override
+    public boolean visit(final MarkerAnnotation annotation) {
+        String qualifiedName;
+        TypeDeclaration typeDeclaration;
+
+        qualifiedName = annotation.resolveTypeBinding().getQualifiedName();
+        if (this.isSpringRepository(qualifiedName)) {
+            if (TypeDeclaration.class.isAssignableFrom(annotation.getParent().getClass())) {
+                typeDeclaration = (TypeDeclaration) annotation.getParent();
+                this.domainClasses.add(this.getQualifiedName(typeDeclaration.resolveBinding()));
+            }
+        }
+
+        return super.visit(annotation);
+    }
+
+    /**
+     * Identify classes annotated with a spring-based Repository annotation.
+     * (MongoDB)
      */
     @Override
     public boolean visit(final NormalAnnotation annotation) {
@@ -91,6 +113,7 @@ public class SpringRepositoryVisitor extends ASTVisitor {
      * @return
      */
     private boolean isSpringRepository(final String className) {
+        boolean returnValue;
         String qualifiedName;
 
         qualifiedName = className;
@@ -100,8 +123,19 @@ public class SpringRepositoryVisitor extends ASTVisitor {
 
         // Consider Spring data repositories, except for the Neo4J repository,
         // that needs special handling
-        return ((qualifiedName.startsWith("org.springframework.")) && (qualifiedName.endsWith("Repository")) && (!qualifiedName
-                .contains("neo4j")));
+        returnValue = false;
+        if (qualifiedName.startsWith("org.springframework.")) {
+            // Document
+            if ((qualifiedName.endsWith("Repository")) && (!qualifiedName.contains("neo4j"))) {
+                returnValue = true;
+            }
+            // JPA
+            else if (qualifiedName.endsWith("ActiveRecord")) {
+                returnValue = true;
+            }
+        }
+
+        return returnValue;
     }
 
     /**
