@@ -75,6 +75,7 @@ public class Neo4jUtil implements SchemaFinder {
     private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws JavaModelException {
         Set currentGraph;
         Struct currentNode;
+        String endStructName;
         Struct currentFields;
         List<Set> returnValue;
         String relationshipName;
@@ -125,8 +126,15 @@ public class Neo4jUtil implements SchemaFinder {
                         // Relationship data
                         currentRelationship = new Relationship();
                         currentRelationship.setEndStruct(new Struct());
-                        currentRelationship.getEndStruct().addAttribute(
-                                new Attribute("name", relationshipEndType.toString()));
+
+                        // Try to obtain a qualified name for the relationship's
+                        // end struct
+                        endStructName = relationshipEndType.toString();
+                        if (relationshipEndType.resolveBinding() != null) {
+                            endStructName = relationshipEndType.resolveBinding().getBinaryName();
+                        }
+
+                        currentRelationship.getEndStruct().addAttribute(new Attribute("name", endStructName));
                         currentRelationship.setStartStruct(currentNode);
                         currentRelationship.addAttribute(new Attribute("name", relationshipName));
 
