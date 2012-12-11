@@ -80,14 +80,17 @@ public abstract class UpdateVisitor extends ASTVisitor {
         boolean returnValue;
 
         returnValue = false;
-        if (this.getMethodBinding().equals(invocation.resolveMethodBinding().getDeclaringClass().getQualifiedName())) {
-            if (invocation.getName().toString().equals(this.getMethodName())) {
-                if (this.variableName != null) {
-                    if (this.variableName.equals(invocation.getExpression().toString())) {
+        if (invocation.resolveMethodBinding() != null) {
+            if (this.getMethodBinding()
+                    .equals(invocation.resolveMethodBinding().getDeclaringClass().getQualifiedName())) {
+                if (invocation.getName().toString().equals(this.getMethodName())) {
+                    if (this.variableName != null) {
+                        if (this.variableName.equals(invocation.getExpression().toString())) {
+                            returnValue = true;
+                        }
+                    } else {
                         returnValue = true;
                     }
-                } else {
-                    returnValue = true;
                 }
             }
         }
