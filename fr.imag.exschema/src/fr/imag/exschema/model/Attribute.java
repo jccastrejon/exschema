@@ -18,7 +18,9 @@
  */
 package fr.imag.exschema.model;
 
-import fr.imag.exschema.GraphvizExporter;
+import fr.imag.exschema.exporter.GraphvizExporter;
+import fr.imag.exschema.exporter.RooExporter;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Data model attribute.
@@ -26,7 +28,7 @@ import fr.imag.exschema.GraphvizExporter;
  * @author jccastrejon
  * 
  */
-public class Attribute implements GraphvizExporter {
+public class Attribute implements GraphvizExporter, RooExporter {
 
     /**
      * Attribute's name.
@@ -54,13 +56,19 @@ public class Attribute implements GraphvizExporter {
         StringBuilder returnValue;
 
         identifier = Long.toString(System.nanoTime());
-        returnValue = new StringBuilder(identifier + " [shape=\"box\", label=\"Attribute \\n " + name + " : " + value + "\"]\n");
+        returnValue = new StringBuilder(identifier + " [shape=\"box\", label=\"Attribute \\n " + name + " : " + value
+                + "\"]\n");
 
         if (parent != null) {
             returnValue.append(parent + " -> " + identifier + "\n");
         }
 
         return returnValue.toString();
+    }
+
+    @Override
+    public String getRooCommands(String parent, final RooModel rooModel) {
+        return "field string --fieldName " + this.name;
     }
 
     // Getters-setters

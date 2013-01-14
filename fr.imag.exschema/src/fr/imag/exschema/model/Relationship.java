@@ -21,7 +21,9 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.imag.exschema.GraphvizExporter;
+import fr.imag.exschema.exporter.GraphvizExporter;
+import fr.imag.exschema.exporter.RooExporter;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Data model relationship.
@@ -29,7 +31,7 @@ import fr.imag.exschema.GraphvizExporter;
  * @author jccastrejon
  * 
  */
-public class Relationship implements GraphvizExporter {
+public class Relationship implements GraphvizExporter, RooExporter {
 
     /**
      * Start point of the relationship.
@@ -89,6 +91,12 @@ public class Relationship implements GraphvizExporter {
 
         returnValue.append("}\n");
         return returnValue.toString();
+    }
+    
+    @Override
+    public String getRooCommands(String parent, final RooModel rooModel) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**

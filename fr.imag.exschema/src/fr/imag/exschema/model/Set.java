@@ -21,7 +21,9 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.imag.exschema.GraphvizExporter;
+import fr.imag.exschema.exporter.GraphvizExporter;
+import fr.imag.exschema.exporter.RooExporter;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Data model set.
@@ -29,7 +31,7 @@ import fr.imag.exschema.GraphvizExporter;
  * @author jccastrejon
  * 
  */
-public class Set implements GraphvizExporter {
+public class Set implements GraphvizExporter, RooExporter {
 
     /**
      * Inner sets.
@@ -115,6 +117,78 @@ public class Set implements GraphvizExporter {
 
         for (Struct struct : this.structs) {
             returnValue.append(struct.getDotNodes(identifier));
+        }
+
+        return returnValue.toString();
+    }
+
+    @Override
+    public String getRooCommands(String parent, final RooModel rooModel) {
+        String entityName;
+        String projectName;
+        RooModel projectRooModel;
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder();
+        // Start of the schema
+        if (parent == null) {
+            projectName = "project" + System.currentTimeMillis();
+            returnValue.append("project --topLevelPackage fr.imag.exschema." + projectName + "\n");
+            // Project setup depending on the data model
+            for (Attribute attribute : this.getAttributes()) {
+                // The implementation attribute specifies the Roo model that
+                // this schema relies upon
+                if ("implementation".equals(attribute.getName())) {
+                    projectRooModel = RooModel.valueOf(attribute.getValue().toUpperCase());
+                    // TODO: Identify Spring MongoDB and relational repositories
+                    // (instead of generic Spring repository)
+                    switch (projectRooModel) {
+                    case NEO4J:
+                        returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
+                        break;
+                    case MONGODB:
+                        returnValue.append("mongo setup --databaseName database" + projectName + "\n");
+                        break;
+                    case RELATIONAL:
+                    default:
+                        returnValue.append("jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY" + "\n");
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Entity
+        else {
+            entityName = null;
+            for (Attribute attribute : this.getAttributes()) {
+                if ("name".equals(attribute.getName())) {
+                    entityName = attribute.getValue();
+                    if (entityName.contains(".")) {
+                        entityName = entityName.substring(entityName.indexOf('.') + 1);
+                    }
+                }
+            }
+
+            if (entityName != null) {
+                switch (rooModel) {
+                case NEO4J:
+                    returnValue.append("entity graph --class ~.domain." + entityName + "\n");
+                    returnValue.append("repository graph --interface ~.repository." + entityName
+                            + "Repository --entity ~.domain." + entityName + "\n");
+                    break;
+                case MONGODB:
+                    returnValue.append("entity mongo --class ~.domain." + entityName + "\n");
+                    returnValue.append("repository mongo --interface ~.repository." + entityName
+                            + "Repository --entity ~.domain." + entityName + "\n");
+                    break;
+                case RELATIONAL:
+                default:
+                    returnValue.append("entity jpa --class ~.domain." + entityName + "\n");
+                    break;
+                }
+            }
         }
 
         return returnValue.toString();

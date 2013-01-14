@@ -21,7 +21,9 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.imag.exschema.GraphvizExporter;
+import fr.imag.exschema.exporter.GraphvizExporter;
+import fr.imag.exschema.exporter.RooExporter;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Data model struct.
@@ -29,7 +31,7 @@ import fr.imag.exschema.GraphvizExporter;
  * @author jccastrejon
  * 
  */
-public class Struct implements GraphvizExporter {
+public class Struct implements GraphvizExporter, RooExporter {
 
     /**
      * Inner sets.
@@ -139,6 +141,15 @@ public class Struct implements GraphvizExporter {
         for (Relationship relationship : this.relationships) {
             returnValue.append(relationship.getDotNodes(identifier));
         }
+
+        return returnValue.toString();
+    }
+
+    @Override
+    public String getRooCommands(String parent, final RooModel rooModel) {
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder();
 
         return returnValue.toString();
     }
