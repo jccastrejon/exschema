@@ -31,7 +31,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Struct implements GraphvizExporter, RooExporter {
+public class Struct extends Entity implements GraphvizExporter, RooExporter {
 
     /**
      * Inner sets.
@@ -42,11 +42,6 @@ public class Struct implements GraphvizExporter, RooExporter {
      * Inner structs.
      */
     private List<Struct> structs;
-
-    /**
-     * Attributes associated to the struct.
-     */
-    private List<Attribute> attributes;
 
     /**
      * Relationships to other structs.
@@ -146,10 +141,39 @@ public class Struct implements GraphvizExporter, RooExporter {
     }
 
     @Override
-    public String getRooCommands(String parent, final RooModel rooModel) {
+    public String getRooCommands(final RooModel rooModel) {
         StringBuilder returnValue;
 
         returnValue = new StringBuilder();
+        // TODO: Support for complex attributes (require nested structs)
+        switch (rooModel) {
+        case NEO4J:
+            // Structs with the single 'name' attribute are entities
+            // TODO: Change from structs to sets?
+            if ((this.attributes.size() == 1) && (this.attributes.get(0).getName().equals("name"))) {
+                returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
+
+                for (Relationship relationship : this.relationships) {
+                    returnValue.append(relationship.getRooCommands(rooModel));
+                }
+            } else {
+                for (Attribute attribute : this.getAttributes()) {
+                    returnValue.append(attribute.getRooCommands(rooModel));
+                }
+            }
+            break;
+        case MONGODB:
+            for (Attribute attribute : this.getAttributes()) {
+                returnValue.append(attribute.getRooCommands(rooModel));
+            }
+            break;
+        case RELATIONAL:
+        default:
+            for (Attribute attribute : this.getAttributes()) {
+                returnValue.append(attribute.getRooCommands(rooModel));
+            }
+            break;
+        }
 
         return returnValue.toString();
     }
@@ -170,14 +194,6 @@ public class Struct implements GraphvizExporter, RooExporter {
 
     public void setStructs(List<Struct> structs) {
         this.structs = structs;
-    }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
     }
 
     public List<Relationship> getRelationships() {

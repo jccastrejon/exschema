@@ -19,6 +19,7 @@
 package fr.imag.exschema.mongodb;
 
 import fr.imag.exschema.SpringRepositoryVisitor;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Visitor that identifies Spring data MongoDB repositories.
@@ -44,5 +45,10 @@ public class SpringDocumentRepositoryVisitor extends SpringRepositoryVisitor {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public String getImplementation() {
+        return RooModel.RELATIONAL.toString();
     }
 }

@@ -30,9 +30,8 @@ public interface RooExporter {
      * Get the appropriate Spring Roo commands for this object, according to the
      * specified Roo model.
      * 
-     * @param parent
      * @param rooModel
      * @return
      */
-    public String getRooCommands(final String parent, final RooModel rooModel);
+    public String getRooCommands(final RooModel rooModel);
 }

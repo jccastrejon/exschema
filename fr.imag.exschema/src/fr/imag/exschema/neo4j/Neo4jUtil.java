@@ -38,6 +38,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import fr.imag.exschema.SchemaFinder;
 import fr.imag.exschema.Util;
+import fr.imag.exschema.exporter.RooModel;
 import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Relationship;
 import fr.imag.exschema.model.Set;
@@ -93,7 +94,7 @@ public class Neo4jUtil implements SchemaFinder {
         if (!entityVisitor.getNodeEntities().isEmpty()) {
             currentGraph = new Set();
             returnValue.add(currentGraph);
-            currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
+            currentGraph.addAttribute(new Attribute("implementation", RooModel.NEO4J.toString()));
             Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "Neo4J node entities: ");
             for (String node : entityVisitor.getNodeEntities().keySet()) {
                 currentNode = new Struct();

@@ -31,7 +31,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Set implements GraphvizExporter, RooExporter {
+public class Set extends Entity implements GraphvizExporter, RooExporter {
 
     /**
      * Inner sets.
@@ -42,11 +42,6 @@ public class Set implements GraphvizExporter, RooExporter {
      * Inner structs.
      */
     private List<Struct> structs;
-
-    /**
-     * Attributes associated to the set.
-     */
-    private List<Attribute> attributes;
 
     /**
      * Default constructor.
@@ -123,70 +118,73 @@ public class Set implements GraphvizExporter, RooExporter {
     }
 
     @Override
-    public String getRooCommands(String parent, final RooModel rooModel) {
-        String entityName;
+    public String getRooCommands(final RooModel rooModel) {
         String projectName;
-        RooModel projectRooModel;
+        RooModel startingRooModel;
         StringBuilder returnValue;
 
+        startingRooModel = null;
         returnValue = new StringBuilder();
+
+        // The implementation attribute specifies the Roo model that
+        // this schema relies upon
+        for (Attribute attribute : this.getAttributes()) {
+            if ("implementation".equals(attribute.getName())) {
+                startingRooModel = RooModel.valueOf(attribute.getValue().toUpperCase());
+            }
+        }
+
         // Start of the schema
-        if (parent == null) {
+        if (startingRooModel != null) {
             projectName = "project" + System.currentTimeMillis();
             returnValue.append("project --topLevelPackage fr.imag.exschema." + projectName + "\n");
-            // Project setup depending on the data model
-            for (Attribute attribute : this.getAttributes()) {
-                // The implementation attribute specifies the Roo model that
-                // this schema relies upon
-                if ("implementation".equals(attribute.getName())) {
-                    projectRooModel = RooModel.valueOf(attribute.getValue().toUpperCase());
-                    // TODO: Identify Spring MongoDB and relational repositories
-                    // (instead of generic Spring repository)
-                    switch (projectRooModel) {
-                    case NEO4J:
-                        returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
-                        break;
-                    case MONGODB:
-                        returnValue.append("mongo setup --databaseName database" + projectName + "\n");
-                        break;
-                    case RELATIONAL:
-                    default:
-                        returnValue.append("jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY" + "\n");
-                        break;
-                    }
-                    break;
+
+            switch (startingRooModel) {
+            case NEO4J:
+                returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
+                // TODO: Change from structs to sets?
+                for (Struct struct : this.getStructs()) {
+                    returnValue.append(struct.getRooCommands(startingRooModel));
                 }
+                break;
+            case MONGODB:
+                returnValue.append("mongo setup --databaseName database" + projectName + "\n");
+                for (Set set : this.getSets()) {
+                    returnValue.append(set.getRooCommands(startingRooModel));
+                }
+                break;
+            case RELATIONAL:
+            default:
+                returnValue.append("jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY" + "\n");
+                for (Set set : this.getSets()) {
+                    returnValue.append(set.getRooCommands(startingRooModel));
+                }
+                break;
             }
         }
 
         // Entity
         else {
-            entityName = null;
-            for (Attribute attribute : this.getAttributes()) {
-                if ("name".equals(attribute.getName())) {
-                    entityName = attribute.getValue();
-                    if (entityName.contains(".")) {
-                        entityName = entityName.substring(entityName.indexOf('.') + 1);
-                    }
-                }
-            }
-
-            if (entityName != null) {
+            if (this.getSimpleName() != null) {
                 switch (rooModel) {
                 case NEO4J:
-                    returnValue.append("entity graph --class ~.domain." + entityName + "\n");
-                    returnValue.append("repository graph --interface ~.repository." + entityName
-                            + "Repository --entity ~.domain." + entityName + "\n");
+                    returnValue.append("entity graph --class ~.domain." + this.getSimpleName() + "\n");
+                    returnValue.append("repository graph --interface ~.repository." + this.getSimpleName()
+                            + "Repository --entity ~.domain." + this.getSimpleName() + "\n");
                     break;
                 case MONGODB:
-                    returnValue.append("entity mongo --class ~.domain." + entityName + "\n");
-                    returnValue.append("repository mongo --interface ~.repository." + entityName
-                            + "Repository --entity ~.domain." + entityName + "\n");
+                    returnValue.append("entity mongo --class ~.domain." + this.getSimpleName() + "\n");
+                    returnValue.append("repository mongo --interface ~.repository." + this.getSimpleName()
+                            + "Repository --entity ~.domain." + this.getSimpleName() + "\n");
                     break;
                 case RELATIONAL:
                 default:
-                    returnValue.append("entity jpa --class ~.domain." + entityName + "\n");
+                    returnValue.append("entity jpa --class ~.domain." + this.getSimpleName() + "\n");
                     break;
+                }
+
+                for (Struct struct : this.getStructs()) {
+                    returnValue.append(struct.getRooCommands(rooModel));
                 }
             }
         }
@@ -210,13 +208,5 @@ public class Set implements GraphvizExporter, RooExporter {
 
     public void setStructs(List<Struct> structs) {
         this.structs = structs;
-    }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
     }
 }

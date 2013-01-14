@@ -39,9 +39,18 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 public abstract class SpringRepositoryVisitor extends ASTVisitor {
     List<String> domainClasses;
 
+    /**
+     * Full constructor.
+     */
     public SpringRepositoryVisitor() {
         this.domainClasses = new ArrayList<String>();
     }
+
+    /**
+     * 
+     * @return
+     */
+    public abstract String getImplementation();
 
     /**
      * Identify classes annotated with a spring-based Repository annotation.
@@ -112,7 +121,7 @@ public abstract class SpringRepositoryVisitor extends ASTVisitor {
     public List<String> getDomainClasses() {
         return this.domainClasses;
     }
-    
+
     /**
      * Determine if the specified class name represents a Spring-based
      * repository.
@@ -121,7 +130,7 @@ public abstract class SpringRepositoryVisitor extends ASTVisitor {
      * @return
      */
     protected abstract boolean isSpringRepository(final String className);
-    
+
     /**
      * 
      * @param className
@@ -134,7 +143,7 @@ public abstract class SpringRepositoryVisitor extends ASTVisitor {
         if (returnValue.contains("<")) {
             returnValue = returnValue.substring(0, returnValue.indexOf('<'));
         }
-        
+
         return returnValue;
     }
 

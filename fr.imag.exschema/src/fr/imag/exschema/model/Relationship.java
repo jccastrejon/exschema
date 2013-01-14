@@ -31,7 +31,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Relationship implements GraphvizExporter, RooExporter {
+public class Relationship extends Entity implements GraphvizExporter, RooExporter {
 
     /**
      * Start point of the relationship.
@@ -42,11 +42,6 @@ public class Relationship implements GraphvizExporter, RooExporter {
      * End point of the relationship.
      */
     private Struct startStruct;
-
-    /**
-     * Attributes associated to the relationship.
-     */
-    private List<Attribute> attributes;
 
     /**
      * Default constructor.
@@ -92,11 +87,19 @@ public class Relationship implements GraphvizExporter, RooExporter {
         returnValue.append("}\n");
         return returnValue.toString();
     }
-    
+
     @Override
-    public String getRooCommands(String parent, final RooModel rooModel) {
-        // TODO Auto-generated method stub
-        return null;
+    public String getRooCommands(final RooModel rooModel) {
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder("relationship entity graph --class ~.domain.Relation"
+                + System.currentTimeMillis());
+        returnValue.append(" --type " + this.getSimpleName());
+        returnValue.append(" --from " + this.getStartStruct().getSimpleName());
+        returnValue.append(" --to " + this.getEndStruct().getSimpleName());
+        returnValue.append("\n");
+
+        return returnValue.toString();
     }
 
     /**
@@ -140,13 +143,5 @@ public class Relationship implements GraphvizExporter, RooExporter {
 
     public void setStartStruct(Struct startStruct) {
         this.startStruct = startStruct;
-    }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
     }
 }

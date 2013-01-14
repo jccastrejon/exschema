@@ -67,8 +67,9 @@ public class Attribute implements GraphvizExporter, RooExporter {
     }
 
     @Override
-    public String getRooCommands(String parent, final RooModel rooModel) {
-        return "field string --fieldName " + this.name;
+    public String getRooCommands(final RooModel rooModel) {
+        // TODO: Support additional data types
+        return "field string --fieldName " + this.name + "\n";
     }
 
     // Getters-setters

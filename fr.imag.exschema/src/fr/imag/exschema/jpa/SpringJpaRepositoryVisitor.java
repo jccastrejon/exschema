@@ -19,6 +19,7 @@
 package fr.imag.exschema.jpa;
 
 import fr.imag.exschema.SpringRepositoryVisitor;
+import fr.imag.exschema.exporter.RooModel;
 
 /**
  * Visitor that identifies JPA repositories.
@@ -42,5 +43,10 @@ public class SpringJpaRepositoryVisitor extends SpringRepositoryVisitor {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public String getImplementation() {
+        return RooModel.MONGODB.toString();
     }
 }
