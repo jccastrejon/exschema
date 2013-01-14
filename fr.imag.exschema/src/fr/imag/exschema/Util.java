@@ -21,6 +21,7 @@ package fr.imag.exschema;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -206,12 +207,26 @@ public class Util {
             throws IOException, InterruptedException, CoreException {
         File dotFile;
         String dotGraph;
+        File outputDirectory;
+        String dateIdentifier;
+        List<String> rooScripts;
 
-        // Export a pdf graph with the discovered schemas, and reload
-        // workspace to reflect the changes
+        // Associate all the export files with a common date identifier
+        dateIdentifier = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(System.currentTimeMillis());
+        outputDirectory = new File(project.getProject().getLocation().toOSString(), "exschema_results/"
+                + dateIdentifier);
+        outputDirectory.mkdirs();
+
+        // Export a pdf graph with the discovered schemas
         dotGraph = Util.createDotGraph(schemas);
-        dotFile = Util.saveDotGraph(dotGraph, project);
+        dotFile = Util.saveDotGraph(dotGraph, outputDirectory);
         Util.executeDotCommand(dotFile);
+
+        // Export Roo scripts
+        rooScripts = Util.createRooScripts(schemas);
+        Util.saveRooScripts(rooScripts, outputDirectory);
+
+        // Reload workspace to reflect the changes
         project.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
     }
 
@@ -246,21 +261,49 @@ public class Util {
      * project.
      * 
      * @param dotGraph
-     * @param project
+     * @param outputDirectory
      * @return
      * @throws IOException
      */
-    private static File saveDotGraph(final String dotGraph, final IJavaProject project) throws IOException {
+    private static File saveDotGraph(final String dotGraph, final File outputDirectory) throws IOException {
         File returnValue;
         FileWriter fileWriter;
 
         // Output content
-        returnValue = new File(project.getProject().getLocation().toOSString(), "schemas.dot");
+        returnValue = new File(outputDirectory, "schemas.dot");
         fileWriter = new FileWriter(returnValue, false);
         fileWriter.write(dotGraph);
         fileWriter.close();
 
         return returnValue;
+    }
+
+    /**
+     * Save the specified Spring Roo scripts in the specified directory.
+     * 
+     * @param rooScripts
+     * @param outputDirectory
+     * @return
+     * @throws IOException
+     */
+    private static void saveRooScripts(final List<String> rooScripts, final File outputDirectory) throws IOException {
+        int index;
+        File directory;
+        File rooScriptFile;
+        FileWriter fileWriter;
+
+        // Save scripts in a new folder
+        directory = new File(outputDirectory, "rooScripts");
+        directory.mkdir();
+
+        index = 0;
+        for (String rooScript : rooScripts) {
+            index = index + 1;
+            rooScriptFile = new File(directory, "schema" + index + ".roo");
+            fileWriter = new FileWriter(rooScriptFile, false);
+            fileWriter.write(rooScript);
+            fileWriter.close();
+        }
     }
 
     /**
@@ -287,6 +330,24 @@ public class Util {
 
         returnValue.append("\n}\n");
         return returnValue.toString();
+    }
+
+    /**
+     * Create a list of Spring Roo scripts from the specified schemas (One
+     * script per schema).
+     * 
+     * @param schemas
+     * @return
+     */
+    private static List<String> createRooScripts(final List<Set> schemas) {
+        List<String> returnValue;
+
+        returnValue = new ArrayList<String>(schemas.size());
+        for (Set schema : schemas) {
+            returnValue.add(schema.getRooCommands(null));
+        }
+
+        return returnValue;
     }
 
     /**
