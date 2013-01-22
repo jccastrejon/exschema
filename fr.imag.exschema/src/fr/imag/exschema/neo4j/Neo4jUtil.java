@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
@@ -84,12 +85,17 @@ public class Neo4jUtil implements SchemaFinder {
         NodeEntityVisitor entityVisitor;
         List<Relationship> relationships;
         Relationship currentRelationship;
+        RelationshipEntityVisitor relationshipVisitor;
 
         // Identify node entities
         returnValue = new ArrayList<Set>();
         entityVisitor = new NodeEntityVisitor();
         relationships = new ArrayList<Relationship>();
         Util.analyzeJavaProject(project, entityVisitor);
+
+        // Identify relationship entities
+        relationshipVisitor = new RelationshipEntityVisitor();
+        Util.analyzeJavaProject(project, relationshipVisitor);
 
         if (!entityVisitor.getNodeEntities().isEmpty()) {
             currentGraph = new Set();
@@ -111,7 +117,9 @@ public class Neo4jUtil implements SchemaFinder {
                     // Identify relationships by the use of Annotations
                     relationshipEndType = null;
                     relationshipName = null;
-                    if (Neo4jUtil.hasRelatedToAnnotation(field.modifiers())) {
+                    if (Neo4jUtil.hasAnnotations(field.modifiers(),
+                            "org.springframework.data.neo4j.annotation.RelatedTo",
+                            "org.springframework.data.graph.annotation.RelatedTo")) {
                         relationshipEndType = field.getType();
                         relationshipName = Util.getValidName(field.fragments().get(0).toString());
                     }
@@ -151,7 +159,8 @@ public class Neo4jUtil implements SchemaFinder {
             }
 
             // Update relationships' endStruct references
-            Neo4jUtil.updateEndStructReferences(relationships, currentGraph);
+            Neo4jUtil.updateEndStructReferences(relationships, relationshipVisitor.getRelationshipEntities(),
+                    currentGraph);
         }
 
         return returnValue;
@@ -345,7 +354,7 @@ public class Neo4jUtil implements SchemaFinder {
             }
 
             // Update relationships' endStruct references
-            Neo4jUtil.updateEndStructReferences(structRelationships, currentGraph);
+            Neo4jUtil.updateEndStructReferences(structRelationships, null, currentGraph);
         }
 
         return returnValue;
@@ -355,29 +364,95 @@ public class Neo4jUtil implements SchemaFinder {
      * Update an end side of a relationship with the correct struct reference.
      * 
      * @param relationships
+     * @param relationshipEntities
      * @param graph
      */
-    private static void updateEndStructReferences(final List<Relationship> relationships, final Set graph) {
-        String currentName;
+    private static void updateEndStructReferences(final List<Relationship> relationships,
+            final Map<String, FieldDeclaration[]> relationshipEntities, final Set graph) {
+        String endName;
+        String startName;
+        boolean matchFound;
+        String currentEndName;
+        String currentStartName;
 
         // Update relationships' endStruct references
         for (Relationship relationship : relationships) {
             // Get the structName to look for
-            currentName = null;
+            currentEndName = null;
             for (Attribute attribute : relationship.getEndStruct().getAttributes()) {
                 if (attribute.getName().equals("name")) {
-                    currentName = attribute.getValue();
+                    currentEndName = attribute.getValue();
                     break;
                 }
             }
 
             // Update the reference with the appropriate struct
-            if (currentName != null) {
+            if (currentEndName != null) {
+                matchFound = false;
                 for (Struct node : graph.getStructs()) {
                     for (Attribute attribute : node.getAttributes()) {
-                        if ((attribute.getName().equals("name")) && (attribute.getValue().equals(currentName))) {
+                        if ((attribute.getName().equals("name")) && (attribute.getValue().equals(currentEndName))) {
+                            matchFound = true;
                             relationship.setEndStruct(node);
                             break;
+                        }
+                    }
+                }
+
+                // If no end struct was found, check if the relation was defined
+                // through a RelationshipEntity
+                if ((!matchFound) && (relationshipEntities != null)) {
+                    for (String relationshipEntity : relationshipEntities.keySet()) {
+                        if (relationshipEntity.equals(currentEndName)) {
+                            // RelationshipEntity found
+                            endName = null;
+                            startName = null;
+                            for (FieldDeclaration field : relationshipEntities.get(relationshipEntity)) {
+                                if (Neo4jUtil.hasAnnotations(field.modifiers(),
+                                        "org.springframework.data.graph.annotation.StartNode",
+                                        "org.springframework.data.neo4j.annotation.StartNode")) {
+                                    startName = field.getType().resolveBinding().getBinaryName();
+                                }
+
+                                if (Neo4jUtil.hasAnnotations(field.modifiers(),
+                                        "org.springframework.data.graph.annotation.EndNode",
+                                        "org.springframework.data.neo4j.annotation.EndNode")) {
+                                    endName = field.getType().resolveBinding().getBinaryName();
+                                }
+                            }
+
+                            currentStartName = null;
+                            for (Attribute attribute : relationship.getStartStruct().getAttributes()) {
+                                if (attribute.getName().equals("name")) {
+                                    currentStartName = attribute.getValue();
+                                    break;
+                                }
+                            }
+
+                            // Set start and end structures
+                            if ((endName != null) && (startName != null) && (currentStartName != null)) {
+                                // The relation is compatible with the
+                                // information of the RelationshipEntity
+                                if (currentStartName.equals(startName)) {
+                                    for (Struct node : graph.getStructs()) {
+                                        for (Attribute attribute : node.getAttributes()) {
+                                            if ((attribute.getName().equals("name"))
+                                                    && (attribute.getValue().equals(endName))) {
+                                                matchFound = true;
+                                                relationship.setEndStruct(node);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // This is the inverse of the relationship, we
+                                // only have to keep the original relationship
+                                else {
+                                    relationship.setEndStruct(null);
+                                    relationship.setStartStruct(null);
+                                }
+                            }
                         }
                     }
                 }
@@ -449,22 +524,35 @@ public class Neo4jUtil implements SchemaFinder {
     }
 
     /**
-     * Identify if the list of modifiers contain Spring's RelatedTo annotation.
+     * Identify if the list of modifiers contain any of the specified
+     * annotations.
      * 
-     * @param modifier
+     * @param modifiers
+     * @param annotations
      * @return
      */
-    private static boolean hasRelatedToAnnotation(final List<?> modifiers) {
+    private static boolean hasAnnotations(final List<?> modifiers, String... annotations) {
         boolean returnValue;
         String annotationName;
 
         returnValue = false;
         for (Object modifier : modifiers) {
+            // Try to get the annotationName either from normal or marker
+            // interfaces
+            annotationName = null;
             if (NormalAnnotation.class.isAssignableFrom(modifier.getClass())) {
                 annotationName = ((NormalAnnotation) modifier).resolveTypeBinding().getQualifiedName();
-                if (annotationName.equals("org.springframework.data.neo4j.annotation.RelatedTo")) {
-                    returnValue = true;
-                    break;
+            } else if (MarkerAnnotation.class.isAssignableFrom(modifier.getClass())) {
+                annotationName = ((MarkerAnnotation) modifier).resolveTypeBinding().getQualifiedName();
+            }
+
+            // Check if the annotation matches
+            if (annotationName != null) {
+                for (String annotation : annotations) {
+                    if (annotationName.equals(annotation)) {
+                        returnValue = true;
+                        break;
+                    }
                 }
             }
         }

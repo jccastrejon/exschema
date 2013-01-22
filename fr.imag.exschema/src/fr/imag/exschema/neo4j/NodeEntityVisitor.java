@@ -33,8 +33,15 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * 
  */
 public class NodeEntityVisitor extends ASTVisitor {
+
+    /**
+     * Identified nodeEntities.
+     */
     private Map<String, FieldDeclaration[]> nodeEntities;
 
+    /**
+     * Full constructor.
+     */
     public NodeEntityVisitor() {
         this.nodeEntities = new HashMap<String, FieldDeclaration[]>();
     }
@@ -57,9 +64,24 @@ public class NodeEntityVisitor extends ASTVisitor {
         return super.visit(annotation);
     }
 
+    /**
+     * Verify if this class has been marked as a Neo4j node.
+     * 
+     * @param annotation
+     * @return
+     */
     private boolean isNodeEntityAnnotation(final MarkerAnnotation annotation) {
-        return annotation.resolveTypeBinding().getQualifiedName()
-                .equals("org.springframework.data.neo4j.annotation.NodeEntity");
+        boolean returnValue;
+        String qualifiedName;
+
+        returnValue = false;
+        qualifiedName = annotation.resolveTypeBinding().getQualifiedName();
+        if (qualifiedName != null) {
+            returnValue = (qualifiedName.equals("org.springframework.data.neo4j.annotation.NodeEntity") || qualifiedName
+                    .equals("org.springframework.data.graph.annotation.NodeEntity"));
+        }
+
+        return returnValue;
     }
 
     /**

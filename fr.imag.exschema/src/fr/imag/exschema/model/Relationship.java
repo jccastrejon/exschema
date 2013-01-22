@@ -68,23 +68,26 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
         String identifier;
         StringBuilder returnValue;
 
-        identifier = Long.toString(System.nanoTime());
-        returnValue = new StringBuilder("subgraph cluster_relationship_" + identifier + "{\n");
-        returnValue.append("label=\"\"\n");
-        returnValue.append("color=\"lightgrey\";\n");
-        returnValue.append(identifier + " [label=\"Relationship\"]\n");
+        returnValue = new StringBuilder("");
+        if ((this.getStartStruct() != null) && (this.getEndStruct() != null)) {
+            identifier = Long.toString(System.nanoTime());
+            returnValue.append("subgraph cluster_relationship_" + identifier + "{\n");
+            returnValue.append("label=\"\"\n");
+            returnValue.append("color=\"lightgrey\";\n");
+            returnValue.append(identifier + " [label=\"Relationship\"]\n");
 
-        for (Attribute attribute : this.attributes) {
-            returnValue.append(attribute.getDotNodes(identifier));
+            for (Attribute attribute : this.attributes) {
+                returnValue.append(attribute.getDotNodes(identifier));
+            }
+
+            // Associate to start and end structs
+            returnValue.append(identifier + " -> " + "struct" + this.startStruct.hashCode()
+                    + " [label=\"start\", style=\"dotted\"]\n");
+            returnValue.append(identifier + " -> " + "struct" + this.endStruct.hashCode()
+                    + " [label=\"end\", style=\"dotted\"]\n");
+
+            returnValue.append("}\n");
         }
-
-        // Associate to start and end structs
-        returnValue.append(identifier + " -> " + "struct" + this.startStruct.hashCode()
-                + " [label=\"start\", style=\"dotted\"]\n");
-        returnValue.append(identifier + " -> " + "struct" + this.endStruct.hashCode()
-                + " [label=\"end\", style=\"dotted\"]\n");
-
-        returnValue.append("}\n");
         return returnValue.toString();
     }
 
@@ -92,13 +95,14 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
     public String getRooCommands(final RooModel rooModel) {
         StringBuilder returnValue;
 
-        returnValue = new StringBuilder("relationship entity graph --class ~.domain.Relation"
-                + System.currentTimeMillis());
-        returnValue.append(" --type " + this.getSimpleName());
-        returnValue.append(" --from " + this.getStartStruct().getSimpleName());
-        returnValue.append(" --to " + this.getEndStruct().getSimpleName());
-        returnValue.append("\n");
-
+        returnValue = new StringBuilder("");
+        if ((this.getStartStruct() != null) && (this.getEndStruct() != null)) {
+            returnValue.append("relationship entity graph --class ~.domain.Relation" + System.currentTimeMillis());
+            returnValue.append(" --type " + this.getSimpleName());
+            returnValue.append(" --from " + this.getStartStruct().getSimpleName());
+            returnValue.append(" --to " + this.getEndStruct().getSimpleName());
+            returnValue.append("\n");
+        }
         return returnValue.toString();
     }
 
