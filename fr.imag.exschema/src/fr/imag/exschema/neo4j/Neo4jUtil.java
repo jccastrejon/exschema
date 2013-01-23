@@ -472,6 +472,7 @@ public class Neo4jUtil implements SchemaFinder {
         String fragmentKey;
         String fragmentRoot;
         String invocationRoot;
+        String fragmentString;
         List<String> currentFields;
         Map<String, List<String>> returnValue;
 
@@ -492,7 +493,20 @@ public class Neo4jUtil implements SchemaFinder {
                 }
             }
 
-            fragmentKey = fragmentRoot + "." + fragment.toString();
+            // Save only the class name
+            if (fragmentRoot.contains(".java")) {
+                fragmentRoot = fragmentRoot.substring(0, fragmentRoot.indexOf(".java")).trim();
+            }
+
+            // Save only variable name if the declaration contains an assignment
+            // (var=expr)
+            fragmentString = fragment.toString();
+            if (fragmentString.contains("=")) {
+                fragmentString = fragmentString.substring(0, fragmentString.indexOf('=')).trim();
+            }
+
+            // Save association between fields and container
+            fragmentKey = fragmentRoot + "." + fragmentString;
             if ((currentFields.size() > 0) && (returnValue.get(fragmentKey) == null)) {
                 returnValue.put(fragmentKey, currentFields);
             }
