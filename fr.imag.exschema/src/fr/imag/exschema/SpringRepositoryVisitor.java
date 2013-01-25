@@ -99,13 +99,18 @@ public abstract class SpringRepositoryVisitor extends ASTVisitor {
      */
     @Override
     public boolean visit(final TypeDeclaration typeDeclaration) {
+        String domainClass;
         String qualifiedName;
 
         if (typeDeclaration.superInterfaceTypes() != null) {
             for (Object superInterface : typeDeclaration.superInterfaceTypes()) {
                 qualifiedName = ((Type) superInterface).resolveBinding().getQualifiedName();
                 if (this.isSpringRepository(qualifiedName)) {
-                    this.domainClasses.add(this.getSpringInterfaceType(qualifiedName));
+                    domainClass = this.getSpringInterfaceType(qualifiedName);
+
+                    if (domainClass != null) {
+                        this.domainClasses.add(domainClass);
+                    }
                 }
             }
         }
@@ -164,6 +169,13 @@ public abstract class SpringRepositoryVisitor extends ASTVisitor {
      * @return
      */
     private String getSpringInterfaceType(final String className) {
-        return className.substring(className.indexOf('<') + 1, className.indexOf(','));
+        String returnValue;
+
+        returnValue = null;
+        if (className.contains("<")) {
+            returnValue = className.substring(className.indexOf('<') + 1, className.indexOf(','));
+        }
+
+        return returnValue;
     }
 }
