@@ -39,7 +39,7 @@ public class SpringDocumentRepositoryVisitor extends SpringRepositoryVisitor {
         returnValue = false;
         qualifiedName = this.getQualifiedName(className);
         if (qualifiedName.startsWith("org.springframework.")) {
-            if ((qualifiedName.endsWith("Repository")) && (!qualifiedName.contains("neo4j"))) {
+            if ((qualifiedName.endsWith("MongoRepository")) && (!qualifiedName.contains("neo4j"))) {
                 returnValue = true;
             }
         }
@@ -49,6 +49,6 @@ public class SpringDocumentRepositoryVisitor extends SpringRepositoryVisitor {
 
     @Override
     public String getImplementation() {
-        return RooModel.RELATIONAL.toString();
+        return RooModel.MONGODB.toString();
     }
 }

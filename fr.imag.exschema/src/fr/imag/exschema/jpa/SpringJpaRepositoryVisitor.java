@@ -47,6 +47,6 @@ public class SpringJpaRepositoryVisitor extends SpringRepositoryVisitor {
 
     @Override
     public String getImplementation() {
-        return RooModel.MONGODB.toString();
+        return RooModel.RELATIONAL.toString();
     }
 }
