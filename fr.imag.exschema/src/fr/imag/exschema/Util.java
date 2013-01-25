@@ -46,6 +46,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.hbase.HBaseUtil;
+import fr.imag.exschema.jpa.JpaRepositoryVisitor;
 import fr.imag.exschema.jpa.SpringJpaRepositoryVisitor;
 import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Set;
@@ -86,6 +87,7 @@ public class Util {
 
         // JPA repositories
         schemas = new ArrayList<Set>();
+        schemas.addAll(Util.discoverSpringRepositories(project, new JpaRepositoryVisitor()));
         schemas.addAll(Util.discoverSpringRepositories(project, new SpringJpaRepositoryVisitor()));
 
         // Document repositories
