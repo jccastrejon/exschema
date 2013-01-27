@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import fr.imag.exschema.Util;
 
 /**
+ * Identifies Spring data's cross-store support for MongoDB.
  * 
  * @author jccastrejon
  * 
@@ -49,6 +50,7 @@ public class RelatedDocumentVisitor extends ASTVisitor {
     }
 
     /**
+     * Name of the annotations that are expected by this visitor.
      * 
      * @return
      */

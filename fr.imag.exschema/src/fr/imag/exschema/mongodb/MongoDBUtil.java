@@ -64,6 +64,7 @@ public class MongoDBUtil implements SchemaFinder {
     }
 
     /**
+     * Analyze invocation to MongoDB's java API (save invocations).
      * 
      * @param discoveredSchemas
      * @throws JavaModelException
@@ -114,6 +115,7 @@ public class MongoDBUtil implements SchemaFinder {
     }
 
     /**
+     * Analyze Spring based cross-store usage.
      * 
      * @param project
      * @param discoveredSchemas

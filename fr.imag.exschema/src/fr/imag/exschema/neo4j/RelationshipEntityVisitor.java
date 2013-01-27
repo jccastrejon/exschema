@@ -32,5 +32,4 @@ public class RelationshipEntityVisitor extends AnnotationVisitor {
         return new String[] { "org.springframework.data.graph.annotation.RelationshipEntity",
                 "org.springframework.data.neo4j.annotation.RelationshipEntity" };
     }
-
 }
