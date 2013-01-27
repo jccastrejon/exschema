@@ -97,19 +97,19 @@ public class Neo4jUtil implements SchemaFinder {
         relationshipVisitor = new RelationshipEntityVisitor();
         Util.analyzeJavaProject(project, relationshipVisitor);
 
-        if (!entityVisitor.getNodeEntities().isEmpty()) {
+        if (!entityVisitor.getEntities().isEmpty()) {
             currentGraph = new Set();
             returnValue.add(currentGraph);
             currentGraph.addAttribute(new Attribute("implementation", RooModel.NEO4J.toString()));
             Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "Neo4J node entities: ");
-            for (String node : entityVisitor.getNodeEntities().keySet()) {
+            for (String node : entityVisitor.getEntities().keySet()) {
                 currentNode = new Struct();
                 currentFields = new Struct();
                 currentNode.addStruct(currentFields);
                 currentGraph.addStruct(currentNode);
                 currentNode.addAttribute(new Attribute("name", node));
                 Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + node);
-                for (FieldDeclaration field : entityVisitor.getNodeEntities().get(node)) {
+                for (FieldDeclaration field : entityVisitor.getEntities().get(node)) {
                     // Try to identify relationships:
                     // We set only the name of the endingStruct, and once
                     // all of the nodes have been identified, we'll update
@@ -159,8 +159,7 @@ public class Neo4jUtil implements SchemaFinder {
             }
 
             // Update relationships' endStruct references
-            Neo4jUtil.updateEndStructReferences(relationships, relationshipVisitor.getRelationshipEntities(),
-                    currentGraph);
+            Neo4jUtil.updateEndStructReferences(relationships, relationshipVisitor.getEntities(), currentGraph);
         }
 
         return returnValue;

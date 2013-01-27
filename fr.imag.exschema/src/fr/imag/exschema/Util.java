@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.hbase.HBaseUtil;
@@ -191,6 +192,31 @@ public class Util {
         returnValue = name;
         if (returnValue.contains("=")) {
             returnValue = returnValue.substring(0, returnValue.indexOf('='));
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * Verify if the specified annotation matches the expected annotation names.
+     * 
+     * @param annotation
+     * @param annotationNames
+     * @return
+     */
+    public static boolean isExpectedAnnotation(final MarkerAnnotation annotation, String... annotationNames) {
+        boolean returnValue;
+        String qualifiedName;
+
+        returnValue = false;
+        qualifiedName = annotation.resolveTypeBinding().getQualifiedName();
+        if (qualifiedName != null) {
+            for (String annotationName : annotationNames) {
+                if (qualifiedName.equals(annotationName)) {
+                    returnValue = true;
+                    break;
+                }
+            }
         }
 
         return returnValue;
@@ -385,7 +411,6 @@ public class Util {
                                 currentCollection.addSet(currentClass);
                                 currentClass.addAttribute(new Attribute("name", domainClass));
                                 Util.logger.log(Util.LOGGING_LEVEL, "\n" + domainClass);
-                                // TODO: Real analysis...
                                 currentFields = new Struct();
                                 currentClass.addStruct(currentFields);
                                 Util.logger.log(Util.LOGGING_LEVEL, "Fields:");

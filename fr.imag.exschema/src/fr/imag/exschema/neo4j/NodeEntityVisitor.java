@@ -18,13 +18,7 @@
  */
 package fr.imag.exschema.neo4j;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.MarkerAnnotation;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import fr.imag.exschema.AnnotationVisitor;
 
 /**
  * Identifies Spring's NodeEntities.
@@ -32,64 +26,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * @author jccastrejon
  * 
  */
-public class NodeEntityVisitor extends ASTVisitor {
-
-    /**
-     * Identified nodeEntities.
-     */
-    private Map<String, FieldDeclaration[]> nodeEntities;
-
-    /**
-     * Full constructor.
-     */
-    public NodeEntityVisitor() {
-        this.nodeEntities = new HashMap<String, FieldDeclaration[]>();
-    }
-
-    /**
-     * Identify classes annotated for Spring-data neo4j.
-     */
+public class NodeEntityVisitor extends AnnotationVisitor {
     @Override
-    public boolean visit(final MarkerAnnotation annotation) {
-        String entityName;
-        TypeDeclaration nodeDeclaration;
-
-        if (this.isNodeEntityAnnotation(annotation)) {
-            // Save in the style {node {attributes}}
-            nodeDeclaration = ((TypeDeclaration) annotation.getParent());
-            entityName = nodeDeclaration.resolveBinding().getQualifiedName();
-
-            nodeEntities.put(entityName, nodeDeclaration.getFields());
-        }
-        return super.visit(annotation);
-    }
-
-    /**
-     * Verify if this class has been marked as a Neo4j node.
-     * 
-     * @param annotation
-     * @return
-     */
-    private boolean isNodeEntityAnnotation(final MarkerAnnotation annotation) {
-        boolean returnValue;
-        String qualifiedName;
-
-        returnValue = false;
-        qualifiedName = annotation.resolveTypeBinding().getQualifiedName();
-        if (qualifiedName != null) {
-            returnValue = (qualifiedName.equals("org.springframework.data.neo4j.annotation.NodeEntity") || qualifiedName
-                    .equals("org.springframework.data.graph.annotation.NodeEntity"));
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * Get the identified node entities.
-     * 
-     * @return
-     */
-    public Map<String, FieldDeclaration[]> getNodeEntities() {
-        return this.nodeEntities;
+    protected String[] getExpectedAnnotations() {
+        return new String[] { "org.springframework.data.neo4j.annotation.NodeEntity",
+                "org.springframework.data.graph.annotation.NodeEntity" };
     }
 }
