@@ -28,10 +28,12 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.SchemaFinder;
 import fr.imag.exschema.Util;
+import fr.imag.exschema.exporter.RooModel;
 import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Set;
 import fr.imag.exschema.model.Struct;
@@ -51,10 +53,26 @@ public class MongoDBUtil implements SchemaFinder {
 
     @Override
     public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+        List<Set> returnValue;
+
+        // Analyze code for mongodb operations
+        returnValue = new ArrayList<Set>();
+        MongoDBUtil.analyzeSaveInvocations(project, returnValue);
+        MongoDBUtil.analyzeSpringCrossStore(project, returnValue);
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * @param discoveredSchemas
+     * @throws JavaModelException
+     */
+    private static void analyzeSaveInvocations(final IJavaProject project, final List<Set> discoveredSchemas)
+            throws JavaModelException {
         Set currentFields;
         Struct currentField;
         Set currentDatabase;
-        List<Set> returnValue;
         Set currentCollection;
         Struct currentDocument;
         MongoInsertVisitor insertVisitor;
@@ -64,14 +82,11 @@ public class MongoDBUtil implements SchemaFinder {
         insertVisitor = new MongoInsertVisitor();
         Util.analyzeJavaProject(project, insertVisitor);
 
-        // Analyze save invocations
-        // TODO: Real analysis...
-        returnValue = new ArrayList<Set>();
         mongoCollections = MongoDBUtil.getMongoCollections(insertVisitor.getSaveInvocations());
         if (!mongoCollections.isEmpty()) {
             currentDatabase = new Set();
-            currentDatabase.addAttribute(new Attribute("implementation", "MongoDB"));
-            returnValue.add(currentDatabase);
+            currentDatabase.addAttribute(new Attribute("implementation", RooModel.MONGODB.toString()));
+            discoveredSchemas.add(currentDatabase);
             MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "\nMongoDB documents (based on inserts): ");
             for (String collection : mongoCollections.keySet()) {
                 currentCollection = new Set();
@@ -96,8 +111,61 @@ public class MongoDBUtil implements SchemaFinder {
                 }
             }
         }
+    }
 
-        return returnValue;
+    /**
+     * 
+     * @param project
+     * @param discoveredSchemas
+     * @throws JavaModelException
+     */
+    private static void analyzeSpringCrossStore(final IJavaProject project, final List<Set> discoveredSchemas)
+            throws JavaModelException {
+        Set currentFields;
+        Struct currentField;
+        Set currentDatabase;
+        Set currentCollection;
+        Struct currentDocument;
+        RelatedDocumentVisitor relatedDocumentVisitor;
+
+        relatedDocumentVisitor = new RelatedDocumentVisitor();
+        Util.analyzeJavaProject(project, relatedDocumentVisitor);
+
+        if (!relatedDocumentVisitor.getEntities().isEmpty()) {
+            // Database
+            currentDatabase = new Set();
+            currentDatabase.addAttribute(new Attribute("implementation", RooModel.MONGODB.toString()));
+            discoveredSchemas.add(currentDatabase);
+
+            // Treat each entity as a unique collection/document
+            MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "\nMongoDB documents (based on spring data cross-store): ");
+            for (String entity : relatedDocumentVisitor.getEntities().keySet()) {
+                // Collection
+                currentCollection = new Set();
+                currentDatabase.addSet(currentCollection);
+                currentCollection.addAttribute(new Attribute("name", entity + "Collection"));
+                MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "--Collection: " + entity + "Collection");
+
+                // Document
+                currentDocument = new Struct();
+                currentCollection.addStruct(currentDocument);
+                currentDocument.addAttribute(new Attribute("name", entity));
+                MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "----Document: " + entity);
+
+                // Fields
+                if ((relatedDocumentVisitor.getEntities().get(entity) != null)
+                        && (relatedDocumentVisitor.getEntities().get(entity).length > 0)) {
+                    currentFields = new Set();
+                    currentDocument.addSet(currentFields);
+                    for (IVariableBinding field : relatedDocumentVisitor.getEntities().get(entity)) {
+                        currentField = new Struct();
+                        currentFields.addStruct(currentField);
+                        currentField.addAttribute(new Attribute("name", field.getName()));
+                        MongoDBUtil.logger.log(Util.LOGGING_LEVEL, "------Field: " + field.getName());
+                    }
+                }
+            }
+        }
     }
 
     /**
