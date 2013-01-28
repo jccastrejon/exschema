@@ -313,7 +313,7 @@ public class Neo4jUtil implements SchemaFinder {
             currentGraph = new Set();
             returnValue.add(currentGraph);
             structRelationships = new ArrayList<Relationship>();
-            currentGraph.addAttribute(new Attribute("implementation", "Neo4j"));
+            currentGraph.addAttribute(new Attribute("implementation", RooModel.NEO4J.toString()));
             Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\nNeo4J nodes: ");
             for (String node : nodes.keySet()) {
                 currentNode = new Struct();
