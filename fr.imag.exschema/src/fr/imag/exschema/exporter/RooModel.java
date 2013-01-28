@@ -21,8 +21,8 @@ package fr.imag.exschema.exporter;
 /**
  * 
  * @author jccastrejon
- *
+ * 
  */
 public enum RooModel {
-    NEO4J, MONGODB, RELATIONAL
+    NEO4J, MONGODB, RELATIONAL, HBASE
 }

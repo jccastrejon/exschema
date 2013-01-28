@@ -28,7 +28,7 @@ import fr.imag.exschema.DeclareVisitor;
  */
 public class ColumnFamilyDeclareVisitor extends DeclareVisitor {
     @Override
-    protected String getExpectedQualifiedName() {
-        return "org.apache.hadoop.hbase.HColumnDescriptor";
+    protected String[] getExpectedQualifiedName() {
+        return new String[] { "org.apache.hadoop.hbase.HColumnDescriptor" };
     }
 }

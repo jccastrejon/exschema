@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 jccastrejon
+ * Copyright 2012 jccastrejon
  *  
  * This file is part of ExSchema.
  *
@@ -26,9 +26,9 @@ import fr.imag.exschema.DeclareVisitor;
  * @author jccastrejon
  * 
  */
-public class TableDeclareVisitor extends DeclareVisitor {
+public class DescriptorDeclareVisitor extends DeclareVisitor {
     @Override
     protected String[] getExpectedQualifiedName() {
-        return new String[] { "org.apache.hadoop.hbase.client.HTable" };
+        return new String[] { "org.apache.hadoop.hbase.HTableDescriptor", "org.apache.hadoop.hbase.client.HTable" };
     }
 }
