@@ -28,7 +28,7 @@ import fr.imag.exschema.DeclareVisitor;
  */
 public class NodeDeclareVisitor extends DeclareVisitor {
     @Override
-    protected String getExpectedQualifiedName() {
-        return "org.neo4j.graphdb.Node";
+    protected String[] getExpectedQualifiedName() {
+        return new String[] { "org.neo4j.graphdb.Node" };
     }
 }

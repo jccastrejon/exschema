@@ -28,7 +28,7 @@ import fr.imag.exschema.DeclareVisitor;
  */
 public class RelationshipDeclareVisitor extends DeclareVisitor {
     @Override
-    protected String getExpectedQualifiedName() {
-        return "org.neo4j.graphdb.Relationship";
+    protected String[] getExpectedQualifiedName() {
+        return new String[] { "org.neo4j.graphdb.Relationship" };
     }
 }

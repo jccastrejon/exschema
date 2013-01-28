@@ -87,21 +87,25 @@ public abstract class DeclareVisitor extends ASTVisitor {
         returnValue = false;
         qualifiedName = null;
         parentNode = variableDeclaration.getParent();
-        if (VariableDeclarationStatement.class.isAssignableFrom(parentNode.getClass())) {
+        if (VariableDeclarationStatement.class.isAssignableFrom(parentNode.getClass())
+                && (((VariableDeclarationStatement) parentNode).getType().resolveBinding() != null)) {
             qualifiedName = ((VariableDeclarationStatement) parentNode).getType().resolveBinding().getQualifiedName();
-        } else if (FieldDeclaration.class.isAssignableFrom(parentNode.getClass())) {
+        } else if (FieldDeclaration.class.isAssignableFrom(parentNode.getClass())
+                && (((FieldDeclaration) parentNode).getType().resolveBinding() != null)) {
             qualifiedName = ((FieldDeclaration) parentNode).getType().resolveBinding().getQualifiedName();
         }
 
         // If a variable name was provided, the declarations that we're looking
         // for should match that name
-        if (this.getExpectedQualifiedName().equals(qualifiedName)) {
-            if (this.variableName != null) {
-                if (this.variableName.equals(variableDeclaration.getName().toString())) {
+        for (String expectedQualifiedName : this.getExpectedQualifiedName()) {
+            if (expectedQualifiedName.equals(qualifiedName)) {
+                if (this.variableName != null) {
+                    if (this.variableName.equals(variableDeclaration.getName().toString())) {
+                        returnValue = true;
+                    }
+                } else {
                     returnValue = true;
                 }
-            } else {
-                returnValue = true;
             }
         }
 
@@ -125,10 +129,10 @@ public abstract class DeclareVisitor extends ASTVisitor {
     }
 
     /**
-     * The class name of the declarations we're looking for.
+     * The class names of the declarations we're looking for.
      * 
      * @param qualifiedName
      * @return
      */
-    protected abstract String getExpectedQualifiedName();
+    protected abstract String[] getExpectedQualifiedName();
 }
