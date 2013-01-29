@@ -18,7 +18,7 @@
  */
 package fr.imag.exschema.neo4j;
 
-import fr.imag.exschema.UpdateVisitor;
+import fr.imag.exschema.visitor.UpdateVisitor;
 
 /**
  * Identifies references to start nodes of Neo4j relationships.

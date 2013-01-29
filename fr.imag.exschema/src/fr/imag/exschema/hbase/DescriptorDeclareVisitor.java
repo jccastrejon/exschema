@@ -18,7 +18,7 @@
  */
 package fr.imag.exschema.hbase;
 
-import fr.imag.exschema.DeclareVisitor;
+import fr.imag.exschema.visitor.DeclareVisitor;
 
 /**
  * Identifies declarations of HBase tables.

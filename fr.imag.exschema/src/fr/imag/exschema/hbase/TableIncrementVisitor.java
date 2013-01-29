@@ -18,7 +18,7 @@
  */
 package fr.imag.exschema.hbase;
 
-import fr.imag.exschema.UpdateVisitor;
+import fr.imag.exschema.visitor.UpdateVisitor;
 
 /**
  * Identifies modification of HBase tables;

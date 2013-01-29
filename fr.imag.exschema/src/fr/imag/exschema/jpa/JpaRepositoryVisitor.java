@@ -18,8 +18,8 @@
  */
 package fr.imag.exschema.jpa;
 
-import fr.imag.exschema.SpringRepositoryVisitor;
 import fr.imag.exschema.exporter.RooModel;
+import fr.imag.exschema.visitor.SpringRepositoryVisitor;
 
 /**
  * 

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with ExSchema. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.imag.exschema;
+package fr.imag.exschema.visitor;
 
 import java.util.ArrayList;
 import java.util.List;

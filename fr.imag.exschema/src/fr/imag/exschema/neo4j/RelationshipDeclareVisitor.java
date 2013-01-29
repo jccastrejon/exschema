@@ -18,7 +18,7 @@
  */
 package fr.imag.exschema.neo4j;
 
-import fr.imag.exschema.DeclareVisitor;
+import fr.imag.exschema.visitor.DeclareVisitor;
 
 /**
  * Identifies when Neo4j relationships are declared.

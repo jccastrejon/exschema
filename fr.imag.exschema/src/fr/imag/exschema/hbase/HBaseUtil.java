@@ -31,14 +31,14 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import fr.imag.exschema.DeclareVisitor;
 import fr.imag.exschema.SchemaFinder;
-import fr.imag.exschema.UpdateVisitor;
 import fr.imag.exschema.Util;
 import fr.imag.exschema.exporter.RooModel;
 import fr.imag.exschema.model.Attribute;
 import fr.imag.exschema.model.Set;
 import fr.imag.exschema.model.Struct;
+import fr.imag.exschema.visitor.DeclareVisitor;
+import fr.imag.exschema.visitor.UpdateVisitor;
 
 /**
  * HBase utility methods.

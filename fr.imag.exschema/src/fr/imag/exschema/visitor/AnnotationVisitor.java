@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with ExSchema. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.imag.exschema;
+package fr.imag.exschema.visitor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import fr.imag.exschema.Util;
 
 /**
  * Identifies entities that have associated annotations.

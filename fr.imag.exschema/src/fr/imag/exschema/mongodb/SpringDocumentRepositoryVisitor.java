@@ -18,8 +18,8 @@
  */
 package fr.imag.exschema.mongodb;
 
-import fr.imag.exschema.SpringRepositoryVisitor;
 import fr.imag.exschema.exporter.RooModel;
+import fr.imag.exschema.visitor.SpringRepositoryVisitor;
 
 /**
  * Visitor that identifies Spring data MongoDB repositories.

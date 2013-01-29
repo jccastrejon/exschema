@@ -18,7 +18,7 @@
  */
 package fr.imag.exschema.neo4j;
 
-import fr.imag.exschema.AnnotationVisitor;
+import fr.imag.exschema.visitor.AnnotationVisitor;
 
 /**
  * Identifies Spring's NodeEntities.

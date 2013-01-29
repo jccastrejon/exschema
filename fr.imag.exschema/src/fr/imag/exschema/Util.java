@@ -55,6 +55,7 @@ import fr.imag.exschema.model.Struct;
 import fr.imag.exschema.mongodb.MongoDBUtil;
 import fr.imag.exschema.mongodb.SpringDocumentRepositoryVisitor;
 import fr.imag.exschema.neo4j.Neo4jUtil;
+import fr.imag.exschema.visitor.SpringRepositoryVisitor;
 
 /**
  * Generic utility methods.
