@@ -154,13 +154,12 @@ public class HBaseUtil implements SchemaFinder {
                 putVisitor.getUpdateInvocations());
 
         for (String familyName : familyNames) {
-
             currentFamilyStruct = new Struct();
             currentTableSet.addStruct(currentFamilyStruct);
             currentFamilyStruct.addAttribute(new Attribute("name", familyName));
             HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n----Family: " + familyName);
 
-            // put(family, qualifier, value)
+            // Put.add(family, qualifier, value)
             columns = new HashSet<String>();
             columns.addAll(HBaseUtil.getHBaseColumns(tableName, rootNode, new PutAddVisitor(), familyName,
                     putVisitor.getUpdateInvocations()));
@@ -200,7 +199,9 @@ public class HBaseUtil implements SchemaFinder {
                     rootNode.accept(updateVisitor);
                     for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
                         arguments = HBaseUtil.getHBaseAddArguments(addInvocation);
-                        returnValue.add(arguments.get(0));
+                        if (arguments.size() >= 1) {
+                            returnValue.add(arguments.get(0).replace('"', ' ').trim());
+                        }
                     }
                 }
             }
@@ -248,7 +249,7 @@ public class HBaseUtil implements SchemaFinder {
 
                 // Columns
                 if ((tableName != null) && (columnFamilyName != null)) {
-                    // put(family, qualifier, value)
+                    // Put.add(family, qualifier, value)
                     columns = new HashSet<String>();
                     columns.addAll(HBaseUtil.getHBaseColumns(tableName, rootNode, new PutAddVisitor(),
                             columnFamilyName, putVisitor.getUpdateInvocations()));
@@ -293,8 +294,10 @@ public class HBaseUtil implements SchemaFinder {
                     rootNode.accept(updateVisitor);
                     for (MethodInvocation addInvocation : updateVisitor.getUpdateInvocations()) {
                         arguments = HBaseUtil.getHBaseAddArguments(addInvocation);
-                        if (arguments.get(0).equals(columnFamilyName)) {
-                            returnValue.add(arguments.get(1));
+                        if (arguments.size() >= 2) {
+                            if (arguments.get(0).replace('"', ' ').trim().equals(columnFamilyName)) {
+                                returnValue.add(arguments.get(1).replace('"', ' ').trim());
+                            }
                         }
                     }
                 }
@@ -435,7 +438,12 @@ public class HBaseUtil implements SchemaFinder {
                 returnValue = ((ClassInstanceCreation) declaration.getInitializer()).arguments().get(argumentIndex)
                         .toString();
                 if (!Util.isVariableName(returnValue)) {
-                    returnValue = null;
+                    // Support names specified with quotes. In this case we use
+                    // the variable name, instead of the table name.
+                    // Ex: HTable table = new HTable(conf, "testtable");
+                    if (returnValue.contains("\"")) {
+                        returnValue = declaration.getName().toString();
+                    }
                 }
             }
         }
