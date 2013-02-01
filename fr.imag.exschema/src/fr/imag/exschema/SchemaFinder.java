@@ -20,6 +20,7 @@ package fr.imag.exschema;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 
@@ -40,5 +41,5 @@ public interface SchemaFinder {
      * @return
      * @throws JavaModelException
      */
-    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException;
+    public List<Set> discoverSchemas(final IJavaProject project) throws CoreException;
 }

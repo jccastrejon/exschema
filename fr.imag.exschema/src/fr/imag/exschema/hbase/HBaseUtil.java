@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.Expression;
@@ -54,7 +54,7 @@ public class HBaseUtil implements SchemaFinder {
     private static Logger logger = Logger.getLogger(HBaseUtil.class.getName());
 
     @Override
-    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+    public List<Set> discoverSchemas(final IJavaProject project) throws CoreException {
         String tableName;
         Set currentTableSet;
         List<Set> returnValue;

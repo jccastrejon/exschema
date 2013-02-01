@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -59,7 +59,7 @@ public class Neo4jUtil implements SchemaFinder {
     private static Logger logger = Logger.getLogger(Neo4jUtil.class.getName());
 
     @Override
-    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+    public List<Set> discoverSchemas(final IJavaProject project) throws CoreException {
         List<Set> returnValue;
 
         returnValue = Neo4jUtil.discoverNodeEntitiesSchemas(project);
@@ -72,9 +72,9 @@ public class Neo4jUtil implements SchemaFinder {
      * Discover Spring's NodeEntities.
      * 
      * @param project
-     * @throws JavaModelException
+     * @throws CoreException 
      */
-    private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws JavaModelException {
+    private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws CoreException {
         Set currentGraph;
         Struct currentNode;
         String endStructName;
@@ -169,9 +169,9 @@ public class Neo4jUtil implements SchemaFinder {
      * Discover Neo4j nodes.
      * 
      * @param project
-     * @throws JavaModelException
+     * @throws CoreException 
      */
-    private static List<Set> discoverNodesSchemas(final IJavaProject project) throws JavaModelException {
+    private static List<Set> discoverNodesSchemas(final IJavaProject project) throws CoreException {
         String endNode;
         Set currentGraph;
         String nodeClass;

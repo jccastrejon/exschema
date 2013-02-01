@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IVariableBinding;
@@ -52,7 +52,7 @@ public class MongoDBUtil implements SchemaFinder {
     private static Logger logger = Logger.getLogger(MongoDBUtil.class.getName());
 
     @Override
-    public List<Set> discoverSchemas(final IJavaProject project) throws JavaModelException {
+    public List<Set> discoverSchemas(final IJavaProject project) throws CoreException {
         List<Set> returnValue;
 
         // Analyze code for mongodb operations
@@ -67,10 +67,10 @@ public class MongoDBUtil implements SchemaFinder {
      * Analyze invocation to MongoDB's java API (save invocations).
      * 
      * @param discoveredSchemas
-     * @throws JavaModelException
+     * @throws CoreException 
      */
     private static void analyzeSaveInvocations(final IJavaProject project, final List<Set> discoveredSchemas)
-            throws JavaModelException {
+            throws CoreException {
         Set currentFields;
         Struct currentField;
         Set currentDatabase;
@@ -119,10 +119,10 @@ public class MongoDBUtil implements SchemaFinder {
      * 
      * @param project
      * @param discoveredSchemas
-     * @throws JavaModelException
+     * @throws CoreException 
      */
     private static void analyzeSpringCrossStore(final IJavaProject project, final List<Set> discoveredSchemas)
-            throws JavaModelException {
+            throws CoreException {
         Set currentFields;
         Struct currentField;
         Set currentDatabase;

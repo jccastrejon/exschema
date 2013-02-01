@@ -23,11 +23,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -35,7 +39,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -155,13 +159,12 @@ public class Util {
      * 
      * @param project
      * @param visitor
-     * @throws JavaModelException
+     * @throws CoreException
      */
-    public static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor)
-            throws JavaModelException {
+    public static void analyzeJavaProject(final IJavaProject project, final ASTVisitor visitor) throws CoreException {
         CompilationUnit parsedUnit;
 
-        for (IPackageFragment aPackage : project.getPackageFragments()) {
+        for (IPackageFragment aPackage : Util.getPackageFragments(project)) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
                     parsedUnit = Util.parse(compilationUnit);
@@ -216,6 +219,38 @@ public class Util {
                 if (qualifiedName.equals(annotationName)) {
                     returnValue = true;
                     break;
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * Get the package fragments associated to the specified project and its
+     * required projects.
+     * 
+     * @param project
+     * @throws CoreException
+     */
+    private static List<IPackageFragment> getPackageFragments(final IJavaProject project) throws CoreException {
+        IProject requiredProject;
+        String[] requiredProjects;
+        IWorkspaceRoot workspaceRoot;
+        List<IPackageFragment> returnValue;
+
+        // Project fragments
+        returnValue = new ArrayList<IPackageFragment>();
+        returnValue.addAll(Arrays.asList(project.getPackageFragments()));
+
+        // Required projects fragments
+        requiredProjects = project.getRequiredProjectNames();
+        if ((requiredProjects != null) && (requiredProjects.length > 0)) {
+            workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+            for (String currentProject : requiredProjects) {
+                requiredProject = workspaceRoot.getProject(currentProject);
+                if (requiredProject.hasNature(JavaCore.NATURE_ID)) {
+                    returnValue.addAll(Arrays.asList((JavaCore.create(requiredProject)).getPackageFragments()));
                 }
             }
         }
@@ -385,10 +420,10 @@ public class Util {
      * @param project
      * @param annotationVisitor
      * @return
-     * @throws JavaModelException
+     * @throws CoreException
      */
     private static List<Set> discoverSpringRepositories(final IJavaProject project,
-            final SpringRepositoryVisitor annotationVisitor) throws JavaModelException {
+            final SpringRepositoryVisitor annotationVisitor) throws CoreException {
         Set currentClass;
         Struct currentFields;
         Set currentCollection;
@@ -402,7 +437,7 @@ public class Util {
         currentCollection = new Set();
         currentCollection.addAttribute(new Attribute("implementation", annotationVisitor.getImplementation()));
         Util.logger.log(Util.LOGGING_LEVEL, "Spring-based repository classes: ");
-        for (IPackageFragment aPackage : project.getPackageFragments()) {
+        for (IPackageFragment aPackage : Util.getPackageFragments(project)) {
             if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
                 for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
                     for (IType type : compilationUnit.getAllTypes()) {
