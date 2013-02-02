@@ -33,7 +33,6 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
-import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
@@ -72,7 +71,7 @@ public class Neo4jUtil implements SchemaFinder {
      * Discover Spring's NodeEntities.
      * 
      * @param project
-     * @throws CoreException 
+     * @throws CoreException
      */
     private static List<Set> discoverNodeEntitiesSchemas(final IJavaProject project) throws CoreException {
         Set currentGraph;
@@ -169,7 +168,7 @@ public class Neo4jUtil implements SchemaFinder {
      * Discover Neo4j nodes.
      * 
      * @param project
-     * @throws CoreException 
+     * @throws CoreException
      */
     private static List<Set> discoverNodesSchemas(final IJavaProject project) throws CoreException {
         String endNode;
@@ -342,7 +341,8 @@ public class Neo4jUtil implements SchemaFinder {
                         structRelationships.add(currentRelationship);
                         Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n----Relationship: " + relationship + " ["
                                 + relationshipTypes.get(node).get(relationship) + "]");
-                        if (relationshipFields.get(node).get(relationship) != null) {
+                        if ((relationshipFields.get(node) != null)
+                                && (relationshipFields.get(node).get(relationship) != null)) {
                             for (String relationField : relationshipFields.get(node).get(relationship)) {
                                 Neo4jUtil.logger
                                         .log(Util.LOGGING_LEVEL, "\n------Relationship field: " + relationField);
@@ -487,7 +487,7 @@ public class Neo4jUtil implements SchemaFinder {
                 // Match name of declare and update variables, in the same file
                 if (fragmentRoot.equals(invocationRoot)) {
                     if (fragment.getName().toString().equals(invocation.getExpression().toString())) {
-                        currentFields.add(((SimpleName) invocation.arguments().get(0)).toString());
+                        currentFields.add(invocation.arguments().get(0).toString().replace('"', ' ').trim());
                     }
                 }
             }
