@@ -57,8 +57,10 @@ public class HBaseUtil implements SchemaFinder {
     public List<Set> discoverSchemas(final IJavaProject project) throws CoreException {
         String tableName;
         Set currentTableSet;
+        List<Set> tableSets;
         List<Set> returnValue;
         String tableDescriptor;
+        Set currentConfiguration;
         TablePutVisitor putVisitor;
         List<String> tableDescriptors;
         TableCreateVisitor createVisitor;
@@ -106,6 +108,7 @@ public class HBaseUtil implements SchemaFinder {
         }
 
         // Get tables data
+        tableSets = new ArrayList<Set>();
         returnValue = new ArrayList<Set>();
         HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n\nHBase tables:");
         for (int i = 0; i < tableDescriptors.size(); i++) {
@@ -118,9 +121,9 @@ public class HBaseUtil implements SchemaFinder {
                     tableDescriptorNameIndex.get(i));
             if (tableName != null) {
                 currentTableSet = new Set();
-                returnValue.add(currentTableSet);
+                tableSets.add(currentTableSet);
                 currentTableSet.addAttribute(new Attribute("name", tableName));
-                currentTableSet.addAttribute(new Attribute("implementation", RooModel.HBASE.toString()));
+
                 HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n--Table: " + tableName);
 
                 // Analyze increment operations (HTableDescriptor.familyAdd)
@@ -132,6 +135,17 @@ public class HBaseUtil implements SchemaFinder {
             }
         }
 
+        // TODO: Identify multiple HBase configurations, at the moment we assume
+        // all tables belong to the same configuration
+        if (!tableSets.isEmpty()) {
+            currentConfiguration = new Set();
+            returnValue.add(currentConfiguration);
+
+            currentConfiguration.addAttribute(new Attribute("implementation", RooModel.HBASE.toString()));
+            for (Set tableSet : tableSets) {
+                currentConfiguration.addSet(tableSet);
+            }
+        }
         return returnValue;
     }
 
