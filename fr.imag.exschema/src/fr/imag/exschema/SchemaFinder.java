@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 
 import fr.imag.exschema.model.Set;
 
@@ -39,7 +38,7 @@ public interface SchemaFinder {
      * 
      * @param project
      * @return
-     * @throws JavaModelException
+     * @throws CoreException
      */
     public List<Set> discoverSchemas(final IJavaProject project) throws CoreException;
 }
