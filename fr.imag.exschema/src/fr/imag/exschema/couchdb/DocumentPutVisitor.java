@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 jccastrejon
+ * Copyright 2013 jccastrejon
  *  
  * This file is part of ExSchema.
  *
@@ -16,13 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with ExSchema. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.imag.exschema.exporter;
+package fr.imag.exschema.couchdb;
+
+import fr.imag.exschema.visitor.UpdateVisitor;
 
 /**
+ * Identifies when properties are set in CouchDB documents.
  * 
  * @author jccastrejon
  * 
  */
-public enum RooModel {
-    NEO4J, MONGODB, RELATIONAL, HBASE, COUCHDB
+public class DocumentPutVisitor extends UpdateVisitor {
+    @Override
+    protected String getMethodBinding() {
+        return "com.fourspaces.couchdb.Document";
+    }
+
+    @Override
+    protected String getMethodName() {
+        return "put";
+    }
 }

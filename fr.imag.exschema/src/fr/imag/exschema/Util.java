@@ -50,6 +50,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
+import fr.imag.exschema.couchdb.CouchDBUtil;
 import fr.imag.exschema.hbase.HBaseUtil;
 import fr.imag.exschema.jpa.JpaRepositoryVisitor;
 import fr.imag.exschema.jpa.SpringJpaRepositoryVisitor;
@@ -101,6 +102,7 @@ public class Util {
 
         // Document
         schemas.addAll(new MongoDBUtil().discoverSchemas(project));
+        schemas.addAll(new CouchDBUtil().discoverSchemas(project));
 
         // Graph
         schemas.addAll(new Neo4jUtil().discoverSchemas(project));
