@@ -229,6 +229,23 @@ public class Util {
     }
 
     /**
+     * Get the Root node of the specified node.
+     * 
+     * @param node
+     * @return
+     */
+    public static ASTNode getRootNode(final ASTNode node) {
+        ASTNode returnValue;
+
+        returnValue = node.getParent();
+        while (returnValue.getParent() != null) {
+            returnValue = returnValue.getParent();
+        }
+
+        return returnValue;
+    }
+
+    /**
      * Get the package fragments associated to the specified project and its
      * required projects.
      * 

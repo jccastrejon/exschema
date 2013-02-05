@@ -19,11 +19,15 @@
 package fr.imag.exschema.couchdb;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import fr.imag.exschema.SchemaFinder;
@@ -56,6 +60,8 @@ public class CouchDBUtil implements SchemaFinder {
         List<Set> returnValue;
         Set currentCollection;
         Struct currentDocument;
+        Map<ASTNode, Set> collections;
+        java.util.Set<ASTNode> databases;
         DocumentPutVisitor documentPutVisitor;
         DocumentSaveVisitor documentSaveVisitor;
 
@@ -64,19 +70,21 @@ public class CouchDBUtil implements SchemaFinder {
         documentSaveVisitor = new DocumentSaveVisitor();
         Util.analyzeJavaProject(project, documentSaveVisitor);
 
-        // Assume only one database
-        // TODO: Support more than one database, by recognizing initializations
-        currentDatabase = new Set();
-        currentDatabase.addAttribute(new Attribute("implementation", RooModel.COUCHDB.toString()));
-        returnValue.add(currentDatabase);
+        // Consider that each file where save invocations are used, define a
+        // combination of database/collection
+        databases = CouchDBUtil.getDatabaseFiles(documentSaveVisitor.getUpdateInvocations());
+        collections = new HashMap<ASTNode, Set>(databases.size());
+        for (ASTNode database : databases) {
+            currentDatabase = new Set();
+            currentDatabase.addAttribute(new Attribute("implementation", RooModel.COUCHDB.toString()));
+            returnValue.add(currentDatabase);
 
-        // Assume only one collection
-        // TODO: Support more than one collection, by recognizing
-        // initializations
-        currentCollection = new Set();
-        currentDatabase.addSet(currentCollection);
-        currentCollection.addAttribute(new Attribute("name", "collection"));
-        CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "--Collection: " + "collection");
+            currentCollection = new Set();
+            currentDatabase.addSet(currentCollection);
+            collections.put(database, currentCollection);
+            currentCollection.addAttribute(new Attribute("name", "collection"));
+            CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "--Collection: " + "collection");
+        }
 
         // Get the attributes from the identified documents
         CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "\nCouchDB documents (based on puts): ");
@@ -85,29 +93,52 @@ public class CouchDBUtil implements SchemaFinder {
             // Only work with variables
             documentName = saveInvocation.arguments().get(0).toString();
             if (Util.isVariableName(documentName)) {
-                currentDocument = new Struct();
-                currentCollection.addStruct(currentDocument);
-                currentDocument.addAttribute(new Attribute("name", documentName));
-                CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "----Document: " + documentName);
+                // Save documents based on the file where they're associated
+                // database is used
+                currentCollection = collections.get(Util.getRootNode(saveInvocation));
+                if (currentCollection != null) {
+                    currentDocument = new Struct();
+                    currentCollection.addStruct(currentDocument);
+                    currentDocument.addAttribute(new Attribute("name", documentName));
+                    CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "----Document: " + documentName);
 
-                // Attributes added through the Document.put() method
-                documentPutVisitor = new DocumentPutVisitor();
-                documentPutVisitor.setVariableName(documentName);
-                saveInvocation.getRoot().accept(documentPutVisitor);
+                    // Attributes added through the Document.put() method
+                    documentPutVisitor = new DocumentPutVisitor();
+                    documentPutVisitor.setVariableName(documentName);
+                    saveInvocation.getRoot().accept(documentPutVisitor);
 
-                if (!documentPutVisitor.getUpdateInvocations().isEmpty()) {
-                    currentFields = new Set();
-                    currentDocument.addSet(currentFields);
+                    if (!documentPutVisitor.getUpdateInvocations().isEmpty()) {
+                        currentFields = new Set();
+                        currentDocument.addSet(currentFields);
 
-                    for (MethodInvocation putInvocation : documentPutVisitor.getUpdateInvocations()) {
-                        field = putInvocation.arguments().get(0).toString().replace('"', ' ').trim();
-                        currentField = new Struct();
-                        currentFields.addStruct(currentField);
-                        currentField.addAttribute(new Attribute("name", field));
-                        CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "------Field: " + field);
+                        for (MethodInvocation putInvocation : documentPutVisitor.getUpdateInvocations()) {
+                            field = putInvocation.arguments().get(0).toString().replace('"', ' ').trim();
+                            currentField = new Struct();
+                            currentFields.addStruct(currentField);
+                            currentField.addAttribute(new Attribute("name", field));
+                            CouchDBUtil.logger.log(Util.LOGGING_LEVEL, "------Field: " + field);
+                        }
                     }
                 }
             }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * Get the different files where the database save invocations are used.
+     * 
+     * @param saveInvocations
+     * @return
+     */
+    private static java.util.Set<ASTNode> getDatabaseFiles(List<MethodInvocation> saveInvocations) {
+        java.util.Set<ASTNode> returnValue;
+
+        returnValue = new HashSet<ASTNode>();
+        for (MethodInvocation saveInvocation : saveInvocations) {
+            // Get the root node of the file containing this invocation
+            returnValue.add(Util.getRootNode(saveInvocation));
         }
 
         return returnValue;
