@@ -19,8 +19,10 @@
 package fr.imag.exschema.hbase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
@@ -57,7 +59,6 @@ public class HBaseUtil implements SchemaFinder {
     public List<Set> discoverSchemas(final IJavaProject project) throws CoreException {
         String tableName;
         Set currentTableSet;
-        List<Set> tableSets;
         List<Set> returnValue;
         String tableDescriptor;
         Set currentConfiguration;
@@ -65,6 +66,8 @@ public class HBaseUtil implements SchemaFinder {
         List<String> tableDescriptors;
         TableCreateVisitor createVisitor;
         List<ASTNode> tableDescriptorsRoots;
+        Map<ASTNode, Set> configurationsMap;
+        java.util.Set<ASTNode> configurations;
         TableIncrementVisitor incrementVisitor;
         List<Integer> tableDescriptorNameIndex;
         TableDeclareVisitor tableDeclareVisitor;
@@ -107,45 +110,50 @@ public class HBaseUtil implements SchemaFinder {
             tableDescriptorNameIndex.add(1);
         }
 
-        // Get tables data
-        tableSets = new ArrayList<Set>();
+        // Consider that each file where the tables are declared/created define
+        // a new configuration
         returnValue = new ArrayList<Set>();
+        configurations = Util.getNodesFiles(tableDescriptorsRoots);
+        configurationsMap = new HashMap<ASTNode, Set>(configurations.size());
+        for (ASTNode configuration : configurations) {
+            currentConfiguration = new Set();
+            currentConfiguration.addAttribute(new Attribute("implementation", RooModel.HBASE.toString()));
+
+            returnValue.add(currentConfiguration);
+            configurationsMap.put(configuration, currentConfiguration);
+        }
+
+        // Get tables data
         HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n\nHBase tables:");
         for (int i = 0; i < tableDescriptors.size(); i++) {
             tableDescriptor = tableDescriptors.get(i);
-
+            
             // Table name
             descriptorDeclareVisitor = new DescriptorDeclareVisitor();
             descriptorDeclareVisitor.setVariableName(tableDescriptor);
             tableName = HBaseUtil.getHBaseName(tableDescriptorsRoots.get(i), descriptorDeclareVisitor,
                     tableDescriptorNameIndex.get(i));
             if (tableName != null) {
-                currentTableSet = new Set();
-                tableSets.add(currentTableSet);
-                currentTableSet.addAttribute(new Attribute("name", tableName));
+                // Save tables based on the file where their associated
+                // configuration is used
+                currentConfiguration = configurationsMap.get(Util.getRootNode(tableDescriptorsRoots.get(i)));
+                if (currentConfiguration != null) {
+                    currentTableSet = new Set();
+                    currentConfiguration.addSet(currentTableSet);
+                    currentTableSet.addAttribute(new Attribute("name", tableName));
+                    HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n--Table: " + tableName);
 
-                HBaseUtil.logger.log(Util.LOGGING_LEVEL, "\n--Table: " + tableName);
+                    // Analyze increment operations (HTableDescriptor.familyAdd)
+                    HBaseUtil.analyzeIncrementOperations(incrementVisitor, putVisitor, tableDescriptorsRoots.get(i),
+                            tableName, tableDescriptor, currentTableSet);
 
-                // Analyze increment operations (HTableDescriptor.familyAdd)
-                HBaseUtil.analyzeIncrementOperations(incrementVisitor, putVisitor, tableDescriptorsRoots.get(i),
-                        tableName, tableDescriptor, currentTableSet);
-
-                // Analyze put operations (HTable.put)
-                HBaseUtil.analyzePutOperations(putVisitor, tableName, tableDescriptorsRoots.get(i), currentTableSet);
+                    // Analyze put operations (HTable.put)
+                    HBaseUtil
+                            .analyzePutOperations(putVisitor, tableName, tableDescriptorsRoots.get(i), currentTableSet);
+                }
             }
         }
 
-        // TODO: Identify multiple HBase configurations, at the moment we assume
-        // all tables belong to the same configuration
-        if (!tableSets.isEmpty()) {
-            currentConfiguration = new Set();
-            returnValue.add(currentConfiguration);
-
-            currentConfiguration.addAttribute(new Attribute("implementation", RooModel.HBASE.toString()));
-            for (Set tableSet : tableSets) {
-                currentConfiguration.addSet(tableSet);
-            }
-        }
         return returnValue;
     }
 
