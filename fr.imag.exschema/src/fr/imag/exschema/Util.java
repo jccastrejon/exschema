@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -229,6 +230,24 @@ public class Util {
     }
 
     /**
+     * Get the different files where the specified nodes are used.
+     * 
+     * @param nodes
+     * @return
+     */
+    public static java.util.Set<ASTNode> getNodesFiles(final List<? extends ASTNode> nodes) {
+        java.util.Set<ASTNode> returnValue;
+
+        returnValue = new HashSet<ASTNode>();
+        for (ASTNode node : nodes) {
+            // Get the root node of the file containing this invocation
+            returnValue.add(Util.getRootNode(node));
+        }
+
+        return returnValue;
+    }
+
+    /**
      * Get the Root node of the specified node.
      * 
      * @param node
@@ -237,7 +256,7 @@ public class Util {
     public static ASTNode getRootNode(final ASTNode node) {
         ASTNode returnValue;
 
-        returnValue = node.getParent();
+        returnValue = node;
         while (returnValue.getParent() != null) {
             returnValue = returnValue.getParent();
         }

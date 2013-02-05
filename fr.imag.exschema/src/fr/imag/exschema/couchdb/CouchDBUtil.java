@@ -20,7 +20,6 @@ package fr.imag.exschema.couchdb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -70,9 +69,9 @@ public class CouchDBUtil implements SchemaFinder {
         documentSaveVisitor = new DocumentSaveVisitor();
         Util.analyzeJavaProject(project, documentSaveVisitor);
 
-        // Consider that each file where save invocations are used, define a
+        // Consider that each file where save invocations are used define a
         // combination of database/collection
-        databases = CouchDBUtil.getDatabaseFiles(documentSaveVisitor.getUpdateInvocations());
+        databases = Util.getNodesFiles(documentSaveVisitor.getUpdateInvocations());
         collections = new HashMap<ASTNode, Set>(databases.size());
         for (ASTNode database : databases) {
             currentDatabase = new Set();
@@ -93,7 +92,7 @@ public class CouchDBUtil implements SchemaFinder {
             // Only work with variables
             documentName = saveInvocation.arguments().get(0).toString();
             if (Util.isVariableName(documentName)) {
-                // Save documents based on the file where they're associated
+                // Save documents based on the file where their associated
                 // database is used
                 currentCollection = collections.get(Util.getRootNode(saveInvocation));
                 if (currentCollection != null) {
@@ -121,24 +120,6 @@ public class CouchDBUtil implements SchemaFinder {
                     }
                 }
             }
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * Get the different files where the database save invocations are used.
-     * 
-     * @param saveInvocations
-     * @return
-     */
-    private static java.util.Set<ASTNode> getDatabaseFiles(List<MethodInvocation> saveInvocations) {
-        java.util.Set<ASTNode> returnValue;
-
-        returnValue = new HashSet<ASTNode>();
-        for (MethodInvocation saveInvocation : saveInvocations) {
-            // Get the root node of the file containing this invocation
-            returnValue.add(Util.getRootNode(saveInvocation));
         }
 
         return returnValue;
