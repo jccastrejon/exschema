@@ -31,7 +31,8 @@ public interface RooExporter {
      * specified Roo model.
      * 
      * @param rooModel
+     * @param parent
      * @return
      */
-    public String getRooCommands(final RooModel rooModel);
+    public String getRooCommands(final RooModel rooModel, final String parent);
 }

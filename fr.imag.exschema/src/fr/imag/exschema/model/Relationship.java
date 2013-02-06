@@ -92,7 +92,7 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
     }
 
     @Override
-    public String getRooCommands(final RooModel rooModel) {
+    public String getRooCommands(final RooModel rooModel, final String parent) {
         StringBuilder returnValue;
 
         returnValue = new StringBuilder("");

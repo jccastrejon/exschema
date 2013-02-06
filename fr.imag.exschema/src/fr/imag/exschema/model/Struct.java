@@ -141,7 +141,7 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter {
     }
 
     @Override
-    public String getRooCommands(final RooModel rooModel) {
+    public String getRooCommands(final RooModel rooModel, final String parent) {
         StringBuilder returnValue;
 
         returnValue = new StringBuilder();
@@ -151,26 +151,33 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter {
             // Structs with the single 'name' attribute are entities
             // TODO: Change from structs to sets?
             if ((this.attributes.size() == 1) && (this.attributes.get(0).getName().equals("name"))) {
-                returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
-
+                // Create graph entity/repository
+                returnValue.append("entity graph --class ").append(this.getSimpleName()).append("\n");
+                returnValue.append("repository graph --interface repository.").append(this.getSimpleName())
+                        .append("Repository").append(" --entity ").append(this.getSimpleName()).append("\n");
+                // Export relationships
                 for (Relationship relationship : this.relationships) {
-                    returnValue.append(relationship.getRooCommands(rooModel));
+                    returnValue.append(relationship.getRooCommands(rooModel, this.getSimpleName()));
+                }
+                // Export inner structs
+                for (Struct struct : this.structs) {
+                    returnValue.append(struct.getRooCommands(rooModel, this.getSimpleName()));
                 }
             } else {
                 for (Attribute attribute : this.getAttributes()) {
-                    returnValue.append(attribute.getRooCommands(rooModel));
+                    returnValue.append(attribute.getRooCommands(rooModel, parent));
                 }
             }
             break;
         case MONGODB:
             for (Attribute attribute : this.getAttributes()) {
-                returnValue.append(attribute.getRooCommands(rooModel));
+                returnValue.append(attribute.getRooCommands(rooModel, parent));
             }
             break;
         case RELATIONAL:
         default:
             for (Attribute attribute : this.getAttributes()) {
-                returnValue.append(attribute.getRooCommands(rooModel));
+                returnValue.append(attribute.getRooCommands(rooModel, parent));
             }
             break;
         }

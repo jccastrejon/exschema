@@ -446,7 +446,7 @@ public class Util {
 
         returnValue = new ArrayList<String>(schemas.size());
         for (Set schema : schemas) {
-            returnValue.add(schema.getRooCommands(null));
+            returnValue.add(schema.getRooCommands(null, null));
         }
 
         return returnValue;

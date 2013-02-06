@@ -118,7 +118,7 @@ public class Set extends Entity implements GraphvizExporter, RooExporter {
     }
 
     @Override
-    public String getRooCommands(final RooModel rooModel) {
+    public String getRooCommands(final RooModel rooModel, final String parent) {
         String projectName;
         RooModel startingRooModel;
         StringBuilder returnValue;
@@ -144,20 +144,20 @@ public class Set extends Entity implements GraphvizExporter, RooExporter {
                 returnValue.append("graph setup --provider Neo4j --databaseLocation graphdb.location" + "\n");
                 // TODO: Change from structs to sets?
                 for (Struct struct : this.getStructs()) {
-                    returnValue.append(struct.getRooCommands(startingRooModel));
+                    returnValue.append(struct.getRooCommands(startingRooModel, this.getSimpleName()));
                 }
                 break;
             case MONGODB:
                 returnValue.append("mongo setup --databaseName database" + projectName + "\n");
                 for (Set set : this.getSets()) {
-                    returnValue.append(set.getRooCommands(startingRooModel));
+                    returnValue.append(set.getRooCommands(startingRooModel, this.getSimpleName()));
                 }
                 break;
             case RELATIONAL:
             default:
                 returnValue.append("jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY" + "\n");
                 for (Set set : this.getSets()) {
-                    returnValue.append(set.getRooCommands(startingRooModel));
+                    returnValue.append(set.getRooCommands(startingRooModel, this.getSimpleName()));
                 }
                 break;
             }
@@ -184,7 +184,7 @@ public class Set extends Entity implements GraphvizExporter, RooExporter {
                 }
 
                 for (Struct struct : this.getStructs()) {
-                    returnValue.append(struct.getRooCommands(rooModel));
+                    returnValue.append(struct.getRooCommands(rooModel, this.getSimpleName()));
                 }
             }
         }
