@@ -17,11 +17,20 @@
             </separator>
          </menu>
          <action
-               label="Discover schemas"
-               class="fr.imag.exschema.popup.actions.DiscoverAction"
-               menubarPath="fr.imag.exschema.menu1/group1"
+               class="fr.imag.exschema.popup.actions.DiscoverHistoryAction"
                enablesFor="1"
-               id="fr.imag.exschema.newAction">
+               icon="META-INF/git.ico"
+               id="fr.imag.exschema.historyAction"
+               label="Discover schemas from Git repository"
+               menubarPath="fr.imag.exschema.menu1/group1">
+         </action>
+         <action
+               class="fr.imag.exschema.popup.actions.DiscoverAction"
+               enablesFor="1"
+               icon="META-INF/current.gif"
+               id="fr.imag.exschema.newAction"
+               label="Discover current schemas"
+               menubarPath="fr.imag.exschema.menu1/group1">
          </action>
       </objectContribution>
    </extension>

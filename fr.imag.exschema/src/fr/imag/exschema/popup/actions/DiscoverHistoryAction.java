@@ -39,7 +39,7 @@ import fr.imag.exschema.Util;
  * @author jccastrejon
  * 
  */
-public class DiscoverAction implements IObjectActionDelegate {
+public class DiscoverHistoryAction implements IObjectActionDelegate {
 
     /**
      * Eclipse shell.
@@ -54,7 +54,7 @@ public class DiscoverAction implements IObjectActionDelegate {
     /**
      * Default constructor.
      */
-    public DiscoverAction() {
+    public DiscoverHistoryAction() {
         super();
     }
 
@@ -73,7 +73,7 @@ public class DiscoverAction implements IObjectActionDelegate {
 
         if (project != null) {
             try {
-                Util.discoverSchemas(project);
+                Util.discoverHistorySchemas(project);
                 outputMessage = "The project schemas have been discovered";
             } catch (Exception e) {
                 e.printStackTrace();

@@ -50,8 +50,11 @@ import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Ref;
 
 import fr.imag.exschema.couchdb.CouchDBUtil;
+import fr.imag.exschema.git.GitUtil;
 import fr.imag.exschema.hbase.HBaseUtil;
 import fr.imag.exschema.jpa.JpaRepositoryVisitor;
 import fr.imag.exschema.jpa.SpringJpaRepositoryVisitor;
@@ -89,7 +92,7 @@ public class Util {
      * @throws IOException
      * @throws CoreException
      */
-    public static void discoverSchemas(final IJavaProject project) throws IOException, InterruptedException,
+    public static File discoverSchemas(final IJavaProject project) throws IOException, InterruptedException,
             CoreException {
         List<Set> schemas;
 
@@ -112,7 +115,43 @@ public class Util {
         schemas.addAll(new HBaseUtil().discoverSchemas(project));
 
         // Export discovered schemas
-        Util.exportDiscoveredSchemas(schemas, project);
+        return Util.exportDiscoveredSchemas(schemas, project);
+    }
+
+    /**
+     * Starting point for discovering schemas from all the versions stored in
+     * the Git repository of the specified project.
+     * 
+     * @param project
+     * @throws GitAPIException
+     * @throws IOException
+     * @throws CoreException
+     * @throws InterruptedException
+     */
+    public static List<File> discoverHistorySchemas(final IJavaProject project) throws IOException, GitAPIException,
+            InterruptedException, CoreException {
+        File currentOutput;
+        List<File> returnValue;
+        List<Ref> projectVersions;
+
+        projectVersions = GitUtil.getProjectVersions(project);
+        returnValue = new ArrayList<File>(projectVersions.size());
+        for (Ref version : projectVersions) {
+            // Checkout this project version
+            GitUtil.checkoutProjectVersion(project, version.getName());
+
+            // Analyze project at this version
+            currentOutput = Util.discoverSchemas(project);
+
+            // Rename output directory with the version name
+            currentOutput.renameTo(new File(currentOutput.getParentFile(), version.getName().replaceAll("\\W", ".")
+                    + "-" + currentOutput.getName()));
+        }
+
+        // Return project to the latest version
+        GitUtil.checkoutProjectVersion(project, "master");
+
+        return returnValue;
     }
 
     /**
@@ -301,11 +340,13 @@ public class Util {
      * the top of the specified project.
      * 
      * @param schemas
+     * @param project
+     * @return The directory where the results are stored.
      * @throws IOException
      * @throws InterruptedException
      * @throws CoreException
      */
-    private static void exportDiscoveredSchemas(final List<Set> schemas, final IJavaProject project)
+    private static File exportDiscoveredSchemas(final List<Set> schemas, final IJavaProject project)
             throws IOException, InterruptedException, CoreException {
         File dotFile;
         String dotGraph;
@@ -330,6 +371,8 @@ public class Util {
 
         // Reload workspace to reflect the changes
         project.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
+
+        return outputDirectory;
     }
 
     /**
