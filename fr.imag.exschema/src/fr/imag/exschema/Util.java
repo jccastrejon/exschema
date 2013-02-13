@@ -34,6 +34,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -88,34 +89,44 @@ public class Util {
      * Starting point for discovering schemas from non-relational applications.
      * 
      * @param project
+     * @param monitor
      * @throws InterruptedException
      * @throws IOException
      * @throws CoreException
      */
-    public static File discoverSchemas(final IJavaProject project) throws IOException, InterruptedException,
-            CoreException {
+    public static File discoverSchemas(final IJavaProject project, final IProgressMonitor monitor) throws IOException,
+            InterruptedException, CoreException {
+        File returnValue;
         List<Set> schemas;
 
         // JPA repositories
+        Util.monitorSubtask(monitor, "Analyzing JPA repositories");
         schemas = new ArrayList<Set>();
         schemas.addAll(Util.discoverSpringRepositories(project, new JpaRepositoryVisitor()));
         schemas.addAll(Util.discoverSpringRepositories(project, new SpringJpaRepositoryVisitor()));
 
         // Document repositories
+        Util.monitorSubtask(monitor, "Analyzing document repositories");
         schemas.addAll(Util.discoverSpringRepositories(project, new SpringDocumentRepositoryVisitor()));
 
         // Document
+        Util.monitorSubtask(monitor, "Analyzing document datastores");
         schemas.addAll(new MongoDBUtil().discoverSchemas(project));
         schemas.addAll(new CouchDBUtil().discoverSchemas(project));
 
         // Graph
+        Util.monitorSubtask(monitor, "Analyzing graph datastores");
         schemas.addAll(new Neo4jUtil().discoverSchemas(project));
 
         // Column
+        Util.monitorSubtask(monitor, "Analyzing column datastores");
         schemas.addAll(new HBaseUtil().discoverSchemas(project));
 
         // Export discovered schemas
-        return Util.exportDiscoveredSchemas(schemas, project);
+        Util.monitorSubtask(monitor, "Exporting schemas");
+        returnValue = Util.exportDiscoveredSchemas(schemas, project);
+
+        return returnValue;
     }
 
     /**
@@ -123,13 +134,14 @@ public class Util {
      * the Git repository of the specified project.
      * 
      * @param project
+     * @param monitor
      * @throws GitAPIException
      * @throws IOException
      * @throws CoreException
      * @throws InterruptedException
      */
-    public static List<File> discoverHistorySchemas(final IJavaProject project) throws IOException, GitAPIException,
-            InterruptedException, CoreException {
+    public static List<File> discoverHistorySchemas(final IJavaProject project, final IProgressMonitor monitor)
+            throws IOException, GitAPIException, InterruptedException, CoreException {
         File currentOutput;
         File renamedOutput;
         List<File> returnValue;
@@ -139,12 +151,16 @@ public class Util {
         returnValue = new ArrayList<File>(projectVersions.size());
         for (Ref version : projectVersions) {
             // Analyze project at this version
+            Util.monitorSubtask(monitor, "Starting the analysis of version: " + version.getName());
             try {
-                // Checkout this project version
+                // Checkout and analyze this project version
+                Util.monitorSubtask(monitor, "Checking out project version");
                 GitUtil.checkoutProjectVersion(project, version.getName());
-                currentOutput = Util.discoverSchemas(project);
+                Util.monitorSubtask(monitor, "Discovering schemas");
+                currentOutput = Util.discoverSchemas(project, monitor);
 
                 // Rename output directory with the version name
+                Util.monitorSubtask(monitor, "Renaming results directory");
                 renamedOutput = new File(currentOutput.getParentFile(), version.getName().replaceAll("\\W", ".") + "-"
                         + currentOutput.getName());
                 currentOutput.renameTo(renamedOutput);
@@ -158,6 +174,7 @@ public class Util {
         }
 
         // Return project to the latest version
+        Util.monitorSubtask(monitor, "Going back to the master branch");
         GitUtil.checkoutProjectVersion(project, "master");
 
         return returnValue;
@@ -310,6 +327,19 @@ public class Util {
         }
 
         return returnValue;
+    }
+
+    /**
+     * Notify in the progress monitor the start of a subtask with the specified
+     * description.
+     * 
+     * @param monitor
+     * @param description
+     */
+    private static void monitorSubtask(final IProgressMonitor monitor, final String description) {
+        if (monitor != null) {
+            monitor.subTask(description);
+        }
     }
 
     /**

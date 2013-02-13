@@ -23,6 +23,10 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.action.IAction;
@@ -33,6 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 
 import fr.imag.exschema.Util;
 
@@ -72,21 +77,53 @@ public class DiscoverHistoryAction implements IObjectActionDelegate {
      * @see IActionDelegate#run(IAction)
      */
     public void run(IAction action) {
-        List<File> results;
-        String outputMessage;
+        Job discoveryJob;
 
         if (project != null) {
-            try {
-                results = Util.discoverHistorySchemas(project);
-                outputMessage = "The following project schemas were discovered: " + results;
-            } catch (Exception e) {
-                e.printStackTrace();
-                outputMessage = "An error ocurred while discovering the schemas: " + e.getMessage();
-            }
+            discoveryJob = new Job("ExSchema") {
+                @Override
+                protected IStatus run(IProgressMonitor monitor) {
+                    List<File> results;
+                    IStatus returnValue;
+                    final StringBuilder outputMessage;
+
+                    outputMessage = new StringBuilder();
+                    try {
+                        // Analysis
+                        monitor.beginTask("Exschema", IProgressMonitor.UNKNOWN);
+                        results = Util.discoverHistorySchemas(project, monitor);
+
+                        // Result message
+                        if (results.isEmpty()) {
+                            outputMessage.append("No project versions were found for analysis");
+                        } else {
+                            outputMessage.append("The schemas for the following project versions were discovered: "
+                                    + results);
+                        }
+                        returnValue = Status.OK_STATUS;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        outputMessage.append("An error ocurred while discovering the schemas: " + e.getMessage());
+                        returnValue = Status.CANCEL_STATUS;
+                    } finally {
+                        monitor.done();
+                    }
+
+                    // Notify to the user the result of the analysis
+                    PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
+                        public void run() {
+                            MessageDialog.openInformation(shell, "ExSchema", outputMessage.toString());
+                        }
+                    });
+                    return returnValue;
+                }
+            };
+
+            discoveryJob.setUser(true);
+            discoveryJob.schedule();
         } else {
-            outputMessage = "No project found to analyze for schemas";
+            MessageDialog.openInformation(shell, "ExSchema", "No project found to analyze for schemas");
         }
-        MessageDialog.openInformation(shell, "ExSchema", outputMessage);
     }
 
     /**
