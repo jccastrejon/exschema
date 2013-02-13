@@ -85,6 +85,7 @@ public class DiscoverHistoryAction implements IObjectActionDelegate {
                 protected IStatus run(IProgressMonitor monitor) {
                     List<File> results;
                     IStatus returnValue;
+                    StringBuilder resultPaths;
                     final StringBuilder outputMessage;
 
                     outputMessage = new StringBuilder();
@@ -97,8 +98,12 @@ public class DiscoverHistoryAction implements IObjectActionDelegate {
                         if (results.isEmpty()) {
                             outputMessage.append("No project versions were found for analysis");
                         } else {
+                            resultPaths = new StringBuilder("\n");
+                            for (File result : results) {
+                                resultPaths.append("\n- ").append(result.getAbsolutePath()).append("\n");
+                            }
                             outputMessage.append("The schemas for the following project versions were discovered: "
-                                    + results);
+                                    + resultPaths);
                         }
                         returnValue = Status.OK_STATUS;
                     } catch (Exception e) {
