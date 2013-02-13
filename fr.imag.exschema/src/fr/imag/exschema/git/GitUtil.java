@@ -80,29 +80,30 @@ public class GitUtil {
         File gitDirectory;
         File currentDirectory;
         Repository repository;
-
         FileRepositoryBuilder repositoryBuilder;
 
         // Check whether the project or one of its ancestors hosts a Git
         // repository
-        repositoryBuilder = new FileRepositoryBuilder();
-        currentDirectory = project.getProject().getRawLocation().toFile();
-        repository = repositoryBuilder.setGitDir(currentDirectory).readEnvironment().findGitDir().build();
-        while (currentDirectory != null) {
-            gitDirectory = new File(currentDirectory, ".git");
-            if (gitDirectory.exists()) {
-                repositoryBuilder = new FileRepositoryBuilder();
-                repository = repositoryBuilder.setGitDir(gitDirectory).readEnvironment().findGitDir().build();
-                break;
-            } else {
-                currentDirectory = currentDirectory.getParentFile();
-            }
-        }
-
-        // If possible, reference the Git repository
         returnValue = null;
-        if (repository != null) {
-            returnValue = new Git(repository);
+        if (project.getProject().getRawLocation() != null) {
+            repositoryBuilder = new FileRepositoryBuilder();
+            currentDirectory = project.getProject().getRawLocation().toFile();
+            repository = repositoryBuilder.setGitDir(currentDirectory).readEnvironment().findGitDir().build();
+            while (currentDirectory != null) {
+                gitDirectory = new File(currentDirectory, ".git");
+                if (gitDirectory.exists()) {
+                    repositoryBuilder = new FileRepositoryBuilder();
+                    repository = repositoryBuilder.setGitDir(gitDirectory).readEnvironment().findGitDir().build();
+                    break;
+                } else {
+                    currentDirectory = currentDirectory.getParentFile();
+                }
+            }
+
+            // If possible, reference the Git repository
+            if (repository != null) {
+                returnValue = new Git(repository);
+            }
         }
 
         return returnValue;
