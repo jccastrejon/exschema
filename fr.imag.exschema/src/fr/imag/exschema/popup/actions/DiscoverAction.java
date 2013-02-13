@@ -18,6 +18,8 @@
  */
 package fr.imag.exschema.popup.actions;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
@@ -69,12 +71,13 @@ public class DiscoverAction implements IObjectActionDelegate {
      * @see IActionDelegate#run(IAction)
      */
     public void run(IAction action) {
+        File result;
         String outputMessage;
 
         if (project != null) {
             try {
-                Util.discoverSchemas(project);
-                outputMessage = "The project schemas have been discovered";
+                result = Util.discoverSchemas(project);
+                outputMessage = "The project schemas have been saved to: " + result.getAbsolutePath();
             } catch (Exception e) {
                 e.printStackTrace();
                 outputMessage = "An error ocurred while discovering the schemas: " + e.getMessage();

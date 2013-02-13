@@ -131,21 +131,30 @@ public class Util {
     public static List<File> discoverHistorySchemas(final IJavaProject project) throws IOException, GitAPIException,
             InterruptedException, CoreException {
         File currentOutput;
+        File renamedOutput;
         List<File> returnValue;
         List<Ref> projectVersions;
 
         projectVersions = GitUtil.getProjectVersions(project);
         returnValue = new ArrayList<File>(projectVersions.size());
         for (Ref version : projectVersions) {
-            // Checkout this project version
-            GitUtil.checkoutProjectVersion(project, version.getName());
-
             // Analyze project at this version
-            currentOutput = Util.discoverSchemas(project);
+            try {
+                // Checkout this project version
+                GitUtil.checkoutProjectVersion(project, version.getName());
+                currentOutput = Util.discoverSchemas(project);
 
-            // Rename output directory with the version name
-            currentOutput.renameTo(new File(currentOutput.getParentFile(), version.getName().replaceAll("\\W", ".")
-                    + "-" + currentOutput.getName()));
+                // Rename output directory with the version name
+                renamedOutput = new File(currentOutput.getParentFile(), version.getName().replaceAll("\\W", ".") + "-"
+                        + currentOutput.getName());
+                currentOutput.renameTo(renamedOutput);
+                returnValue.add(renamedOutput);
+            } catch (Exception e) {
+                Util.logger.log(
+                        Util.LOGGING_LEVEL,
+                        "Unable to discover schemas for project " + project.getElementName() + " at version "
+                                + version.getName(), e);
+            }
         }
 
         // Return project to the latest version

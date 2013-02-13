@@ -18,6 +18,9 @@
  */
 package fr.imag.exschema.popup.actions;
 
+import java.io.File;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
@@ -69,12 +72,13 @@ public class DiscoverHistoryAction implements IObjectActionDelegate {
      * @see IActionDelegate#run(IAction)
      */
     public void run(IAction action) {
+        List<File> results;
         String outputMessage;
 
         if (project != null) {
             try {
-                Util.discoverHistorySchemas(project);
-                outputMessage = "The project schemas have been discovered";
+                results = Util.discoverHistorySchemas(project);
+                outputMessage = "The following project schemas were discovered: " + results;
             } catch (Exception e) {
                 e.printStackTrace();
                 outputMessage = "An error ocurred while discovering the schemas: " + e.getMessage();
