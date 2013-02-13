@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,10 +48,10 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -65,6 +67,7 @@ import fr.imag.exschema.model.Struct;
 import fr.imag.exschema.mongodb.MongoDBUtil;
 import fr.imag.exschema.mongodb.SpringDocumentRepositoryVisitor;
 import fr.imag.exschema.neo4j.Neo4jUtil;
+import fr.imag.exschema.visitor.AnnotationVisitor;
 import fr.imag.exschema.visitor.SpringRepositoryVisitor;
 
 /**
@@ -243,6 +246,40 @@ public class Util {
     }
 
     /**
+     * Analyze classes that are expected by the specified annotationVisitor, as
+     * well as any super class that may match the requirements of such visitor.
+     * 
+     * @param annotationVisitor
+     * @throws CoreException
+     */
+    public static void analyzeAnnotations(final IJavaProject project, final AnnotationVisitor annotationVisitor)
+            throws CoreException {
+        Map<String, IField[]> childEntities;
+
+        // Classes that directly have the expected annotations
+        Util.analyzeJavaProject(project, annotationVisitor);
+
+        // Classes that some of their parents have the expected annotation
+        childEntities = new HashMap<String, IField[]>();
+        for (String macthingClass : annotationVisitor.getEntities().keySet()) {
+            for (IPackageFragment aPackage : Util.getPackageFragments(project)) {
+                if (aPackage.getKind() == IPackageFragmentRoot.K_SOURCE) {
+                    for (ICompilationUnit compilationUnit : aPackage.getCompilationUnits()) {
+                        for (IType type : compilationUnit.getTypes()) {
+                            if ((type.getSuperclassName() != null)
+                                    && (macthingClass.contains(type.getSuperclassName()))) {
+                                childEntities.put(type.getFullyQualifiedName(), type.getFields());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        annotationVisitor.setChildEntities(childEntities);
+    }
+
+    /**
      * Determine whether the specified string is a valid Java variable name.
      * 
      * @param name
@@ -276,7 +313,7 @@ public class Util {
      * @param annotationNames
      * @return
      */
-    public static boolean isExpectedAnnotation(final MarkerAnnotation annotation, String... annotationNames) {
+    public static boolean isExpectedAnnotation(final Annotation annotation, String... annotationNames) {
         boolean returnValue;
         String qualifiedName;
 

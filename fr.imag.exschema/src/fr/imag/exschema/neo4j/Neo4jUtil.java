@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -90,7 +91,7 @@ public class Neo4jUtil implements SchemaFinder {
         returnValue = new ArrayList<Set>();
         entityVisitor = new NodeEntityVisitor();
         relationships = new ArrayList<Relationship>();
-        Util.analyzeJavaProject(project, entityVisitor);
+        Util.analyzeAnnotations(project, entityVisitor);
 
         // Identify relationship entities
         relationshipVisitor = new RelationshipEntityVisitor();
@@ -118,9 +119,15 @@ public class Neo4jUtil implements SchemaFinder {
                     relationshipName = null;
                     if (Neo4jUtil.hasAnnotations(field.modifiers(),
                             "org.springframework.data.neo4j.annotation.RelatedTo",
-                            "org.springframework.data.graph.annotation.RelatedTo")) {
-                        relationshipEndType = field.getType();
-                        relationshipName = Util.getValidName(field.fragments().get(0).toString());
+                            "org.springframework.data.graph.annotation.RelatedTo",
+                            "org.springframework.data.neo4j.annotation.RelatedToVia")) {
+                        if (field.getType().isParameterizedType()) {
+                            relationshipEndType = (Type) ((ParameterizedType) field.getType()).typeArguments().get(0);
+                            relationshipName = Util.getValidName(field.fragments().get(0).toString());
+                        } else {
+                            relationshipEndType = field.getType();
+                            relationshipName = Util.getValidName(field.fragments().get(0).toString());
+                        }
                     }
 
                     // Identify relationships by the use of collections
@@ -154,6 +161,20 @@ public class Neo4jUtil implements SchemaFinder {
                         currentFields.addAttribute(new Attribute("name", field.fragments().get(0).toString()));
                         Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.fragments().get(0));
                     }
+                }
+            }
+
+            // Child entities
+            for (String childNode : entityVisitor.getChildEntities().keySet()) {
+                currentNode = new Struct();
+                currentFields = new Struct();
+                currentNode.addStruct(currentFields);
+                currentGraph.addStruct(currentNode);
+                currentNode.addAttribute(new Attribute("name", childNode));
+                Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "\n--Node: " + childNode);
+                for (IField field : entityVisitor.getChildEntities().get(childNode)) {
+                    currentFields.addAttribute(new Attribute("name", field.getElementName()));
+                    Neo4jUtil.logger.log(Util.LOGGING_LEVEL, "----Field: " + field.getElementName());
                 }
             }
 

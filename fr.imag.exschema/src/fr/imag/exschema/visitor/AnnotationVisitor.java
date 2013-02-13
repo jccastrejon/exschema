@@ -21,9 +21,12 @@ package fr.imag.exschema.visitor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import fr.imag.exschema.Util;
@@ -42,10 +45,16 @@ public abstract class AnnotationVisitor extends ASTVisitor {
     private Map<String, FieldDeclaration[]> entities;
 
     /**
+     * Children of the identified entities.
+     */
+    Map<String, IField[]> childEntities;
+
+    /**
      * Full constructor.
      */
     public AnnotationVisitor() {
         this.entities = new HashMap<String, FieldDeclaration[]>();
+        this.childEntities = new HashMap<String, IField[]>();
     }
 
     /**
@@ -55,11 +64,25 @@ public abstract class AnnotationVisitor extends ASTVisitor {
      */
     protected abstract String[] getExpectedAnnotations();
 
-    /**
-     * Identify classes annotated for Spring-data neo4j.
-     */
     @Override
     public boolean visit(final MarkerAnnotation annotation) {
+        this.doVisit(annotation);
+        return super.visit(annotation);
+    }
+
+    @Override
+    public boolean visit(final NormalAnnotation annotation) {
+        this.doVisit(annotation);
+        return super.visit(annotation);
+    }
+
+    /**
+     * Identify classes annotated for Spring-data neo4j.
+     * 
+     * @param annotation
+     * @return
+     */
+    private void doVisit(final Annotation annotation) {
         String entityName;
         TypeDeclaration nodeDeclaration;
 
@@ -69,7 +92,6 @@ public abstract class AnnotationVisitor extends ASTVisitor {
             entityName = nodeDeclaration.resolveBinding().getQualifiedName();
             entities.put(entityName, nodeDeclaration.getFields());
         }
-        return super.visit(annotation);
     }
 
     /**
@@ -79,5 +101,23 @@ public abstract class AnnotationVisitor extends ASTVisitor {
      */
     public Map<String, FieldDeclaration[]> getEntities() {
         return this.entities;
+    }
+
+    /**
+     * Get the identified child node entities.
+     * 
+     * @return
+     */
+    public Map<String, IField[]> getChildEntities() {
+        return this.childEntities;
+    }
+
+    /**
+     * Set child node entities.
+     * 
+     * @param childEntities
+     */
+    public void setChildEntities(Map<String, IField[]> childEntities) {
+        this.childEntities = childEntities;
     }
 }
