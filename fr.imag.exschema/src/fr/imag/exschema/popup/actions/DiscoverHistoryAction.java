@@ -90,7 +90,7 @@ public class DiscoverHistoryAction implements IObjectActionDelegate {
                     outputMessage = new StringBuilder();
                     try {
                         // Analysis
-                        monitor.beginTask("Exschema", IProgressMonitor.UNKNOWN);
+                        monitor.beginTask("Discovering schemas from Git repository", IProgressMonitor.UNKNOWN);
                         results = Util.discoverHistorySchemas(project, monitor);
 
                         // Result message

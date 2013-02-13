@@ -88,7 +88,7 @@ public class DiscoverAction implements IObjectActionDelegate {
 
                     outputMessage = new StringBuilder();
                     try {
-                        monitor.beginTask("Exschema", IProgressMonitor.UNKNOWN);
+                        monitor.beginTask("Discovering current schemas", IProgressMonitor.UNKNOWN);
                         result = Util.discoverSchemas(project, monitor);
                         outputMessage.append("The project schemas were saved in: " + result.getAbsolutePath());
                         returnValue = Status.OK_STATUS;
