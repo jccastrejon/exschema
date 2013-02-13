@@ -2,7 +2,7 @@
 <feature
       id="fr.imag.exschema.feature"
       label="ExSchema"
-      version="1.0.0.3"
+      version="1.0.0.4"
       provider-name="Université de Grenoble">
 
    <description url="http://code.google.com/p/exschema/">
