@@ -6,10 +6,10 @@ import fr.imag.exschema.xtext.exSchema.Attribute;
 import fr.imag.exschema.xtext.exSchema.Entity;
 import fr.imag.exschema.xtext.exSchema.ExSchemaFactory;
 import fr.imag.exschema.xtext.exSchema.ExSchemaPackage;
-import fr.imag.exschema.xtext.exSchema.Relationship;
+import fr.imag.exschema.xtext.exSchema.Relationship_;
 import fr.imag.exschema.xtext.exSchema.Schema;
-import fr.imag.exschema.xtext.exSchema.Set;
-import fr.imag.exschema.xtext.exSchema.Struct;
+import fr.imag.exschema.xtext.exSchema.Set_;
+import fr.imag.exschema.xtext.exSchema.Struct_;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -45,21 +45,21 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass setEClass = null;
+  private EClass set_EClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass structEClass = null;
+  private EClass struct_EClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass relationshipEClass = null;
+  private EClass relationship_EClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -196,9 +196,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getSet()
+  public EClass getSet_()
   {
-    return setEClass;
+    return set_EClass;
   }
 
   /**
@@ -206,9 +206,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getSet_Entities()
+  public EReference getSet__Entities()
   {
-    return (EReference)setEClass.getEStructuralFeatures().get(0);
+    return (EReference)set_EClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -216,9 +216,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getStruct()
+  public EClass getStruct_()
   {
-    return structEClass;
+    return struct_EClass;
   }
 
   /**
@@ -226,9 +226,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getStruct_Entities()
+  public EReference getStruct__Entities()
   {
-    return (EReference)structEClass.getEStructuralFeatures().get(0);
+    return (EReference)struct_EClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -236,9 +236,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRelationship()
+  public EClass getRelationship_()
   {
-    return relationshipEClass;
+    return relationship_EClass;
   }
 
   /**
@@ -246,9 +246,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRelationship_Start()
+  public EReference getRelationship__Start()
   {
-    return (EReference)relationshipEClass.getEStructuralFeatures().get(0);
+    return (EReference)relationship_EClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -256,9 +256,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRelationship_End()
+  public EReference getRelationship__End()
   {
-    return (EReference)relationshipEClass.getEStructuralFeatures().get(1);
+    return (EReference)relationship_EClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -329,15 +329,15 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
     createEAttribute(entityEClass, ENTITY__NAME);
     createEReference(entityEClass, ENTITY__ATTRIBUTES);
 
-    setEClass = createEClass(SET);
-    createEReference(setEClass, SET__ENTITIES);
+    set_EClass = createEClass(SET_);
+    createEReference(set_EClass, SET___ENTITIES);
 
-    structEClass = createEClass(STRUCT);
-    createEReference(structEClass, STRUCT__ENTITIES);
+    struct_EClass = createEClass(STRUCT_);
+    createEReference(struct_EClass, STRUCT___ENTITIES);
 
-    relationshipEClass = createEClass(RELATIONSHIP);
-    createEReference(relationshipEClass, RELATIONSHIP__START);
-    createEReference(relationshipEClass, RELATIONSHIP__END);
+    relationship_EClass = createEClass(RELATIONSHIP_);
+    createEReference(relationship_EClass, RELATIONSHIP___START);
+    createEReference(relationship_EClass, RELATIONSHIP___END);
 
     attributeEClass = createEClass(ATTRIBUTE);
     createEAttribute(attributeEClass, ATTRIBUTE__NAME);
@@ -373,9 +373,9 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    setEClass.getESuperTypes().add(this.getEntity());
-    structEClass.getESuperTypes().add(this.getEntity());
-    relationshipEClass.getESuperTypes().add(this.getEntity());
+    set_EClass.getESuperTypes().add(this.getEntity());
+    struct_EClass.getESuperTypes().add(this.getEntity());
+    relationship_EClass.getESuperTypes().add(this.getEntity());
 
     // Initialize classes and features; add operations and parameters
     initEClass(schemaEClass, Schema.class, "Schema", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -386,15 +386,15 @@ public class ExSchemaPackageImpl extends EPackageImpl implements ExSchemaPackage
     initEAttribute(getEntity_Name(), ecorePackage.getEString(), "name", null, 0, 1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEntity_Attributes(), this.getAttribute(), null, "attributes", null, 0, -1, Entity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(setEClass, Set.class, "Set", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSet_Entities(), this.getEntity(), null, "entities", null, 0, -1, Set.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(set_EClass, Set_.class, "Set_", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSet__Entities(), this.getEntity(), null, "entities", null, 0, -1, Set_.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(structEClass, Struct.class, "Struct", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getStruct_Entities(), this.getEntity(), null, "entities", null, 0, -1, Struct.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(struct_EClass, Struct_.class, "Struct_", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getStruct__Entities(), this.getEntity(), null, "entities", null, 0, -1, Struct_.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(relationshipEClass, Relationship.class, "Relationship", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRelationship_Start(), this.getEntity(), null, "start", null, 0, 1, Relationship.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRelationship_End(), this.getEntity(), null, "end", null, 0, 1, Relationship.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(relationship_EClass, Relationship_.class, "Relationship_", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRelationship__Start(), this.getEntity(), null, "start", null, 0, 1, Relationship_.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRelationship__End(), this.getEntity(), null, "end", null, 0, 1, Relationship_.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(attributeEClass, Attribute.class, "Attribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttribute_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attribute.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

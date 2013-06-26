@@ -62,29 +62,29 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 	public class EntityElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Entity");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cSetParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cStructParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cRelationshipParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cSet_ParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cStruct_ParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cRelationship_ParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//Entity:
-		//	Set | Struct | Relationship;
+		//	Set_ | Struct_ | Relationship_;
 		public ParserRule getRule() { return rule; }
 
-		//Set | Struct | Relationship
+		//Set_ | Struct_ | Relationship_
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//Set
-		public RuleCall getSetParserRuleCall_0() { return cSetParserRuleCall_0; }
+		//Set_
+		public RuleCall getSet_ParserRuleCall_0() { return cSet_ParserRuleCall_0; }
 
-		//Struct
-		public RuleCall getStructParserRuleCall_1() { return cStructParserRuleCall_1; }
+		//Struct_
+		public RuleCall getStruct_ParserRuleCall_1() { return cStruct_ParserRuleCall_1; }
 
-		//Relationship
-		public RuleCall getRelationshipParserRuleCall_2() { return cRelationshipParserRuleCall_2; }
+		//Relationship_
+		public RuleCall getRelationship_ParserRuleCall_2() { return cRelationship_ParserRuleCall_2; }
 	}
 
-	public class SetElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Set");
+	public class Set_Elements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Set_");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cSetKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
@@ -100,7 +100,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEntitiesEntityParserRuleCall_3_1_0 = (RuleCall)cEntitiesAssignment_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		
-		//Set:
+		//Set_:
 		//	"Set" name=ID ("[" attributes+=Attribute* "]")? ("{" entities+=Entity* "}")?;
 		public ParserRule getRule() { return rule; }
 
@@ -147,8 +147,8 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_3_2() { return cRightCurlyBracketKeyword_3_2; }
 	}
 
-	public class StructElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Struct");
+	public class Struct_Elements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Struct_");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cStructKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
@@ -164,7 +164,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEntitiesEntityParserRuleCall_3_1_0 = (RuleCall)cEntitiesAssignment_3_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		
-		//Struct:
+		//Struct_:
 		//	"Struct" name=ID ("[" attributes+=Attribute* "]")? ("{" entities+=Entity* "}")?;
 		public ParserRule getRule() { return rule; }
 
@@ -211,8 +211,8 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_3_2() { return cRightCurlyBracketKeyword_3_2; }
 	}
 
-	public class RelationshipElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Relationship");
+	public class Relationship_Elements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Relationship_");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cRelationshipKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
@@ -234,7 +234,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEndEntityParserRuleCall_3_6_0 = (RuleCall)cEndAssignment_3_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_3_7 = (Keyword)cGroup_3.eContents().get(7);
 		
-		//Relationship:
+		//Relationship_:
 		//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=Entity "end" "=" end=Entity "}")?;
 		public ParserRule getRule() { return rule; }
 
@@ -334,9 +334,9 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private SchemaElements pSchema;
 	private EntityElements pEntity;
-	private SetElements pSet;
-	private StructElements pStruct;
-	private RelationshipElements pRelationship;
+	private Set_Elements pSet_;
+	private Struct_Elements pStruct_;
+	private Relationship_Elements pRelationship_;
 	private AttributeElements pAttribute;
 	
 	private final Grammar grammar;
@@ -388,7 +388,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Entity:
-	//	Set | Struct | Relationship;
+	//	Set_ | Struct_ | Relationship_;
 	public EntityElements getEntityAccess() {
 		return (pEntity != null) ? pEntity : (pEntity = new EntityElements());
 	}
@@ -397,34 +397,34 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		return getEntityAccess().getRule();
 	}
 
-	//Set:
+	//Set_:
 	//	"Set" name=ID ("[" attributes+=Attribute* "]")? ("{" entities+=Entity* "}")?;
-	public SetElements getSetAccess() {
-		return (pSet != null) ? pSet : (pSet = new SetElements());
+	public Set_Elements getSet_Access() {
+		return (pSet_ != null) ? pSet_ : (pSet_ = new Set_Elements());
 	}
 	
-	public ParserRule getSetRule() {
-		return getSetAccess().getRule();
+	public ParserRule getSet_Rule() {
+		return getSet_Access().getRule();
 	}
 
-	//Struct:
+	//Struct_:
 	//	"Struct" name=ID ("[" attributes+=Attribute* "]")? ("{" entities+=Entity* "}")?;
-	public StructElements getStructAccess() {
-		return (pStruct != null) ? pStruct : (pStruct = new StructElements());
+	public Struct_Elements getStruct_Access() {
+		return (pStruct_ != null) ? pStruct_ : (pStruct_ = new Struct_Elements());
 	}
 	
-	public ParserRule getStructRule() {
-		return getStructAccess().getRule();
+	public ParserRule getStruct_Rule() {
+		return getStruct_Access().getRule();
 	}
 
-	//Relationship:
+	//Relationship_:
 	//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=Entity "end" "=" end=Entity "}")?;
-	public RelationshipElements getRelationshipAccess() {
-		return (pRelationship != null) ? pRelationship : (pRelationship = new RelationshipElements());
+	public Relationship_Elements getRelationship_Access() {
+		return (pRelationship_ != null) ? pRelationship_ : (pRelationship_ = new Relationship_Elements());
 	}
 	
-	public ParserRule getRelationshipRule() {
-		return getRelationshipAccess().getRule();
+	public ParserRule getRelationship_Rule() {
+		return getRelationship_Access().getRule();
 	}
 
 	//Attribute:

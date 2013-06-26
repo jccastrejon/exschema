@@ -20,10 +20,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: exSchema,
- exSchema.impl,
- exSchema.util,
- fr.imag.exschema.xtext,
+Export-Package: fr.imag.exschema.xtext,
  fr.imag.exschema.xtext.exSchema,
  fr.imag.exschema.xtext.exSchema.impl,
  fr.imag.exschema.xtext.exSchema.util,

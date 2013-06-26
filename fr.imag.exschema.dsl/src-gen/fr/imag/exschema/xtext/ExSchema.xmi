@@ -31,9 +31,9 @@
         <elements xsi:type="xtext:RuleCall" rule="/0/@rules.4"/>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="Set">
+    <rules xsi:type="xtext:ParserRule" name="Set_">
       <type metamodel="/0/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Set"/>
+        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Set_"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="Set"/>
@@ -56,9 +56,9 @@
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="Struct">
+    <rules xsi:type="xtext:ParserRule" name="Struct_">
       <type metamodel="/0/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Struct"/>
+        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Struct_"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="Struct"/>
@@ -81,9 +81,9 @@
         </elements>
       </alternatives>
     </rules>
-    <rules xsi:type="xtext:ParserRule" name="Relationship">
+    <rules xsi:type="xtext:ParserRule" name="Relationship_">
       <type metamodel="/0/@metamodelDeclarations.0">
-        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Relationship"/>
+        <classifier xsi:type="ecore:EClass" href="http://lig.imag.fr/dsl/ExSchema#//Relationship_"/>
       </type>
       <alternatives xsi:type="xtext:Group">
         <elements xsi:type="xtext:Keyword" value="Relationship"/>

@@ -4,7 +4,7 @@ package fr.imag.exschema.xtext.exSchema.impl;
 
 import fr.imag.exschema.xtext.exSchema.Entity;
 import fr.imag.exschema.xtext.exSchema.ExSchemaPackage;
-import fr.imag.exschema.xtext.exSchema.Relationship;
+import fr.imag.exschema.xtext.exSchema.Relationship_;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -16,19 +16,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Relationship</b></em>'.
+ * An implementation of the model object '<em><b>Relationship </b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl#getStart <em>Start</em>}</li>
- *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl#getEnd <em>End</em>}</li>
+ *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl#getStart <em>Start</em>}</li>
+ *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl#getEnd <em>End</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class RelationshipImpl extends EntityImpl implements Relationship
+public class Relationship_Impl extends EntityImpl implements Relationship_
 {
   /**
    * The cached value of the '{@link #getStart() <em>Start</em>}' containment reference.
@@ -55,7 +55,7 @@ public class RelationshipImpl extends EntityImpl implements Relationship
    * <!-- end-user-doc -->
    * @generated
    */
-  protected RelationshipImpl()
+  protected Relationship_Impl()
   {
     super();
   }
@@ -68,7 +68,7 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   @Override
   protected EClass eStaticClass()
   {
-    return ExSchemaPackage.Literals.RELATIONSHIP;
+    return ExSchemaPackage.Literals.RELATIONSHIP_;
   }
 
   /**
@@ -92,7 +92,7 @@ public class RelationshipImpl extends EntityImpl implements Relationship
     start = newStart;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP__START, oldStart, newStart);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___START, oldStart, newStart);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -109,14 +109,14 @@ public class RelationshipImpl extends EntityImpl implements Relationship
     {
       NotificationChain msgs = null;
       if (start != null)
-        msgs = ((InternalEObject)start).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP__START, null, msgs);
+        msgs = ((InternalEObject)start).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___START, null, msgs);
       if (newStart != null)
-        msgs = ((InternalEObject)newStart).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP__START, null, msgs);
+        msgs = ((InternalEObject)newStart).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___START, null, msgs);
       msgs = basicSetStart(newStart, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP__START, newStart, newStart));
+      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___START, newStart, newStart));
   }
 
   /**
@@ -140,7 +140,7 @@ public class RelationshipImpl extends EntityImpl implements Relationship
     end = newEnd;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP__END, oldEnd, newEnd);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___END, oldEnd, newEnd);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -157,14 +157,14 @@ public class RelationshipImpl extends EntityImpl implements Relationship
     {
       NotificationChain msgs = null;
       if (end != null)
-        msgs = ((InternalEObject)end).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP__END, null, msgs);
+        msgs = ((InternalEObject)end).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___END, null, msgs);
       if (newEnd != null)
-        msgs = ((InternalEObject)newEnd).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP__END, null, msgs);
+        msgs = ((InternalEObject)newEnd).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___END, null, msgs);
       msgs = basicSetEnd(newEnd, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP__END, newEnd, newEnd));
+      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___END, newEnd, newEnd));
   }
 
   /**
@@ -177,9 +177,9 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   {
     switch (featureID)
     {
-      case ExSchemaPackage.RELATIONSHIP__START:
+      case ExSchemaPackage.RELATIONSHIP___START:
         return basicSetStart(null, msgs);
-      case ExSchemaPackage.RELATIONSHIP__END:
+      case ExSchemaPackage.RELATIONSHIP___END:
         return basicSetEnd(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -195,9 +195,9 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   {
     switch (featureID)
     {
-      case ExSchemaPackage.RELATIONSHIP__START:
+      case ExSchemaPackage.RELATIONSHIP___START:
         return getStart();
-      case ExSchemaPackage.RELATIONSHIP__END:
+      case ExSchemaPackage.RELATIONSHIP___END:
         return getEnd();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -213,10 +213,10 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   {
     switch (featureID)
     {
-      case ExSchemaPackage.RELATIONSHIP__START:
+      case ExSchemaPackage.RELATIONSHIP___START:
         setStart((Entity)newValue);
         return;
-      case ExSchemaPackage.RELATIONSHIP__END:
+      case ExSchemaPackage.RELATIONSHIP___END:
         setEnd((Entity)newValue);
         return;
     }
@@ -233,10 +233,10 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   {
     switch (featureID)
     {
-      case ExSchemaPackage.RELATIONSHIP__START:
+      case ExSchemaPackage.RELATIONSHIP___START:
         setStart((Entity)null);
         return;
-      case ExSchemaPackage.RELATIONSHIP__END:
+      case ExSchemaPackage.RELATIONSHIP___END:
         setEnd((Entity)null);
         return;
     }
@@ -253,12 +253,12 @@ public class RelationshipImpl extends EntityImpl implements Relationship
   {
     switch (featureID)
     {
-      case ExSchemaPackage.RELATIONSHIP__START:
+      case ExSchemaPackage.RELATIONSHIP___START:
         return start != null;
-      case ExSchemaPackage.RELATIONSHIP__END:
+      case ExSchemaPackage.RELATIONSHIP___END:
         return end != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //RelationshipImpl
+} //Relationship_Impl

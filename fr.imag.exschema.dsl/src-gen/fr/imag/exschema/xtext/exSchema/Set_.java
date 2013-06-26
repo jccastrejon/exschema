@@ -6,21 +6,21 @@ import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Set</b></em>'.
+ * A representation of the model object '<em><b>Set </b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link fr.imag.exschema.xtext.exSchema.Set#getEntities <em>Entities</em>}</li>
+ *   <li>{@link fr.imag.exschema.xtext.exSchema.Set_#getEntities <em>Entities</em>}</li>
  * </ul>
  * </p>
  *
- * @see fr.imag.exschema.xtext.exSchema.ExSchemaPackage#getSet()
+ * @see fr.imag.exschema.xtext.exSchema.ExSchemaPackage#getSet_()
  * @model
  * @generated
  */
-public interface Set extends Entity
+public interface Set_ extends Entity
 {
   /**
    * Returns the value of the '<em><b>Entities</b></em>' containment reference list.
@@ -32,10 +32,10 @@ public interface Set extends Entity
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Entities</em>' containment reference list.
-   * @see fr.imag.exschema.xtext.exSchema.ExSchemaPackage#getSet_Entities()
+   * @see fr.imag.exschema.xtext.exSchema.ExSchemaPackage#getSet__Entities()
    * @model containment="true"
    * @generated
    */
   EList<Entity> getEntities();
 
-} // Set
+} // Set_

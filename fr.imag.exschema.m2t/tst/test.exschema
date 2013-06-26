@@ -1,0 +1,1 @@
+Set s1 [ attr1 = 'attr1' ] { Set s2 Set s4 }

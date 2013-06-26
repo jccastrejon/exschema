@@ -317,24 +317,24 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEntity"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:141:1: ruleEntity returns [EObject current=null] : (this_Set_0= ruleSet | this_Struct_1= ruleStruct | this_Relationship_2= ruleRelationship ) ;
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:141:1: ruleEntity returns [EObject current=null] : (this_Set__0= ruleSet_ | this_Struct__1= ruleStruct_ | this_Relationship__2= ruleRelationship_ ) ;
     public final EObject ruleEntity() throws RecognitionException {
         EObject current = null;
 
-        EObject this_Set_0 = null;
+        EObject this_Set__0 = null;
 
-        EObject this_Struct_1 = null;
+        EObject this_Struct__1 = null;
 
-        EObject this_Relationship_2 = null;
+        EObject this_Relationship__2 = null;
 
 
          enterRule(); 
             
         try {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:144:28: ( (this_Set_0= ruleSet | this_Struct_1= ruleStruct | this_Relationship_2= ruleRelationship ) )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:145:1: (this_Set_0= ruleSet | this_Struct_1= ruleStruct | this_Relationship_2= ruleRelationship )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:144:28: ( (this_Set__0= ruleSet_ | this_Struct__1= ruleStruct_ | this_Relationship__2= ruleRelationship_ ) )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:145:1: (this_Set__0= ruleSet_ | this_Struct__1= ruleStruct_ | this_Relationship__2= ruleRelationship_ )
             {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:145:1: (this_Set_0= ruleSet | this_Struct_1= ruleStruct | this_Relationship_2= ruleRelationship )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:145:1: (this_Set__0= ruleSet_ | this_Struct__1= ruleStruct_ | this_Relationship__2= ruleRelationship_ )
             int alt4=3;
             switch ( input.LA(1) ) {
             case 13:
@@ -361,54 +361,54 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
             switch (alt4) {
                 case 1 :
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:146:5: this_Set_0= ruleSet
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:146:5: this_Set__0= ruleSet_
                     {
                      
-                            newCompositeNode(grammarAccess.getEntityAccess().getSetParserRuleCall_0()); 
+                            newCompositeNode(grammarAccess.getEntityAccess().getSet_ParserRuleCall_0()); 
                         
-                    pushFollow(FOLLOW_ruleSet_in_ruleEntity274);
-                    this_Set_0=ruleSet();
+                    pushFollow(FOLLOW_ruleSet__in_ruleEntity274);
+                    this_Set__0=ruleSet_();
 
                     state._fsp--;
 
                      
-                            current = this_Set_0; 
+                            current = this_Set__0; 
                             afterParserOrEnumRuleCall();
                         
 
                     }
                     break;
                 case 2 :
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:156:5: this_Struct_1= ruleStruct
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:156:5: this_Struct__1= ruleStruct_
                     {
                      
-                            newCompositeNode(grammarAccess.getEntityAccess().getStructParserRuleCall_1()); 
+                            newCompositeNode(grammarAccess.getEntityAccess().getStruct_ParserRuleCall_1()); 
                         
-                    pushFollow(FOLLOW_ruleStruct_in_ruleEntity301);
-                    this_Struct_1=ruleStruct();
+                    pushFollow(FOLLOW_ruleStruct__in_ruleEntity301);
+                    this_Struct__1=ruleStruct_();
 
                     state._fsp--;
 
                      
-                            current = this_Struct_1; 
+                            current = this_Struct__1; 
                             afterParserOrEnumRuleCall();
                         
 
                     }
                     break;
                 case 3 :
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:166:5: this_Relationship_2= ruleRelationship
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:166:5: this_Relationship__2= ruleRelationship_
                     {
                      
-                            newCompositeNode(grammarAccess.getEntityAccess().getRelationshipParserRuleCall_2()); 
+                            newCompositeNode(grammarAccess.getEntityAccess().getRelationship_ParserRuleCall_2()); 
                         
-                    pushFollow(FOLLOW_ruleRelationship_in_ruleEntity328);
-                    this_Relationship_2=ruleRelationship();
+                    pushFollow(FOLLOW_ruleRelationship__in_ruleEntity328);
+                    this_Relationship__2=ruleRelationship_();
 
                     state._fsp--;
 
                      
-                            current = this_Relationship_2; 
+                            current = this_Relationship__2; 
                             afterParserOrEnumRuleCall();
                         
 
@@ -434,26 +434,26 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleEntity"
 
 
-    // $ANTLR start "entryRuleSet"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:182:1: entryRuleSet returns [EObject current=null] : iv_ruleSet= ruleSet EOF ;
-    public final EObject entryRuleSet() throws RecognitionException {
+    // $ANTLR start "entryRuleSet_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:182:1: entryRuleSet_ returns [EObject current=null] : iv_ruleSet_= ruleSet_ EOF ;
+    public final EObject entryRuleSet_() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleSet = null;
+        EObject iv_ruleSet_ = null;
 
 
         try {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:183:2: (iv_ruleSet= ruleSet EOF )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:184:2: iv_ruleSet= ruleSet EOF
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:183:2: (iv_ruleSet_= ruleSet_ EOF )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:184:2: iv_ruleSet_= ruleSet_ EOF
             {
-             newCompositeNode(grammarAccess.getSetRule()); 
-            pushFollow(FOLLOW_ruleSet_in_entryRuleSet363);
-            iv_ruleSet=ruleSet();
+             newCompositeNode(grammarAccess.getSet_Rule()); 
+            pushFollow(FOLLOW_ruleSet__in_entryRuleSet_363);
+            iv_ruleSet_=ruleSet_();
 
             state._fsp--;
 
-             current =iv_ruleSet; 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSet373); 
+             current =iv_ruleSet_; 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSet_373); 
 
             }
 
@@ -467,12 +467,12 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleSet"
+    // $ANTLR end "entryRuleSet_"
 
 
-    // $ANTLR start "ruleSet"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:191:1: ruleSet returns [EObject current=null] : (otherlv_0= 'Set' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? ) ;
-    public final EObject ruleSet() throws RecognitionException {
+    // $ANTLR start "ruleSet_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:191:1: ruleSet_ returns [EObject current=null] : (otherlv_0= 'Set' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? ) ;
+    public final EObject ruleSet_() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
@@ -495,9 +495,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:195:1: (otherlv_0= 'Set' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:195:3: otherlv_0= 'Set' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )?
             {
-            otherlv_0=(Token)match(input,13,FOLLOW_13_in_ruleSet410); 
+            otherlv_0=(Token)match(input,13,FOLLOW_13_in_ruleSet_410); 
 
-                	newLeafNode(otherlv_0, grammarAccess.getSetAccess().getSetKeyword_0());
+                	newLeafNode(otherlv_0, grammarAccess.getSet_Access().getSetKeyword_0());
                 
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:199:1: ( (lv_name_1_0= RULE_ID ) )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:200:1: (lv_name_1_0= RULE_ID )
@@ -505,13 +505,13 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:200:1: (lv_name_1_0= RULE_ID )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:201:3: lv_name_1_0= RULE_ID
             {
-            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleSet427); 
+            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleSet_427); 
 
-            			newLeafNode(lv_name_1_0, grammarAccess.getSetAccess().getNameIDTerminalRuleCall_1_0()); 
+            			newLeafNode(lv_name_1_0, grammarAccess.getSet_Access().getNameIDTerminalRuleCall_1_0()); 
             		
 
             	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getSetRule());
+            	            current = createModelElement(grammarAccess.getSet_Rule());
             	        }
                    		setWithLastConsumed(
                    			current, 
@@ -536,9 +536,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:217:4: otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']'
                     {
-                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleSet445); 
+                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleSet_445); 
 
-                        	newLeafNode(otherlv_2, grammarAccess.getSetAccess().getLeftSquareBracketKeyword_2_0());
+                        	newLeafNode(otherlv_2, grammarAccess.getSet_Access().getLeftSquareBracketKeyword_2_0());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:221:1: ( (lv_attributes_3_0= ruleAttribute ) )*
                     loop5:
@@ -559,16 +559,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     	    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:223:3: lv_attributes_3_0= ruleAttribute
                     	    {
                     	     
-                    	    	        newCompositeNode(grammarAccess.getSetAccess().getAttributesAttributeParserRuleCall_2_1_0()); 
+                    	    	        newCompositeNode(grammarAccess.getSet_Access().getAttributesAttributeParserRuleCall_2_1_0()); 
                     	    	    
-                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleSet466);
+                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleSet_466);
                     	    lv_attributes_3_0=ruleAttribute();
 
                     	    state._fsp--;
 
 
                     	    	        if (current==null) {
-                    	    	            current = createModelElementForParent(grammarAccess.getSetRule());
+                    	    	            current = createModelElementForParent(grammarAccess.getSet_Rule());
                     	    	        }
                     	           		add(
                     	           			current, 
@@ -589,9 +589,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                         }
                     } while (true);
 
-                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleSet479); 
+                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleSet_479); 
 
-                        	newLeafNode(otherlv_4, grammarAccess.getSetAccess().getRightSquareBracketKeyword_2_2());
+                        	newLeafNode(otherlv_4, grammarAccess.getSet_Access().getRightSquareBracketKeyword_2_2());
                         
 
                     }
@@ -610,9 +610,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:243:5: otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}'
                     {
-                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleSet494); 
+                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleSet_494); 
 
-                        	newLeafNode(otherlv_5, grammarAccess.getSetAccess().getLeftCurlyBracketKeyword_3_0());
+                        	newLeafNode(otherlv_5, grammarAccess.getSet_Access().getLeftCurlyBracketKeyword_3_0());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:247:1: ( (lv_entities_6_0= ruleEntity ) )*
                     loop7:
@@ -633,16 +633,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     	    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:249:3: lv_entities_6_0= ruleEntity
                     	    {
                     	     
-                    	    	        newCompositeNode(grammarAccess.getSetAccess().getEntitiesEntityParserRuleCall_3_1_0()); 
+                    	    	        newCompositeNode(grammarAccess.getSet_Access().getEntitiesEntityParserRuleCall_3_1_0()); 
                     	    	    
-                    	    pushFollow(FOLLOW_ruleEntity_in_ruleSet515);
+                    	    pushFollow(FOLLOW_ruleEntity_in_ruleSet_515);
                     	    lv_entities_6_0=ruleEntity();
 
                     	    state._fsp--;
 
 
                     	    	        if (current==null) {
-                    	    	            current = createModelElementForParent(grammarAccess.getSetRule());
+                    	    	            current = createModelElementForParent(grammarAccess.getSet_Rule());
                     	    	        }
                     	           		add(
                     	           			current, 
@@ -663,9 +663,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                         }
                     } while (true);
 
-                    otherlv_7=(Token)match(input,15,FOLLOW_15_in_ruleSet528); 
+                    otherlv_7=(Token)match(input,15,FOLLOW_15_in_ruleSet_528); 
 
-                        	newLeafNode(otherlv_7, grammarAccess.getSetAccess().getRightCurlyBracketKeyword_3_2());
+                        	newLeafNode(otherlv_7, grammarAccess.getSet_Access().getRightCurlyBracketKeyword_3_2());
                         
 
                     }
@@ -690,29 +690,29 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleSet"
+    // $ANTLR end "ruleSet_"
 
 
-    // $ANTLR start "entryRuleStruct"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:277:1: entryRuleStruct returns [EObject current=null] : iv_ruleStruct= ruleStruct EOF ;
-    public final EObject entryRuleStruct() throws RecognitionException {
+    // $ANTLR start "entryRuleStruct_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:277:1: entryRuleStruct_ returns [EObject current=null] : iv_ruleStruct_= ruleStruct_ EOF ;
+    public final EObject entryRuleStruct_() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleStruct = null;
+        EObject iv_ruleStruct_ = null;
 
 
         try {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:278:2: (iv_ruleStruct= ruleStruct EOF )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:279:2: iv_ruleStruct= ruleStruct EOF
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:278:2: (iv_ruleStruct_= ruleStruct_ EOF )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:279:2: iv_ruleStruct_= ruleStruct_ EOF
             {
-             newCompositeNode(grammarAccess.getStructRule()); 
-            pushFollow(FOLLOW_ruleStruct_in_entryRuleStruct566);
-            iv_ruleStruct=ruleStruct();
+             newCompositeNode(grammarAccess.getStruct_Rule()); 
+            pushFollow(FOLLOW_ruleStruct__in_entryRuleStruct_566);
+            iv_ruleStruct_=ruleStruct_();
 
             state._fsp--;
 
-             current =iv_ruleStruct; 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleStruct576); 
+             current =iv_ruleStruct_; 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleStruct_576); 
 
             }
 
@@ -726,12 +726,12 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleStruct"
+    // $ANTLR end "entryRuleStruct_"
 
 
-    // $ANTLR start "ruleStruct"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:286:1: ruleStruct returns [EObject current=null] : (otherlv_0= 'Struct' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? ) ;
-    public final EObject ruleStruct() throws RecognitionException {
+    // $ANTLR start "ruleStruct_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:286:1: ruleStruct_ returns [EObject current=null] : (otherlv_0= 'Struct' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? ) ;
+    public final EObject ruleStruct_() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
@@ -754,9 +754,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:290:1: (otherlv_0= 'Struct' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )? )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:290:3: otherlv_0= 'Struct' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}' )?
             {
-            otherlv_0=(Token)match(input,16,FOLLOW_16_in_ruleStruct613); 
+            otherlv_0=(Token)match(input,16,FOLLOW_16_in_ruleStruct_613); 
 
-                	newLeafNode(otherlv_0, grammarAccess.getStructAccess().getStructKeyword_0());
+                	newLeafNode(otherlv_0, grammarAccess.getStruct_Access().getStructKeyword_0());
                 
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:294:1: ( (lv_name_1_0= RULE_ID ) )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:295:1: (lv_name_1_0= RULE_ID )
@@ -764,13 +764,13 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:295:1: (lv_name_1_0= RULE_ID )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:296:3: lv_name_1_0= RULE_ID
             {
-            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleStruct630); 
+            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleStruct_630); 
 
-            			newLeafNode(lv_name_1_0, grammarAccess.getStructAccess().getNameIDTerminalRuleCall_1_0()); 
+            			newLeafNode(lv_name_1_0, grammarAccess.getStruct_Access().getNameIDTerminalRuleCall_1_0()); 
             		
 
             	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getStructRule());
+            	            current = createModelElement(grammarAccess.getStruct_Rule());
             	        }
                    		setWithLastConsumed(
                    			current, 
@@ -795,9 +795,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:312:4: otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']'
                     {
-                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleStruct648); 
+                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleStruct_648); 
 
-                        	newLeafNode(otherlv_2, grammarAccess.getStructAccess().getLeftSquareBracketKeyword_2_0());
+                        	newLeafNode(otherlv_2, grammarAccess.getStruct_Access().getLeftSquareBracketKeyword_2_0());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:316:1: ( (lv_attributes_3_0= ruleAttribute ) )*
                     loop9:
@@ -818,16 +818,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     	    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:318:3: lv_attributes_3_0= ruleAttribute
                     	    {
                     	     
-                    	    	        newCompositeNode(grammarAccess.getStructAccess().getAttributesAttributeParserRuleCall_2_1_0()); 
+                    	    	        newCompositeNode(grammarAccess.getStruct_Access().getAttributesAttributeParserRuleCall_2_1_0()); 
                     	    	    
-                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleStruct669);
+                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleStruct_669);
                     	    lv_attributes_3_0=ruleAttribute();
 
                     	    state._fsp--;
 
 
                     	    	        if (current==null) {
-                    	    	            current = createModelElementForParent(grammarAccess.getStructRule());
+                    	    	            current = createModelElementForParent(grammarAccess.getStruct_Rule());
                     	    	        }
                     	           		add(
                     	           			current, 
@@ -848,9 +848,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                         }
                     } while (true);
 
-                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleStruct682); 
+                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleStruct_682); 
 
-                        	newLeafNode(otherlv_4, grammarAccess.getStructAccess().getRightSquareBracketKeyword_2_2());
+                        	newLeafNode(otherlv_4, grammarAccess.getStruct_Access().getRightSquareBracketKeyword_2_2());
                         
 
                     }
@@ -869,9 +869,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:338:5: otherlv_5= '{' ( (lv_entities_6_0= ruleEntity ) )* otherlv_7= '}'
                     {
-                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleStruct697); 
+                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleStruct_697); 
 
-                        	newLeafNode(otherlv_5, grammarAccess.getStructAccess().getLeftCurlyBracketKeyword_3_0());
+                        	newLeafNode(otherlv_5, grammarAccess.getStruct_Access().getLeftCurlyBracketKeyword_3_0());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:342:1: ( (lv_entities_6_0= ruleEntity ) )*
                     loop11:
@@ -892,16 +892,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     	    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:344:3: lv_entities_6_0= ruleEntity
                     	    {
                     	     
-                    	    	        newCompositeNode(grammarAccess.getStructAccess().getEntitiesEntityParserRuleCall_3_1_0()); 
+                    	    	        newCompositeNode(grammarAccess.getStruct_Access().getEntitiesEntityParserRuleCall_3_1_0()); 
                     	    	    
-                    	    pushFollow(FOLLOW_ruleEntity_in_ruleStruct718);
+                    	    pushFollow(FOLLOW_ruleEntity_in_ruleStruct_718);
                     	    lv_entities_6_0=ruleEntity();
 
                     	    state._fsp--;
 
 
                     	    	        if (current==null) {
-                    	    	            current = createModelElementForParent(grammarAccess.getStructRule());
+                    	    	            current = createModelElementForParent(grammarAccess.getStruct_Rule());
                     	    	        }
                     	           		add(
                     	           			current, 
@@ -922,9 +922,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                         }
                     } while (true);
 
-                    otherlv_7=(Token)match(input,15,FOLLOW_15_in_ruleStruct731); 
+                    otherlv_7=(Token)match(input,15,FOLLOW_15_in_ruleStruct_731); 
 
-                        	newLeafNode(otherlv_7, grammarAccess.getStructAccess().getRightCurlyBracketKeyword_3_2());
+                        	newLeafNode(otherlv_7, grammarAccess.getStruct_Access().getRightCurlyBracketKeyword_3_2());
                         
 
                     }
@@ -949,29 +949,29 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleStruct"
+    // $ANTLR end "ruleStruct_"
 
 
-    // $ANTLR start "entryRuleRelationship"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:372:1: entryRuleRelationship returns [EObject current=null] : iv_ruleRelationship= ruleRelationship EOF ;
-    public final EObject entryRuleRelationship() throws RecognitionException {
+    // $ANTLR start "entryRuleRelationship_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:372:1: entryRuleRelationship_ returns [EObject current=null] : iv_ruleRelationship_= ruleRelationship_ EOF ;
+    public final EObject entryRuleRelationship_() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleRelationship = null;
+        EObject iv_ruleRelationship_ = null;
 
 
         try {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:373:2: (iv_ruleRelationship= ruleRelationship EOF )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:374:2: iv_ruleRelationship= ruleRelationship EOF
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:373:2: (iv_ruleRelationship_= ruleRelationship_ EOF )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:374:2: iv_ruleRelationship_= ruleRelationship_ EOF
             {
-             newCompositeNode(grammarAccess.getRelationshipRule()); 
-            pushFollow(FOLLOW_ruleRelationship_in_entryRuleRelationship769);
-            iv_ruleRelationship=ruleRelationship();
+             newCompositeNode(grammarAccess.getRelationship_Rule()); 
+            pushFollow(FOLLOW_ruleRelationship__in_entryRuleRelationship_769);
+            iv_ruleRelationship_=ruleRelationship_();
 
             state._fsp--;
 
-             current =iv_ruleRelationship; 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleRelationship779); 
+             current =iv_ruleRelationship_; 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleRelationship_779); 
 
             }
 
@@ -985,12 +985,12 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleRelationship"
+    // $ANTLR end "entryRuleRelationship_"
 
 
-    // $ANTLR start "ruleRelationship"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:381:1: ruleRelationship returns [EObject current=null] : (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? ) ;
-    public final EObject ruleRelationship() throws RecognitionException {
+    // $ANTLR start "ruleRelationship_"
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:381:1: ruleRelationship_ returns [EObject current=null] : (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? ) ;
+    public final EObject ruleRelationship_() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
@@ -1019,9 +1019,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:1: (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:3: otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )?
             {
-            otherlv_0=(Token)match(input,17,FOLLOW_17_in_ruleRelationship816); 
+            otherlv_0=(Token)match(input,17,FOLLOW_17_in_ruleRelationship_816); 
 
-                	newLeafNode(otherlv_0, grammarAccess.getRelationshipAccess().getRelationshipKeyword_0());
+                	newLeafNode(otherlv_0, grammarAccess.getRelationship_Access().getRelationshipKeyword_0());
                 
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:389:1: ( (lv_name_1_0= RULE_ID ) )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:390:1: (lv_name_1_0= RULE_ID )
@@ -1029,13 +1029,13 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:390:1: (lv_name_1_0= RULE_ID )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:391:3: lv_name_1_0= RULE_ID
             {
-            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleRelationship833); 
+            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleRelationship_833); 
 
-            			newLeafNode(lv_name_1_0, grammarAccess.getRelationshipAccess().getNameIDTerminalRuleCall_1_0()); 
+            			newLeafNode(lv_name_1_0, grammarAccess.getRelationship_Access().getNameIDTerminalRuleCall_1_0()); 
             		
 
             	        if (current==null) {
-            	            current = createModelElement(grammarAccess.getRelationshipRule());
+            	            current = createModelElement(grammarAccess.getRelationship_Rule());
             	        }
                    		setWithLastConsumed(
                    			current, 
@@ -1060,9 +1060,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:407:4: otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']'
                     {
-                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleRelationship851); 
+                    otherlv_2=(Token)match(input,11,FOLLOW_11_in_ruleRelationship_851); 
 
-                        	newLeafNode(otherlv_2, grammarAccess.getRelationshipAccess().getLeftSquareBracketKeyword_2_0());
+                        	newLeafNode(otherlv_2, grammarAccess.getRelationship_Access().getLeftSquareBracketKeyword_2_0());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:411:1: ( (lv_attributes_3_0= ruleAttribute ) )*
                     loop13:
@@ -1083,16 +1083,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     	    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:413:3: lv_attributes_3_0= ruleAttribute
                     	    {
                     	     
-                    	    	        newCompositeNode(grammarAccess.getRelationshipAccess().getAttributesAttributeParserRuleCall_2_1_0()); 
+                    	    	        newCompositeNode(grammarAccess.getRelationship_Access().getAttributesAttributeParserRuleCall_2_1_0()); 
                     	    	    
-                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleRelationship872);
+                    	    pushFollow(FOLLOW_ruleAttribute_in_ruleRelationship_872);
                     	    lv_attributes_3_0=ruleAttribute();
 
                     	    state._fsp--;
 
 
                     	    	        if (current==null) {
-                    	    	            current = createModelElementForParent(grammarAccess.getRelationshipRule());
+                    	    	            current = createModelElementForParent(grammarAccess.getRelationship_Rule());
                     	    	        }
                     	           		add(
                     	           			current, 
@@ -1113,9 +1113,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                         }
                     } while (true);
 
-                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleRelationship885); 
+                    otherlv_4=(Token)match(input,12,FOLLOW_12_in_ruleRelationship_885); 
 
-                        	newLeafNode(otherlv_4, grammarAccess.getRelationshipAccess().getRightSquareBracketKeyword_2_2());
+                        	newLeafNode(otherlv_4, grammarAccess.getRelationship_Access().getRightSquareBracketKeyword_2_2());
                         
 
                     }
@@ -1134,17 +1134,17 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                 case 1 :
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:433:5: otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}'
                     {
-                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleRelationship900); 
+                    otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleRelationship_900); 
 
-                        	newLeafNode(otherlv_5, grammarAccess.getRelationshipAccess().getLeftCurlyBracketKeyword_3_0());
+                        	newLeafNode(otherlv_5, grammarAccess.getRelationship_Access().getLeftCurlyBracketKeyword_3_0());
                         
-                    otherlv_6=(Token)match(input,18,FOLLOW_18_in_ruleRelationship912); 
+                    otherlv_6=(Token)match(input,18,FOLLOW_18_in_ruleRelationship_912); 
 
-                        	newLeafNode(otherlv_6, grammarAccess.getRelationshipAccess().getStartKeyword_3_1());
+                        	newLeafNode(otherlv_6, grammarAccess.getRelationship_Access().getStartKeyword_3_1());
                         
-                    otherlv_7=(Token)match(input,19,FOLLOW_19_in_ruleRelationship924); 
+                    otherlv_7=(Token)match(input,19,FOLLOW_19_in_ruleRelationship_924); 
 
-                        	newLeafNode(otherlv_7, grammarAccess.getRelationshipAccess().getEqualsSignKeyword_3_2());
+                        	newLeafNode(otherlv_7, grammarAccess.getRelationship_Access().getEqualsSignKeyword_3_2());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:445:1: ( (lv_start_8_0= ruleEntity ) )
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:446:1: (lv_start_8_0= ruleEntity )
@@ -1153,16 +1153,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:447:3: lv_start_8_0= ruleEntity
                     {
                      
-                    	        newCompositeNode(grammarAccess.getRelationshipAccess().getStartEntityParserRuleCall_3_3_0()); 
+                    	        newCompositeNode(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); 
                     	    
-                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship945);
+                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship_945);
                     lv_start_8_0=ruleEntity();
 
                     state._fsp--;
 
 
                     	        if (current==null) {
-                    	            current = createModelElementForParent(grammarAccess.getRelationshipRule());
+                    	            current = createModelElementForParent(grammarAccess.getRelationship_Rule());
                     	        }
                            		set(
                            			current, 
@@ -1177,13 +1177,13 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_9=(Token)match(input,20,FOLLOW_20_in_ruleRelationship957); 
+                    otherlv_9=(Token)match(input,20,FOLLOW_20_in_ruleRelationship_957); 
 
-                        	newLeafNode(otherlv_9, grammarAccess.getRelationshipAccess().getEndKeyword_3_4());
+                        	newLeafNode(otherlv_9, grammarAccess.getRelationship_Access().getEndKeyword_3_4());
                         
-                    otherlv_10=(Token)match(input,19,FOLLOW_19_in_ruleRelationship969); 
+                    otherlv_10=(Token)match(input,19,FOLLOW_19_in_ruleRelationship_969); 
 
-                        	newLeafNode(otherlv_10, grammarAccess.getRelationshipAccess().getEqualsSignKeyword_3_5());
+                        	newLeafNode(otherlv_10, grammarAccess.getRelationship_Access().getEqualsSignKeyword_3_5());
                         
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:471:1: ( (lv_end_11_0= ruleEntity ) )
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:472:1: (lv_end_11_0= ruleEntity )
@@ -1192,16 +1192,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
                     // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:473:3: lv_end_11_0= ruleEntity
                     {
                      
-                    	        newCompositeNode(grammarAccess.getRelationshipAccess().getEndEntityParserRuleCall_3_6_0()); 
+                    	        newCompositeNode(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); 
                     	    
-                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship990);
+                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship_990);
                     lv_end_11_0=ruleEntity();
 
                     state._fsp--;
 
 
                     	        if (current==null) {
-                    	            current = createModelElementForParent(grammarAccess.getRelationshipRule());
+                    	            current = createModelElementForParent(grammarAccess.getRelationship_Rule());
                     	        }
                            		set(
                            			current, 
@@ -1216,9 +1216,9 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_12=(Token)match(input,15,FOLLOW_15_in_ruleRelationship1002); 
+                    otherlv_12=(Token)match(input,15,FOLLOW_15_in_ruleRelationship_1002); 
 
-                        	newLeafNode(otherlv_12, grammarAccess.getRelationshipAccess().getRightCurlyBracketKeyword_3_7());
+                        	newLeafNode(otherlv_12, grammarAccess.getRelationship_Access().getRightCurlyBracketKeyword_3_7());
                         
 
                     }
@@ -1243,7 +1243,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleRelationship"
+    // $ANTLR end "ruleRelationship_"
 
 
     // $ANTLR start "entryRuleAttribute"
@@ -1388,44 +1388,44 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_ruleEntity_in_ruleSchema180 = new BitSet(new long[]{0x0000000000032002L});
     public static final BitSet FOLLOW_ruleEntity_in_entryRuleEntity217 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleEntity227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSet_in_ruleEntity274 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleStruct_in_ruleEntity301 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleRelationship_in_ruleEntity328 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSet_in_entryRuleSet363 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSet373 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_13_in_ruleSet410 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleSet427 = new BitSet(new long[]{0x0000000000004802L});
-    public static final BitSet FOLLOW_11_in_ruleSet445 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_ruleAttribute_in_ruleSet466 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_12_in_ruleSet479 = new BitSet(new long[]{0x0000000000004002L});
-    public static final BitSet FOLLOW_14_in_ruleSet494 = new BitSet(new long[]{0x000000000003A000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleSet515 = new BitSet(new long[]{0x000000000003A000L});
-    public static final BitSet FOLLOW_15_in_ruleSet528 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleStruct_in_entryRuleStruct566 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleStruct576 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_16_in_ruleStruct613 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleStruct630 = new BitSet(new long[]{0x0000000000004802L});
-    public static final BitSet FOLLOW_11_in_ruleStruct648 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_ruleAttribute_in_ruleStruct669 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_12_in_ruleStruct682 = new BitSet(new long[]{0x0000000000004002L});
-    public static final BitSet FOLLOW_14_in_ruleStruct697 = new BitSet(new long[]{0x000000000003A000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleStruct718 = new BitSet(new long[]{0x000000000003A000L});
-    public static final BitSet FOLLOW_15_in_ruleStruct731 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleRelationship_in_entryRuleRelationship769 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleRelationship779 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_17_in_ruleRelationship816 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleRelationship833 = new BitSet(new long[]{0x0000000000004802L});
-    public static final BitSet FOLLOW_11_in_ruleRelationship851 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_ruleAttribute_in_ruleRelationship872 = new BitSet(new long[]{0x0000000000001010L});
-    public static final BitSet FOLLOW_12_in_ruleRelationship885 = new BitSet(new long[]{0x0000000000004002L});
-    public static final BitSet FOLLOW_14_in_ruleRelationship900 = new BitSet(new long[]{0x0000000000040000L});
-    public static final BitSet FOLLOW_18_in_ruleRelationship912 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_ruleRelationship924 = new BitSet(new long[]{0x0000000000032000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship945 = new BitSet(new long[]{0x0000000000100000L});
-    public static final BitSet FOLLOW_20_in_ruleRelationship957 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_ruleRelationship969 = new BitSet(new long[]{0x0000000000032000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship990 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_15_in_ruleRelationship1002 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSet__in_ruleEntity274 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleStruct__in_ruleEntity301 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleRelationship__in_ruleEntity328 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSet__in_entryRuleSet_363 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSet_373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_ruleSet_410 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleSet_427 = new BitSet(new long[]{0x0000000000004802L});
+    public static final BitSet FOLLOW_11_in_ruleSet_445 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_ruleAttribute_in_ruleSet_466 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_12_in_ruleSet_479 = new BitSet(new long[]{0x0000000000004002L});
+    public static final BitSet FOLLOW_14_in_ruleSet_494 = new BitSet(new long[]{0x000000000003A000L});
+    public static final BitSet FOLLOW_ruleEntity_in_ruleSet_515 = new BitSet(new long[]{0x000000000003A000L});
+    public static final BitSet FOLLOW_15_in_ruleSet_528 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleStruct__in_entryRuleStruct_566 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleStruct_576 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_16_in_ruleStruct_613 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleStruct_630 = new BitSet(new long[]{0x0000000000004802L});
+    public static final BitSet FOLLOW_11_in_ruleStruct_648 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_ruleAttribute_in_ruleStruct_669 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_12_in_ruleStruct_682 = new BitSet(new long[]{0x0000000000004002L});
+    public static final BitSet FOLLOW_14_in_ruleStruct_697 = new BitSet(new long[]{0x000000000003A000L});
+    public static final BitSet FOLLOW_ruleEntity_in_ruleStruct_718 = new BitSet(new long[]{0x000000000003A000L});
+    public static final BitSet FOLLOW_15_in_ruleStruct_731 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleRelationship__in_entryRuleRelationship_769 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleRelationship_779 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_17_in_ruleRelationship_816 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleRelationship_833 = new BitSet(new long[]{0x0000000000004802L});
+    public static final BitSet FOLLOW_11_in_ruleRelationship_851 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_ruleAttribute_in_ruleRelationship_872 = new BitSet(new long[]{0x0000000000001010L});
+    public static final BitSet FOLLOW_12_in_ruleRelationship_885 = new BitSet(new long[]{0x0000000000004002L});
+    public static final BitSet FOLLOW_14_in_ruleRelationship_900 = new BitSet(new long[]{0x0000000000040000L});
+    public static final BitSet FOLLOW_18_in_ruleRelationship_912 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_ruleRelationship_924 = new BitSet(new long[]{0x0000000000032000L});
+    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship_945 = new BitSet(new long[]{0x0000000000100000L});
+    public static final BitSet FOLLOW_20_in_ruleRelationship_957 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_ruleRelationship_969 = new BitSet(new long[]{0x0000000000032000L});
+    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship_990 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_15_in_ruleRelationship_1002 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleAttribute_in_entryRuleAttribute1040 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleAttribute1050 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_ruleAttribute1092 = new BitSet(new long[]{0x0000000000080000L});

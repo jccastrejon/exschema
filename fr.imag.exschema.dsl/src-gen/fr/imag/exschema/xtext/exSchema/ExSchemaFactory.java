@@ -41,31 +41,31 @@ public interface ExSchemaFactory extends EFactory
   Entity createEntity();
 
   /**
-   * Returns a new object of class '<em>Set</em>'.
+   * Returns a new object of class '<em>Set </em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Set</em>'.
+   * @return a new object of class '<em>Set </em>'.
    * @generated
    */
-  Set createSet();
+  Set_ createSet_();
 
   /**
-   * Returns a new object of class '<em>Struct</em>'.
+   * Returns a new object of class '<em>Struct </em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Struct</em>'.
+   * @return a new object of class '<em>Struct </em>'.
    * @generated
    */
-  Struct createStruct();
+  Struct_ createStruct_();
 
   /**
-   * Returns a new object of class '<em>Relationship</em>'.
+   * Returns a new object of class '<em>Relationship </em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Relationship</em>'.
+   * @return a new object of class '<em>Relationship </em>'.
    * @generated
    */
-  Relationship createRelationship();
+  Relationship_ createRelationship_();
 
   /**
    * Returns a new object of class '<em>Attribute</em>'.

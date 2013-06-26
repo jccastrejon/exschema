@@ -7,8 +7,6 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: exSchema.tests,
- fr.imag.exschema.xtext
 Require-Bundle: org.eclipse.core.runtime,
  fr.imag.exschema.dsl;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,

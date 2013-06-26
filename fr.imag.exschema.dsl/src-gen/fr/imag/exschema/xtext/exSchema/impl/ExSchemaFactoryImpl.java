@@ -66,9 +66,9 @@ public class ExSchemaFactoryImpl extends EFactoryImpl implements ExSchemaFactory
     {
       case ExSchemaPackage.SCHEMA: return createSchema();
       case ExSchemaPackage.ENTITY: return createEntity();
-      case ExSchemaPackage.SET: return createSet();
-      case ExSchemaPackage.STRUCT: return createStruct();
-      case ExSchemaPackage.RELATIONSHIP: return createRelationship();
+      case ExSchemaPackage.SET_: return createSet_();
+      case ExSchemaPackage.STRUCT_: return createStruct_();
+      case ExSchemaPackage.RELATIONSHIP_: return createRelationship_();
       case ExSchemaPackage.ATTRIBUTE: return createAttribute();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -102,10 +102,10 @@ public class ExSchemaFactoryImpl extends EFactoryImpl implements ExSchemaFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Set createSet()
+  public Set_ createSet_()
   {
-    SetImpl set = new SetImpl();
-    return set;
+    Set_Impl set_ = new Set_Impl();
+    return set_;
   }
 
   /**
@@ -113,10 +113,10 @@ public class ExSchemaFactoryImpl extends EFactoryImpl implements ExSchemaFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Struct createStruct()
+  public Struct_ createStruct_()
   {
-    StructImpl struct = new StructImpl();
-    return struct;
+    Struct_Impl struct_ = new Struct_Impl();
+    return struct_;
   }
 
   /**
@@ -124,10 +124,10 @@ public class ExSchemaFactoryImpl extends EFactoryImpl implements ExSchemaFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Relationship createRelationship()
+  public Relationship_ createRelationship_()
   {
-    RelationshipImpl relationship = new RelationshipImpl();
-    return relationship;
+    Relationship_Impl relationship_ = new Relationship_Impl();
+    return relationship_;
   }
 
   /**

@@ -4,7 +4,7 @@ package fr.imag.exschema.xtext.exSchema.impl;
 
 import fr.imag.exschema.xtext.exSchema.Entity;
 import fr.imag.exschema.xtext.exSchema.ExSchemaPackage;
-import fr.imag.exschema.xtext.exSchema.Set;
+import fr.imag.exschema.xtext.exSchema.Struct_;
 
 import java.util.Collection;
 
@@ -20,18 +20,18 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Set</b></em>'.
+ * An implementation of the model object '<em><b>Struct </b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.SetImpl#getEntities <em>Entities</em>}</li>
+ *   <li>{@link fr.imag.exschema.xtext.exSchema.impl.Struct_Impl#getEntities <em>Entities</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class SetImpl extends EntityImpl implements Set
+public class Struct_Impl extends EntityImpl implements Struct_
 {
   /**
    * The cached value of the '{@link #getEntities() <em>Entities</em>}' containment reference list.
@@ -48,7 +48,7 @@ public class SetImpl extends EntityImpl implements Set
    * <!-- end-user-doc -->
    * @generated
    */
-  protected SetImpl()
+  protected Struct_Impl()
   {
     super();
   }
@@ -61,7 +61,7 @@ public class SetImpl extends EntityImpl implements Set
   @Override
   protected EClass eStaticClass()
   {
-    return ExSchemaPackage.Literals.SET;
+    return ExSchemaPackage.Literals.STRUCT_;
   }
 
   /**
@@ -73,7 +73,7 @@ public class SetImpl extends EntityImpl implements Set
   {
     if (entities == null)
     {
-      entities = new EObjectContainmentEList<Entity>(Entity.class, this, ExSchemaPackage.SET__ENTITIES);
+      entities = new EObjectContainmentEList<Entity>(Entity.class, this, ExSchemaPackage.STRUCT___ENTITIES);
     }
     return entities;
   }
@@ -88,7 +88,7 @@ public class SetImpl extends EntityImpl implements Set
   {
     switch (featureID)
     {
-      case ExSchemaPackage.SET__ENTITIES:
+      case ExSchemaPackage.STRUCT___ENTITIES:
         return ((InternalEList<?>)getEntities()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -104,7 +104,7 @@ public class SetImpl extends EntityImpl implements Set
   {
     switch (featureID)
     {
-      case ExSchemaPackage.SET__ENTITIES:
+      case ExSchemaPackage.STRUCT___ENTITIES:
         return getEntities();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -121,7 +121,7 @@ public class SetImpl extends EntityImpl implements Set
   {
     switch (featureID)
     {
-      case ExSchemaPackage.SET__ENTITIES:
+      case ExSchemaPackage.STRUCT___ENTITIES:
         getEntities().clear();
         getEntities().addAll((Collection<? extends Entity>)newValue);
         return;
@@ -139,7 +139,7 @@ public class SetImpl extends EntityImpl implements Set
   {
     switch (featureID)
     {
-      case ExSchemaPackage.SET__ENTITIES:
+      case ExSchemaPackage.STRUCT___ENTITIES:
         getEntities().clear();
         return;
     }
@@ -156,10 +156,10 @@ public class SetImpl extends EntityImpl implements Set
   {
     switch (featureID)
     {
-      case ExSchemaPackage.SET__ENTITIES:
+      case ExSchemaPackage.STRUCT___ENTITIES:
         return entities != null && !entities.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //SetImpl
+} //Struct_Impl

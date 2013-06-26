@@ -6,15 +6,15 @@ Schema:
 	('[' (attributes+=Attribute)* ']')? entities+=Entity*;
 
 Entity:
-	Set | Struct | Relationship;
+	Set_ | Struct_ | Relationship_;
 
-Set:
+Set_:
 	'Set' name=ID ('[' (attributes+=Attribute)* ']')? ('{' entities+=Entity* '}')?;
 
-Struct:
+Struct_:
 	'Struct' name=ID ('[' (attributes+=Attribute)* ']')? ('{' entities+=Entity* '}')?;
 
-Relationship:
+Relationship_:
 	'Relationship' name=ID ('[' (attributes+=Attribute)* ']')? ('{' 'start' '=' start=Entity 'end' '=' end=Entity '}')?;
 
 Attribute:

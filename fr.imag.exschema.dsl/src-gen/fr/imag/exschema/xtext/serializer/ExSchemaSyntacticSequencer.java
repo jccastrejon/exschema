@@ -18,22 +18,22 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected ExSchemaGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_Relationship___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_Relationship____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
 	protected AbstractElementAlias match_Schema___LeftSquareBracketKeyword_0_0_RightSquareBracketKeyword_0_2__q;
-	protected AbstractElementAlias match_Set___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
-	protected AbstractElementAlias match_Set___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
-	protected AbstractElementAlias match_Struct___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
-	protected AbstractElementAlias match_Struct___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_Set____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
+	protected AbstractElementAlias match_Set____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
+	protected AbstractElementAlias match_Struct____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q;
+	protected AbstractElementAlias match_Struct____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (ExSchemaGrammarAccess) access;
-		match_Relationship___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getRelationshipAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getRelationshipAccess().getRightSquareBracketKeyword_2_2()));
+		match_Relationship____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getRelationship_Access().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getRelationship_Access().getRightSquareBracketKeyword_2_2()));
 		match_Schema___LeftSquareBracketKeyword_0_0_RightSquareBracketKeyword_0_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSchemaAccess().getLeftSquareBracketKeyword_0_0()), new TokenAlias(false, false, grammarAccess.getSchemaAccess().getRightSquareBracketKeyword_0_2()));
-		match_Set___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSetAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getSetAccess().getRightCurlyBracketKeyword_3_2()));
-		match_Set___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSetAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getSetAccess().getRightSquareBracketKeyword_2_2()));
-		match_Struct___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getStructAccess().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getStructAccess().getRightCurlyBracketKeyword_3_2()));
-		match_Struct___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getStructAccess().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getStructAccess().getRightSquareBracketKeyword_2_2()));
+		match_Set____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSet_Access().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getSet_Access().getRightCurlyBracketKeyword_3_2()));
+		match_Set____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getSet_Access().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getSet_Access().getRightSquareBracketKeyword_2_2()));
+		match_Struct____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getStruct_Access().getLeftCurlyBracketKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getStruct_Access().getRightCurlyBracketKeyword_3_2()));
+		match_Struct____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getStruct_Access().getLeftSquareBracketKeyword_2_0()), new TokenAlias(false, false, grammarAccess.getStruct_Access().getRightSquareBracketKeyword_2_2()));
 	}
 	
 	@Override
@@ -48,18 +48,18 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if(match_Relationship___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
-				emit_Relationship___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if(match_Relationship____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_Relationship____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Schema___LeftSquareBracketKeyword_0_0_RightSquareBracketKeyword_0_2__q.equals(syntax))
 				emit_Schema___LeftSquareBracketKeyword_0_0_RightSquareBracketKeyword_0_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Set___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_Set___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Set___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
-				emit_Set___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Struct___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
-				emit_Struct___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Struct___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
-				emit_Struct___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Set____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
+				emit_Set____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Set____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_Set____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Struct____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q.equals(syntax))
+				emit_Struct____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Struct____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q.equals(syntax))
+				emit_Struct____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -68,7 +68,7 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('[' ']')?
 	 */
-	protected void emit_Relationship___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Relationship____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -84,7 +84,7 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('{' '}')?
 	 */
-	protected void emit_Set___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Set____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -92,7 +92,7 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('[' ']')?
 	 */
-	protected void emit_Set___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Set____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -100,7 +100,7 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('{' '}')?
 	 */
-	protected void emit_Struct___LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Struct____LeftCurlyBracketKeyword_3_0_RightCurlyBracketKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -108,7 +108,7 @@ public class ExSchemaSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * Syntax:
 	 *     ('[' ']')?
 	 */
-	protected void emit_Struct___LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Struct____LeftSquareBracketKeyword_2_0_RightSquareBracketKeyword_2_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

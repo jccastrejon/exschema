@@ -199,7 +199,7 @@ public class Set extends Entity implements GraphvizExporter, RooExporter, DslExp
 
         returnValue = new StringBuilder("\nSet ");
 
-        returnValue.append(System.currentTimeMillis());
+        returnValue.append("set" + System.currentTimeMillis());
         returnValue.append("[ ");
         for (Attribute attribute : this.attributes) {
             returnValue.append(attribute.getDsl());

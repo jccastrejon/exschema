@@ -86,27 +86,27 @@ public class ExSchemaSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ExSchemaPackage.SET:
+      case ExSchemaPackage.SET_:
       {
-        Set set = (Set)theEObject;
-        T result = caseSet(set);
-        if (result == null) result = caseEntity(set);
+        Set_ set_ = (Set_)theEObject;
+        T result = caseSet_(set_);
+        if (result == null) result = caseEntity(set_);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ExSchemaPackage.STRUCT:
+      case ExSchemaPackage.STRUCT_:
       {
-        Struct struct = (Struct)theEObject;
-        T result = caseStruct(struct);
-        if (result == null) result = caseEntity(struct);
+        Struct_ struct_ = (Struct_)theEObject;
+        T result = caseStruct_(struct_);
+        if (result == null) result = caseEntity(struct_);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ExSchemaPackage.RELATIONSHIP:
+      case ExSchemaPackage.RELATIONSHIP_:
       {
-        Relationship relationship = (Relationship)theEObject;
-        T result = caseRelationship(relationship);
-        if (result == null) result = caseEntity(relationship);
+        Relationship_ relationship_ = (Relationship_)theEObject;
+        T result = caseRelationship_(relationship_);
+        if (result == null) result = caseEntity(relationship_);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -154,49 +154,49 @@ public class ExSchemaSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Set</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Set </em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Set</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Set </em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseSet(Set object)
+  public T caseSet_(Set_ object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Struct</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Struct </em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Struct</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Struct </em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseStruct(Struct object)
+  public T caseStruct_(Struct_ object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Relationship</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Relationship </em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Relationship</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Relationship </em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseRelationship(Relationship object)
+  public T caseRelationship_(Relationship_ object)
   {
     return null;
   }

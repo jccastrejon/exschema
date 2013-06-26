@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import fr.imag.exschema.xtext.exSchema.Attribute;
 import fr.imag.exschema.xtext.exSchema.ExSchemaPackage;
-import fr.imag.exschema.xtext.exSchema.Relationship;
+import fr.imag.exschema.xtext.exSchema.Relationship_;
 import fr.imag.exschema.xtext.exSchema.Schema;
-import fr.imag.exschema.xtext.exSchema.Set;
-import fr.imag.exschema.xtext.exSchema.Struct;
+import fr.imag.exschema.xtext.exSchema.Set_;
+import fr.imag.exschema.xtext.exSchema.Struct_;
 import fr.imag.exschema.xtext.services.ExSchemaGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.acceptor.ISemanticSequenceAcceptor;
@@ -35,10 +35,10 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 					return; 
 				}
 				else break;
-			case ExSchemaPackage.RELATIONSHIP:
+			case ExSchemaPackage.RELATIONSHIP_:
 				if(context == grammarAccess.getEntityRule() ||
-				   context == grammarAccess.getRelationshipRule()) {
-					sequence_Relationship(context, (Relationship) semanticObject); 
+				   context == grammarAccess.getRelationship_Rule()) {
+					sequence_Relationship_(context, (Relationship_) semanticObject); 
 					return; 
 				}
 				else break;
@@ -48,17 +48,17 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 					return; 
 				}
 				else break;
-			case ExSchemaPackage.SET:
+			case ExSchemaPackage.SET_:
 				if(context == grammarAccess.getEntityRule() ||
-				   context == grammarAccess.getSetRule()) {
-					sequence_Set(context, (Set) semanticObject); 
+				   context == grammarAccess.getSet_Rule()) {
+					sequence_Set_(context, (Set_) semanticObject); 
 					return; 
 				}
 				else break;
-			case ExSchemaPackage.STRUCT:
+			case ExSchemaPackage.STRUCT_:
 				if(context == grammarAccess.getEntityRule() ||
-				   context == grammarAccess.getStructRule()) {
-					sequence_Struct(context, (Struct) semanticObject); 
+				   context == grammarAccess.getStruct_Rule()) {
+					sequence_Struct_(context, (Struct_) semanticObject); 
 					return; 
 				}
 				else break;
@@ -89,7 +89,7 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 * Constraint:
 	 *     (name=ID attributes+=Attribute* (start=Entity end=Entity)?)
 	 */
-	protected void sequence_Relationship(EObject context, Relationship semanticObject) {
+	protected void sequence_Relationship_(EObject context, Relationship_ semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -107,7 +107,7 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 * Constraint:
 	 *     (name=ID attributes+=Attribute* entities+=Entity*)
 	 */
-	protected void sequence_Set(EObject context, Set semanticObject) {
+	protected void sequence_Set_(EObject context, Set_ semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -116,7 +116,7 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	 * Constraint:
 	 *     (name=ID attributes+=Attribute* entities+=Entity*)
 	 */
-	protected void sequence_Struct(EObject context, Struct semanticObject) {
+	protected void sequence_Struct_(EObject context, Struct_ semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 }

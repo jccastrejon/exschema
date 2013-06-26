@@ -131,14 +131,14 @@ public interface ExSchemaPackage extends EPackage
   int ENTITY_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.SetImpl <em>Set</em>}' class.
+   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.Set_Impl <em>Set </em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see fr.imag.exschema.xtext.exSchema.impl.SetImpl
-   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getSet()
+   * @see fr.imag.exschema.xtext.exSchema.impl.Set_Impl
+   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getSet_()
    * @generated
    */
-  int SET = 2;
+  int SET_ = 2;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -147,7 +147,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SET__NAME = ENTITY__NAME;
+  int SET___NAME = ENTITY__NAME;
 
   /**
    * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -156,7 +156,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SET__ATTRIBUTES = ENTITY__ATTRIBUTES;
+  int SET___ATTRIBUTES = ENTITY__ATTRIBUTES;
 
   /**
    * The feature id for the '<em><b>Entities</b></em>' containment reference list.
@@ -165,26 +165,26 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SET__ENTITIES = ENTITY_FEATURE_COUNT + 0;
+  int SET___ENTITIES = ENTITY_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Set</em>' class.
+   * The number of structural features of the '<em>Set </em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SET_FEATURE_COUNT = ENTITY_FEATURE_COUNT + 1;
+  int SET__FEATURE_COUNT = ENTITY_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.StructImpl <em>Struct</em>}' class.
+   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.Struct_Impl <em>Struct </em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see fr.imag.exschema.xtext.exSchema.impl.StructImpl
-   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getStruct()
+   * @see fr.imag.exschema.xtext.exSchema.impl.Struct_Impl
+   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getStruct_()
    * @generated
    */
-  int STRUCT = 3;
+  int STRUCT_ = 3;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -193,7 +193,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STRUCT__NAME = ENTITY__NAME;
+  int STRUCT___NAME = ENTITY__NAME;
 
   /**
    * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -202,7 +202,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STRUCT__ATTRIBUTES = ENTITY__ATTRIBUTES;
+  int STRUCT___ATTRIBUTES = ENTITY__ATTRIBUTES;
 
   /**
    * The feature id for the '<em><b>Entities</b></em>' containment reference list.
@@ -211,26 +211,26 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STRUCT__ENTITIES = ENTITY_FEATURE_COUNT + 0;
+  int STRUCT___ENTITIES = ENTITY_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Struct</em>' class.
+   * The number of structural features of the '<em>Struct </em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int STRUCT_FEATURE_COUNT = ENTITY_FEATURE_COUNT + 1;
+  int STRUCT__FEATURE_COUNT = ENTITY_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl <em>Relationship</em>}' class.
+   * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl <em>Relationship </em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl
-   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getRelationship()
+   * @see fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl
+   * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getRelationship_()
    * @generated
    */
-  int RELATIONSHIP = 4;
+  int RELATIONSHIP_ = 4;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -239,7 +239,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RELATIONSHIP__NAME = ENTITY__NAME;
+  int RELATIONSHIP___NAME = ENTITY__NAME;
 
   /**
    * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
@@ -248,7 +248,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RELATIONSHIP__ATTRIBUTES = ENTITY__ATTRIBUTES;
+  int RELATIONSHIP___ATTRIBUTES = ENTITY__ATTRIBUTES;
 
   /**
    * The feature id for the '<em><b>Start</b></em>' containment reference.
@@ -257,7 +257,7 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RELATIONSHIP__START = ENTITY_FEATURE_COUNT + 0;
+  int RELATIONSHIP___START = ENTITY_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>End</b></em>' containment reference.
@@ -266,16 +266,16 @@ public interface ExSchemaPackage extends EPackage
    * @generated
    * @ordered
    */
-  int RELATIONSHIP__END = ENTITY_FEATURE_COUNT + 1;
+  int RELATIONSHIP___END = ENTITY_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the '<em>Relationship</em>' class.
+   * The number of structural features of the '<em>Relationship </em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RELATIONSHIP_FEATURE_COUNT = ENTITY_FEATURE_COUNT + 2;
+  int RELATIONSHIP__FEATURE_COUNT = ENTITY_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link fr.imag.exschema.xtext.exSchema.impl.AttributeImpl <em>Attribute</em>}' class.
@@ -380,78 +380,78 @@ public interface ExSchemaPackage extends EPackage
   EReference getEntity_Attributes();
 
   /**
-   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Set <em>Set</em>}'.
+   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Set_ <em>Set </em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Set</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Set
+   * @return the meta object for class '<em>Set </em>'.
+   * @see fr.imag.exschema.xtext.exSchema.Set_
    * @generated
    */
-  EClass getSet();
+  EClass getSet_();
 
   /**
-   * Returns the meta object for the containment reference list '{@link fr.imag.exschema.xtext.exSchema.Set#getEntities <em>Entities</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Entities</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Set#getEntities()
-   * @see #getSet()
-   * @generated
-   */
-  EReference getSet_Entities();
-
-  /**
-   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Struct <em>Struct</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Struct</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Struct
-   * @generated
-   */
-  EClass getStruct();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link fr.imag.exschema.xtext.exSchema.Struct#getEntities <em>Entities</em>}'.
+   * Returns the meta object for the containment reference list '{@link fr.imag.exschema.xtext.exSchema.Set_#getEntities <em>Entities</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Entities</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Struct#getEntities()
-   * @see #getStruct()
+   * @see fr.imag.exschema.xtext.exSchema.Set_#getEntities()
+   * @see #getSet_()
    * @generated
    */
-  EReference getStruct_Entities();
+  EReference getSet__Entities();
 
   /**
-   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Relationship <em>Relationship</em>}'.
+   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Struct_ <em>Struct </em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Relationship</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Relationship
+   * @return the meta object for class '<em>Struct </em>'.
+   * @see fr.imag.exschema.xtext.exSchema.Struct_
    * @generated
    */
-  EClass getRelationship();
+  EClass getStruct_();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship#getStart <em>Start</em>}'.
+   * Returns the meta object for the containment reference list '{@link fr.imag.exschema.xtext.exSchema.Struct_#getEntities <em>Entities</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Entities</em>'.
+   * @see fr.imag.exschema.xtext.exSchema.Struct_#getEntities()
+   * @see #getStruct_()
+   * @generated
+   */
+  EReference getStruct__Entities();
+
+  /**
+   * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Relationship_ <em>Relationship </em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Relationship </em>'.
+   * @see fr.imag.exschema.xtext.exSchema.Relationship_
+   * @generated
+   */
+  EClass getRelationship_();
+
+  /**
+   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getStart <em>Start</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Start</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Relationship#getStart()
-   * @see #getRelationship()
+   * @see fr.imag.exschema.xtext.exSchema.Relationship_#getStart()
+   * @see #getRelationship_()
    * @generated
    */
-  EReference getRelationship_Start();
+  EReference getRelationship__Start();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship#getEnd <em>End</em>}'.
+   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getEnd <em>End</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>End</em>'.
-   * @see fr.imag.exschema.xtext.exSchema.Relationship#getEnd()
-   * @see #getRelationship()
+   * @see fr.imag.exschema.xtext.exSchema.Relationship_#getEnd()
+   * @see #getRelationship_()
    * @generated
    */
-  EReference getRelationship_End();
+  EReference getRelationship__End();
 
   /**
    * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Attribute <em>Attribute</em>}'.
@@ -561,14 +561,14 @@ public interface ExSchemaPackage extends EPackage
     EReference ENTITY__ATTRIBUTES = eINSTANCE.getEntity_Attributes();
 
     /**
-     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.SetImpl <em>Set</em>}' class.
+     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.Set_Impl <em>Set </em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see fr.imag.exschema.xtext.exSchema.impl.SetImpl
-     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getSet()
+     * @see fr.imag.exschema.xtext.exSchema.impl.Set_Impl
+     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getSet_()
      * @generated
      */
-    EClass SET = eINSTANCE.getSet();
+    EClass SET_ = eINSTANCE.getSet_();
 
     /**
      * The meta object literal for the '<em><b>Entities</b></em>' containment reference list feature.
@@ -576,17 +576,17 @@ public interface ExSchemaPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SET__ENTITIES = eINSTANCE.getSet_Entities();
+    EReference SET___ENTITIES = eINSTANCE.getSet__Entities();
 
     /**
-     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.StructImpl <em>Struct</em>}' class.
+     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.Struct_Impl <em>Struct </em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see fr.imag.exschema.xtext.exSchema.impl.StructImpl
-     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getStruct()
+     * @see fr.imag.exschema.xtext.exSchema.impl.Struct_Impl
+     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getStruct_()
      * @generated
      */
-    EClass STRUCT = eINSTANCE.getStruct();
+    EClass STRUCT_ = eINSTANCE.getStruct_();
 
     /**
      * The meta object literal for the '<em><b>Entities</b></em>' containment reference list feature.
@@ -594,17 +594,17 @@ public interface ExSchemaPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference STRUCT__ENTITIES = eINSTANCE.getStruct_Entities();
+    EReference STRUCT___ENTITIES = eINSTANCE.getStruct__Entities();
 
     /**
-     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl <em>Relationship</em>}' class.
+     * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl <em>Relationship </em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see fr.imag.exschema.xtext.exSchema.impl.RelationshipImpl
-     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getRelationship()
+     * @see fr.imag.exschema.xtext.exSchema.impl.Relationship_Impl
+     * @see fr.imag.exschema.xtext.exSchema.impl.ExSchemaPackageImpl#getRelationship_()
      * @generated
      */
-    EClass RELATIONSHIP = eINSTANCE.getRelationship();
+    EClass RELATIONSHIP_ = eINSTANCE.getRelationship_();
 
     /**
      * The meta object literal for the '<em><b>Start</b></em>' containment reference feature.
@@ -612,7 +612,7 @@ public interface ExSchemaPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIONSHIP__START = eINSTANCE.getRelationship_Start();
+    EReference RELATIONSHIP___START = eINSTANCE.getRelationship__Start();
 
     /**
      * The meta object literal for the '<em><b>End</b></em>' containment reference feature.
@@ -620,7 +620,7 @@ public interface ExSchemaPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIONSHIP__END = eINSTANCE.getRelationship_End();
+    EReference RELATIONSHIP___END = eINSTANCE.getRelationship__End();
 
     /**
      * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.AttributeImpl <em>Attribute</em>}' class.

@@ -85,19 +85,19 @@ public class ExSchemaAdapterFactory extends AdapterFactoryImpl
         return createEntityAdapter();
       }
       @Override
-      public Adapter caseSet(Set object)
+      public Adapter caseSet_(Set_ object)
       {
-        return createSetAdapter();
+        return createSet_Adapter();
       }
       @Override
-      public Adapter caseStruct(Struct object)
+      public Adapter caseStruct_(Struct_ object)
       {
-        return createStructAdapter();
+        return createStruct_Adapter();
       }
       @Override
-      public Adapter caseRelationship(Relationship object)
+      public Adapter caseRelationship_(Relationship_ object)
       {
-        return createRelationshipAdapter();
+        return createRelationship_Adapter();
       }
       @Override
       public Adapter caseAttribute(Attribute object)
@@ -157,46 +157,46 @@ public class ExSchemaAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Set <em>Set</em>}'.
+   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Set_ <em>Set </em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see fr.imag.exschema.xtext.exSchema.Set
+   * @see fr.imag.exschema.xtext.exSchema.Set_
    * @generated
    */
-  public Adapter createSetAdapter()
+  public Adapter createSet_Adapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Struct <em>Struct</em>}'.
+   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Struct_ <em>Struct </em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see fr.imag.exschema.xtext.exSchema.Struct
+   * @see fr.imag.exschema.xtext.exSchema.Struct_
    * @generated
    */
-  public Adapter createStructAdapter()
+  public Adapter createStruct_Adapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Relationship <em>Relationship</em>}'.
+   * Creates a new adapter for an object of class '{@link fr.imag.exschema.xtext.exSchema.Relationship_ <em>Relationship </em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see fr.imag.exschema.xtext.exSchema.Relationship
+   * @see fr.imag.exschema.xtext.exSchema.Relationship_
    * @generated
    */
-  public Adapter createRelationshipAdapter()
+  public Adapter createRelationship_Adapter()
   {
     return null;
   }

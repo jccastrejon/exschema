@@ -75,7 +75,7 @@ public class Attribute implements GraphvizExporter, RooExporter, DslExporter {
 
     @Override
     public String getDsl() {
-        return " " + this.name + "=" + this.value;
+        return " " + this.name + "='" + this.value + "'";
     }
 
     // Getters-setters

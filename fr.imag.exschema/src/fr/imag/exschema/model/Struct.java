@@ -59,7 +59,7 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter, Dsl
      * Default constructor.
      */
     public Struct() {
-        this.structId = System.currentTimeMillis() + new Random().nextInt(1000) + "";
+        this.structId = "struct" + System.currentTimeMillis() + new Random().nextInt(1000);
         this.sets = new ArrayList<Set>();
         this.structs = new ArrayList<Struct>();
         this.attributes = new ArrayList<Attribute>();

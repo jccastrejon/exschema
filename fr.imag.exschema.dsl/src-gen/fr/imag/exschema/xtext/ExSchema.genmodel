@@ -15,15 +15,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Entity/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Entity/attributes"/>
     </genClasses>
-    <genClasses ecoreClass="ExSchema.ecore#//Set">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Set/entities"/>
+    <genClasses ecoreClass="ExSchema.ecore#//Set_">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Set_/entities"/>
     </genClasses>
-    <genClasses ecoreClass="ExSchema.ecore#//Struct">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Struct/entities"/>
+    <genClasses ecoreClass="ExSchema.ecore#//Struct_">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Struct_/entities"/>
     </genClasses>
-    <genClasses ecoreClass="ExSchema.ecore#//Relationship">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship/start"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship/end"/>
+    <genClasses ecoreClass="ExSchema.ecore#//Relationship_">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship_/start"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship_/end"/>
     </genClasses>
     <genClasses ecoreClass="ExSchema.ecore#//Attribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Attribute/name"/>
