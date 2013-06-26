@@ -1,0 +1,21 @@
+grammar fr.imag.exschema.xtext.ExSchema with org.eclipse.xtext.common.Terminals
+
+generate exSchema "http://lig.imag.fr/dsl/ExSchema"
+
+Schema:
+	('[' (attributes+=Attribute)* ']')? entities+=Entity*;
+
+Entity:
+	Set | Struct | Relationship;
+
+Set:
+	'Set' name=ID ('[' (attributes+=Attribute)* ']')? ('{' entities+=Entity* '}')?;
+
+Struct:
+	'Struct' name=ID ('[' (attributes+=Attribute)* ']')? ('{' entities+=Entity* '}')?;
+
+Relationship:
+	'Relationship' name=ID ('[' (attributes+=Attribute)* ']')? ('{' 'start' '=' start=Entity 'end' '=' end=Entity '}')?;
+
+Attribute:
+	name=ID "=" value=STRING;

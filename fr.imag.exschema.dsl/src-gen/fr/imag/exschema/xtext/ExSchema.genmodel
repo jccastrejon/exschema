@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.imag.exschema.dsl/src-gen" editDirectory="/fr.imag.exschema.dsl.edit/src"
+    editorDirectory="/fr.imag.exschema.dsl.editor/src" modelPluginID="fr.imag.exschema.dsl"
+    forceOverwrite="true" modelName="ExSchema" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="fr.imag.exschema.dsl.edit"
+    editorPluginID="fr.imag.exschema.dsl.editor" runtimeVersion="2.8">
+  <genPackages prefix="ExSchema" basePackage="fr.imag.exschema.xtext" disposableProviderFactory="true"
+      ecorePackage="ExSchema.ecore#/">
+    <genClasses ecoreClass="ExSchema.ecore#//Schema">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Schema/attributes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Schema/entities"/>
+    </genClasses>
+    <genClasses ecoreClass="ExSchema.ecore#//Entity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Entity/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Entity/attributes"/>
+    </genClasses>
+    <genClasses ecoreClass="ExSchema.ecore#//Set">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Set/entities"/>
+    </genClasses>
+    <genClasses ecoreClass="ExSchema.ecore#//Struct">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Struct/entities"/>
+    </genClasses>
+    <genClasses ecoreClass="ExSchema.ecore#//Relationship">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship/start"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship/end"/>
+    </genClasses>
+    <genClasses ecoreClass="ExSchema.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Attribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Attribute/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
