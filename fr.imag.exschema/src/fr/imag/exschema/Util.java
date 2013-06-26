@@ -428,6 +428,7 @@ public class Util {
         String dotGraph;
         File outputDirectory;
         String dateIdentifier;
+        List<String> dslFiles;
         List<String> rooScripts;
 
         // Associate all the export files with a common date identifier
@@ -443,7 +444,11 @@ public class Util {
 
         // Export Roo scripts
         rooScripts = Util.createRooScripts(schemas);
-        Util.saveRooScripts(rooScripts, outputDirectory);
+        Util.saveFiles(rooScripts, outputDirectory, "rooScripts", "roo");
+
+        // Export a Dsl representation
+        dslFiles = Util.createDslFiles(schemas);
+        Util.saveFiles(dslFiles, outputDirectory, "dslFiles", "exschema");
 
         // Reload workspace to reflect the changes
         project.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -500,29 +505,31 @@ public class Util {
     }
 
     /**
-     * Save the specified Spring Roo scripts in the specified directory.
+     * Save file contents in an output directory.
      * 
-     * @param rooScripts
+     * @param contents
      * @param outputDirectory
-     * @return
+     * @param dirName
+     * @param fileExtension
      * @throws IOException
      */
-    private static void saveRooScripts(final List<String> rooScripts, final File outputDirectory) throws IOException {
+    private static void saveFiles(final List<String> contents, final File outputDirectory, final String outputName,
+            final String fileExtension) throws IOException {
         int index;
         File directory;
         File rooScriptFile;
         FileWriter fileWriter;
 
         // Save scripts in a new folder
-        directory = new File(outputDirectory, "rooScripts");
+        directory = new File(outputDirectory, outputName);
         directory.mkdir();
 
         index = 0;
-        for (String rooScript : rooScripts) {
+        for (String content : contents) {
             index = index + 1;
-            rooScriptFile = new File(directory, "schema" + index + ".roo");
+            rooScriptFile = new File(directory, "schema" + index + "." + fileExtension);
             fileWriter = new FileWriter(rooScriptFile, false);
-            fileWriter.write(rooScript);
+            fileWriter.write(content);
             fileWriter.close();
         }
     }
@@ -566,6 +573,24 @@ public class Util {
         returnValue = new ArrayList<String>(schemas.size());
         for (Set schema : schemas) {
             returnValue.add(schema.getRooCommands(null, null));
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * Create a list of DSL representations from the specified schemas (One file
+     * per schema).
+     * 
+     * @param schemas
+     * @return
+     */
+    private static List<String> createDslFiles(final List<Set> schemas) {
+        List<String> returnValue;
+
+        returnValue = new ArrayList<String>(schemas.size());
+        for (Set schema : schemas) {
+            returnValue.add(schema.getDsl());
         }
 
         return returnValue;

@@ -21,6 +21,7 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
 import fr.imag.exschema.exporter.RooModel;
@@ -31,7 +32,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Relationship extends Entity implements GraphvizExporter, RooExporter {
+public class Relationship extends Entity implements GraphvizExporter, RooExporter, DslExporter {
 
     /**
      * Start point of the relationship.
@@ -129,6 +130,31 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
         returnValue.append("\n\nEnd: " + this.endStruct.toString());
 
         return returnValue.toString();
+    }
+
+    @Override
+    public String getDsl() {
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder();
+        if ((this.startStruct != null) && (this.endStruct != null)) {
+            returnValue.append("\nRelationship ");
+            returnValue.append(System.currentTimeMillis());
+            returnValue.append("[ ");
+            for (Attribute attribute : this.attributes) {
+                returnValue.append(attribute.getDsl());
+            }
+            returnValue.append(" ]");
+
+            returnValue.append("{ start=");
+            returnValue.append(this.startStruct.getStructId());
+            returnValue.append(" end=");
+            returnValue.append(this.endStruct.getStructId());
+            returnValue.append(" }");
+        }
+
+        return returnValue.toString();
+
     }
 
     // Getters-setters

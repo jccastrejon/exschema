@@ -18,6 +18,7 @@
  */
 package fr.imag.exschema.model;
 
+import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
 import fr.imag.exschema.exporter.RooModel;
@@ -28,7 +29,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Attribute implements GraphvizExporter, RooExporter {
+public class Attribute implements GraphvizExporter, RooExporter, DslExporter {
 
     /**
      * Attribute's name.
@@ -70,6 +71,11 @@ public class Attribute implements GraphvizExporter, RooExporter {
     public String getRooCommands(final RooModel rooModel, final String parent) {
         // TODO: Support additional data types
         return "field string --fieldName " + this.value + " --class " + parent + "\n";
+    }
+
+    @Override
+    public String getDsl() {
+        return " " + this.name + "=" + this.value;
     }
 
     // Getters-setters

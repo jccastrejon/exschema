@@ -21,6 +21,7 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
 import fr.imag.exschema.exporter.RooModel;
@@ -31,7 +32,7 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Set extends Entity implements GraphvizExporter, RooExporter {
+public class Set extends Entity implements GraphvizExporter, RooExporter, DslExporter {
 
     /**
      * Inner sets.
@@ -188,6 +189,36 @@ public class Set extends Entity implements GraphvizExporter, RooExporter {
                 }
             }
         }
+
+        return returnValue.toString();
+    }
+
+    @Override
+    public String getDsl() {
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder("\nSet ");
+
+        returnValue.append(System.currentTimeMillis());
+        returnValue.append("[ ");
+        for (Attribute attribute : this.attributes) {
+            returnValue.append(attribute.getDsl());
+        }
+        returnValue.append(" ]");
+
+        returnValue.append("\n{");
+        if (!this.sets.isEmpty()) {
+            for (Set set : this.sets) {
+                returnValue.append(set.getDsl());
+            }
+        }
+
+        if (!this.structs.isEmpty()) {
+            for (Struct struct : this.structs) {
+                returnValue.append(struct.getDsl());
+            }
+        }
+        returnValue.append("\n}");
 
         return returnValue.toString();
     }

@@ -20,7 +20,9 @@ package fr.imag.exschema.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
 import fr.imag.exschema.exporter.RooModel;
@@ -31,12 +33,17 @@ import fr.imag.exschema.exporter.RooModel;
  * @author jccastrejon
  * 
  */
-public class Struct extends Entity implements GraphvizExporter, RooExporter {
+public class Struct extends Entity implements GraphvizExporter, RooExporter, DslExporter {
 
     /**
      * Inner sets.
      */
     private List<Set> sets;
+
+    /**
+     * Struct ID.
+     */
+    private String structId;
 
     /**
      * Inner structs.
@@ -52,6 +59,7 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter {
      * Default constructor.
      */
     public Struct() {
+        this.structId = System.currentTimeMillis() + new Random().nextInt(1000) + "";
         this.sets = new ArrayList<Set>();
         this.structs = new ArrayList<Struct>();
         this.attributes = new ArrayList<Attribute>();
@@ -185,7 +193,47 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter {
         return returnValue.toString();
     }
 
+    @Override
+    public String getDsl() {
+        StringBuilder returnValue;
+
+        returnValue = new StringBuilder("\nStruct ");
+
+        returnValue.append(this.structId);
+        returnValue.append("[ ");
+        for (Attribute attribute : this.attributes) {
+            returnValue.append(attribute.getDsl());
+        }
+        returnValue.append(" ]");
+
+        returnValue.append("\n{");
+        if (!this.sets.isEmpty()) {
+            for (Set set : this.sets) {
+                returnValue.append(set.getDsl());
+            }
+        }
+
+        if (!this.structs.isEmpty()) {
+            for (Struct struct : this.structs) {
+                returnValue.append(struct.getDsl());
+            }
+        }
+
+        if (!this.relationships.isEmpty()) {
+            for (Relationship relationship : this.relationships) {
+                returnValue.append(relationship.getDsl());
+            }
+        }
+        returnValue.append("\n}");
+
+        return returnValue.toString();
+    }
+
     // Getters-setters
+
+    public String getStructId() {
+        return this.structId;
+    }
 
     public List<Set> getSets() {
         return sets;
