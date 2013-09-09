@@ -55,14 +55,18 @@ public class GitUtil {
      * @throws IOException
      * @throws GitAPIException
      * @throws CoreException
+     * @throws InterruptedException 
      */
     public static void checkoutProjectVersion(final IJavaProject project, final String versionName) throws IOException,
-            GitAPIException, CoreException {
+            GitAPIException, CoreException, InterruptedException {
+        Process process;
         Git gitRepository;
 
         gitRepository = GitUtil.getGitRepository(project);
         if (gitRepository != null) {
-            gitRepository.checkout().setName(versionName).call();
+            process = Runtime.getRuntime().exec("git checkout " + versionName, null,
+                    gitRepository.getRepository().getDirectory().getParentFile());
+            process.waitFor();
             project.getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
         }
     }
