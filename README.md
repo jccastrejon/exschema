@@ -23,6 +23,7 @@ Demonstration on a polyglot persistence application (JPA+Neo4j+MongoDB+HBase) an
 - - - - 
 
 ##### Installation #####
+1. Install [Git](http://git-scm.com/book/en/Getting-Started-Installing-Git Git)
 1. Install the latest distribution of [Eclipse](http://www.eclipse.org/downloads/)
 2. Install [Graphviz](http://www.graphviz.org/Download..php) (If you're using Ubuntu, you can rely on the Ubuntu Software Center to retrieve the latest stable version)
 3. Inside Eclipse, install the ExSchema plugin (Help->Install New Software->Add...) using the following update site: https://raw.github.com/jccastrejon/exschema/master/fr.imag.exschema.update.site/
