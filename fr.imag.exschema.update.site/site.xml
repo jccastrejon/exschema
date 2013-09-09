@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/fr.imag.exschema.feature_1.0.0.5.jar" id="fr.imag.exschema.feature" version="1.0.0.5"/>
+   <feature url="features/fr.imag.exschema.feature_1.0.0.5.jar" id="fr.imag.exschema.feature" version="1.0.0.5">
+      <category name="ExSchema"/>
+   </feature>
    <category-def name="ExSchema" label="ExSchema">
       <description>
          ExSchema: Discoverying Schemas from Polyglot Persistence Applications
