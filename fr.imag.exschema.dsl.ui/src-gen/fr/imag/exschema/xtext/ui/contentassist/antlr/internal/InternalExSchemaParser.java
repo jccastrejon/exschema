@@ -4626,25 +4626,21 @@ public class InternalExSchemaParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Relationship___StartAssignment_3_3"
-    // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1774:1: rule__Relationship___StartAssignment_3_3 : ( ruleEntity ) ;
+    // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1774:1: rule__Relationship___StartAssignment_3_3 : ( RULE_ID ) ;
     public final void rule__Relationship___StartAssignment_3_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1778:1: ( ( ruleEntity ) )
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1779:1: ( ruleEntity )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1778:1: ( ( RULE_ID ) )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1779:1: ( RULE_ID )
             {
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1779:1: ( ruleEntity )
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1780:1: ruleEntity
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1779:1: ( RULE_ID )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1780:1: RULE_ID
             {
-             before(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); 
-            pushFollow(FOLLOW_ruleEntity_in_rule__Relationship___StartAssignment_3_33497);
-            ruleEntity();
-
-            state._fsp--;
-
-             after(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); 
+             before(grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); 
+            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Relationship___StartAssignment_3_33497); 
+             after(grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); 
 
             }
 
@@ -4667,25 +4663,21 @@ public class InternalExSchemaParser extends AbstractInternalContentAssistParser 
 
 
     // $ANTLR start "rule__Relationship___EndAssignment_3_6"
-    // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1789:1: rule__Relationship___EndAssignment_3_6 : ( ruleEntity ) ;
+    // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1789:1: rule__Relationship___EndAssignment_3_6 : ( RULE_ID ) ;
     public final void rule__Relationship___EndAssignment_3_6() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1793:1: ( ( ruleEntity ) )
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1794:1: ( ruleEntity )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1793:1: ( ( RULE_ID ) )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1794:1: ( RULE_ID )
             {
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1794:1: ( ruleEntity )
-            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1795:1: ruleEntity
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1794:1: ( RULE_ID )
+            // ../fr.imag.exschema.dsl.ui/src-gen/fr/imag/exschema/xtext/ui/contentassist/antlr/internal/InternalExSchema.g:1795:1: RULE_ID
             {
-             before(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); 
-            pushFollow(FOLLOW_ruleEntity_in_rule__Relationship___EndAssignment_3_63528);
-            ruleEntity();
-
-            state._fsp--;
-
-             after(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); 
+             before(grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); 
+            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Relationship___EndAssignment_3_63528); 
+             after(grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); 
 
             }
 
@@ -4898,7 +4890,7 @@ public class InternalExSchemaParser extends AbstractInternalContentAssistParser 
     public static final BitSet FOLLOW_rule__Relationship___Group_3__1__Impl_in_rule__Relationship___Group_3__12554 = new BitSet(new long[]{0x0000000000080000L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__2_in_rule__Relationship___Group_3__12557 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_18_in_rule__Relationship___Group_3__1__Impl2585 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Relationship___Group_3__2__Impl_in_rule__Relationship___Group_3__22616 = new BitSet(new long[]{0x0000000000032000L});
+    public static final BitSet FOLLOW_rule__Relationship___Group_3__2__Impl_in_rule__Relationship___Group_3__22616 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__3_in_rule__Relationship___Group_3__22619 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_19_in_rule__Relationship___Group_3__2__Impl2647 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__3__Impl_in_rule__Relationship___Group_3__32678 = new BitSet(new long[]{0x0000000000100000L});
@@ -4907,7 +4899,7 @@ public class InternalExSchemaParser extends AbstractInternalContentAssistParser 
     public static final BitSet FOLLOW_rule__Relationship___Group_3__4__Impl_in_rule__Relationship___Group_3__42738 = new BitSet(new long[]{0x0000000000080000L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__5_in_rule__Relationship___Group_3__42741 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_20_in_rule__Relationship___Group_3__4__Impl2769 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Relationship___Group_3__5__Impl_in_rule__Relationship___Group_3__52800 = new BitSet(new long[]{0x0000000000032000L});
+    public static final BitSet FOLLOW_rule__Relationship___Group_3__5__Impl_in_rule__Relationship___Group_3__52800 = new BitSet(new long[]{0x0000000000000010L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__6_in_rule__Relationship___Group_3__52803 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_19_in_rule__Relationship___Group_3__5__Impl2831 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Relationship___Group_3__6__Impl_in_rule__Relationship___Group_3__62862 = new BitSet(new long[]{0x0000000000008000L});
@@ -4933,8 +4925,8 @@ public class InternalExSchemaParser extends AbstractInternalContentAssistParser 
     public static final BitSet FOLLOW_ruleEntity_in_rule__Struct___EntitiesAssignment_3_13404 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__Relationship___NameAssignment_13435 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleAttribute_in_rule__Relationship___AttributesAssignment_2_13466 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEntity_in_rule__Relationship___StartAssignment_3_33497 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleEntity_in_rule__Relationship___EndAssignment_3_63528 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_ID_in_rule__Relationship___StartAssignment_3_33497 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_ID_in_rule__Relationship___EndAssignment_3_63528 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__Attribute__NameAssignment_03559 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_STRING_in_rule__Attribute__ValueAssignment_23590 = new BitSet(new long[]{0x0000000000000002L});
 

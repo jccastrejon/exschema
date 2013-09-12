@@ -4,7 +4,7 @@
     editorDirectory="/fr.imag.exschema.dsl.editor/src" modelPluginID="fr.imag.exschema.dsl"
     forceOverwrite="true" modelName="ExSchema" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="5.0" copyrightFields="false" editPluginID="fr.imag.exschema.dsl.edit"
-    editorPluginID="fr.imag.exschema.dsl.editor" runtimeVersion="2.8">
+    editorPluginID="fr.imag.exschema.dsl.editor" runtimeVersion="2.9">
   <genPackages prefix="ExSchema" basePackage="fr.imag.exschema.xtext" disposableProviderFactory="true"
       ecorePackage="ExSchema.ecore#/">
     <genClasses ecoreClass="ExSchema.ecore#//Schema">
@@ -22,8 +22,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Struct_/entities"/>
     </genClasses>
     <genClasses ecoreClass="ExSchema.ecore#//Relationship_">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship_/start"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ExSchema.ecore#//Relationship_/end"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Relationship_/start"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Relationship_/end"/>
     </genClasses>
     <genClasses ecoreClass="ExSchema.ecore#//Attribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ExSchema.ecore#//Attribute/name"/>

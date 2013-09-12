@@ -251,7 +251,7 @@ public interface ExSchemaPackage extends EPackage
   int RELATIONSHIP___ATTRIBUTES = ENTITY__ATTRIBUTES;
 
   /**
-   * The feature id for the '<em><b>Start</b></em>' containment reference.
+   * The feature id for the '<em><b>Start</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -260,7 +260,7 @@ public interface ExSchemaPackage extends EPackage
   int RELATIONSHIP___START = ENTITY_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>End</b></em>' containment reference.
+   * The feature id for the '<em><b>End</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -432,26 +432,26 @@ public interface ExSchemaPackage extends EPackage
   EClass getRelationship_();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getStart <em>Start</em>}'.
+   * Returns the meta object for the attribute '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getStart <em>Start</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Start</em>'.
+   * @return the meta object for the attribute '<em>Start</em>'.
    * @see fr.imag.exschema.xtext.exSchema.Relationship_#getStart()
    * @see #getRelationship_()
    * @generated
    */
-  EReference getRelationship__Start();
+  EAttribute getRelationship__Start();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getEnd <em>End</em>}'.
+   * Returns the meta object for the attribute '{@link fr.imag.exschema.xtext.exSchema.Relationship_#getEnd <em>End</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>End</em>'.
+   * @return the meta object for the attribute '<em>End</em>'.
    * @see fr.imag.exschema.xtext.exSchema.Relationship_#getEnd()
    * @see #getRelationship_()
    * @generated
    */
-  EReference getRelationship__End();
+  EAttribute getRelationship__End();
 
   /**
    * Returns the meta object for class '{@link fr.imag.exschema.xtext.exSchema.Attribute <em>Attribute</em>}'.
@@ -607,20 +607,20 @@ public interface ExSchemaPackage extends EPackage
     EClass RELATIONSHIP_ = eINSTANCE.getRelationship_();
 
     /**
-     * The meta object literal for the '<em><b>Start</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Start</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIONSHIP___START = eINSTANCE.getRelationship__Start();
+    EAttribute RELATIONSHIP___START = eINSTANCE.getRelationship__Start();
 
     /**
-     * The meta object literal for the '<em><b>End</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>End</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIONSHIP___END = eINSTANCE.getRelationship__End();
+    EAttribute RELATIONSHIP___END = eINSTANCE.getRelationship__End();
 
     /**
      * The meta object literal for the '{@link fr.imag.exschema.xtext.exSchema.impl.AttributeImpl <em>Attribute</em>}' class.

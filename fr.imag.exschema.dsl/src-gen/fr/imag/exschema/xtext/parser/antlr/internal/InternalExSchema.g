@@ -444,19 +444,19 @@ ruleRelationship_ returns [EObject current=null]
     }
 (
 (
-		{ 
-	        newCompositeNode(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); 
-	    }
-		lv_start_8_0=ruleEntity		{
+		lv_start_8_0=RULE_ID
+		{
+			newLeafNode(lv_start_8_0, grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); 
+		}
+		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getRelationship_Rule());
+	            $current = createModelElement(grammarAccess.getRelationship_Rule());
 	        }
-       		set(
+       		setWithLastConsumed(
        			$current, 
        			"start",
         		lv_start_8_0, 
-        		"Entity");
-	        afterParserOrEnumRuleCall();
+        		"ID");
 	    }
 
 )
@@ -470,19 +470,19 @@ ruleRelationship_ returns [EObject current=null]
     }
 (
 (
-		{ 
-	        newCompositeNode(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); 
-	    }
-		lv_end_11_0=ruleEntity		{
+		lv_end_11_0=RULE_ID
+		{
+			newLeafNode(lv_end_11_0, grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); 
+		}
+		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getRelationship_Rule());
+	            $current = createModelElement(grammarAccess.getRelationship_Rule());
 	        }
-       		set(
+       		setWithLastConsumed(
        			$current, 
        			"end",
         		lv_end_11_0, 
-        		"Entity");
-	        afterParserOrEnumRuleCall();
+        		"ID");
 	    }
 
 )

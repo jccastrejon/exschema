@@ -15,7 +15,7 @@ Struct_:
 	'Struct' name=ID ('[' (attributes+=Attribute)* ']')? ('{' entities+=Entity* '}')?;
 
 Relationship_:
-	'Relationship' name=ID ('[' (attributes+=Attribute)* ']')? ('{' 'start' '=' start=Entity 'end' '=' end=Entity '}')?;
+	'Relationship' name=ID ('[' (attributes+=Attribute)* ']')? ('{' 'start' '=' start=ID 'end' '=' end=ID '}')?;
 
 Attribute:
 	name=ID "=" value=STRING;

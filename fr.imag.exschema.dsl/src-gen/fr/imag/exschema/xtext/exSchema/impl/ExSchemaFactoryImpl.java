@@ -30,7 +30,7 @@ public class ExSchemaFactoryImpl extends EFactoryImpl implements ExSchemaFactory
   {
     try
     {
-      ExSchemaFactory theExSchemaFactory = (ExSchemaFactory)EPackage.Registry.INSTANCE.getEFactory("http://lig.imag.fr/dsl/ExSchema"); 
+      ExSchemaFactory theExSchemaFactory = (ExSchemaFactory)EPackage.Registry.INSTANCE.getEFactory(ExSchemaPackage.eNS_URI);
       if (theExSchemaFactory != null)
       {
         return theExSchemaFactory;

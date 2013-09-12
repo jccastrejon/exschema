@@ -21,6 +21,7 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.Util;
 import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
@@ -137,7 +138,7 @@ public class Set extends Entity implements GraphvizExporter, RooExporter, DslExp
 
         // Start of the schema
         if (startingRooModel != null) {
-            projectName = "project" + System.currentTimeMillis();
+            projectName = "project" + Util.getUniqueIdentifier();
             returnValue.append("project --topLevelPackage fr.imag.exschema." + projectName + "\n");
 
             switch (startingRooModel) {
@@ -199,7 +200,7 @@ public class Set extends Entity implements GraphvizExporter, RooExporter, DslExp
 
         returnValue = new StringBuilder("\nSet ");
 
-        returnValue.append("set" + System.currentTimeMillis());
+        returnValue.append("set_" + Util.getUniqueIdentifier());
         returnValue.append("[ ");
         for (Attribute attribute : this.attributes) {
             returnValue.append(attribute.getDsl());

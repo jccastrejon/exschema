@@ -87,7 +87,7 @@ public class ExSchemaSemanticSequencer extends AbstractDelegatingSemanticSequenc
 	
 	/**
 	 * Constraint:
-	 *     (name=ID attributes+=Attribute* (start=Entity end=Entity)?)
+	 *     (name=ID attributes+=Attribute* (start=ID end=ID)?)
 	 */
 	protected void sequence_Relationship_(EObject context, Relationship_ semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

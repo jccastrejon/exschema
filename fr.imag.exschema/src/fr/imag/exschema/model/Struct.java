@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import fr.imag.exschema.Util;
 import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
@@ -59,7 +60,7 @@ public class Struct extends Entity implements GraphvizExporter, RooExporter, Dsl
      * Default constructor.
      */
     public Struct() {
-        this.structId = "struct" + System.currentTimeMillis() + new Random().nextInt(1000);
+        this.structId = "struct_" + Util.getUniqueIdentifier();
         this.sets = new ArrayList<Set>();
         this.structs = new ArrayList<Struct>();
         this.attributes = new ArrayList<Attribute>();

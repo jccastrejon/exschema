@@ -21,6 +21,7 @@ package fr.imag.exschema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.imag.exschema.Util;
 import fr.imag.exschema.exporter.DslExporter;
 import fr.imag.exschema.exporter.GraphvizExporter;
 import fr.imag.exschema.exporter.RooExporter;
@@ -98,7 +99,7 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
 
         returnValue = new StringBuilder("");
         if ((this.getStartStruct() != null) && (this.getEndStruct() != null)) {
-            returnValue.append("relationship entity graph --class ~.domain.Relation" + System.currentTimeMillis());
+            returnValue.append("relationship entity graph --class ~.domain.Relation" + Util.getUniqueIdentifier());
             returnValue.append(" --type " + this.getSimpleName());
             returnValue.append(" --from " + this.getStartStruct().getSimpleName());
             returnValue.append(" --to " + this.getEndStruct().getSimpleName());
@@ -139,7 +140,7 @@ public class Relationship extends Entity implements GraphvizExporter, RooExporte
         returnValue = new StringBuilder();
         if ((this.startStruct != null) && (this.endStruct != null)) {
             returnValue.append("\nRelationship ");
-            returnValue.append(System.currentTimeMillis());
+            returnValue.append("relationship_" + Util.getUniqueIdentifier());
             returnValue.append("[ ");
             for (Attribute attribute : this.attributes) {
                 returnValue.append(attribute.getDsl());

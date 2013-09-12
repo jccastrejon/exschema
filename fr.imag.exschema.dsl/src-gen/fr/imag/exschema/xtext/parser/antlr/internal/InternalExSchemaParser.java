@@ -989,7 +989,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleRelationship_"
-    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:381:1: ruleRelationship_ returns [EObject current=null] : (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? ) ;
+    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:381:1: ruleRelationship_ returns [EObject current=null] : (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )? ) ;
     public final EObject ruleRelationship_() throws RecognitionException {
         EObject current = null;
 
@@ -1000,24 +1000,22 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
         Token otherlv_5=null;
         Token otherlv_6=null;
         Token otherlv_7=null;
+        Token lv_start_8_0=null;
         Token otherlv_9=null;
         Token otherlv_10=null;
+        Token lv_end_11_0=null;
         Token otherlv_12=null;
         EObject lv_attributes_3_0 = null;
-
-        EObject lv_start_8_0 = null;
-
-        EObject lv_end_11_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:384:28: ( (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? ) )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:1: (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:384:28: ( (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )? ) )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:1: (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )? )
             {
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:1: (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )? )
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:3: otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )?
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:1: (otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )? )
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:385:3: otherlv_0= 'Relationship' ( (lv_name_1_0= RULE_ID ) ) (otherlv_2= '[' ( (lv_attributes_3_0= ruleAttribute ) )* otherlv_4= ']' )? (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )?
             {
             otherlv_0=(Token)match(input,17,FOLLOW_17_in_ruleRelationship_816); 
 
@@ -1123,7 +1121,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:433:3: (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}' )?
+            // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:433:3: (otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}' )?
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -1132,7 +1130,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             }
             switch (alt15) {
                 case 1 :
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:433:5: otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= ruleEntity ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= ruleEntity ) ) otherlv_12= '}'
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:433:5: otherlv_5= '{' otherlv_6= 'start' otherlv_7= '=' ( (lv_start_8_0= RULE_ID ) ) otherlv_9= 'end' otherlv_10= '=' ( (lv_end_11_0= RULE_ID ) ) otherlv_12= '}'
                     {
                     otherlv_5=(Token)match(input,14,FOLLOW_14_in_ruleRelationship_900); 
 
@@ -1146,30 +1144,25 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
                         	newLeafNode(otherlv_7, grammarAccess.getRelationship_Access().getEqualsSignKeyword_3_2());
                         
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:445:1: ( (lv_start_8_0= ruleEntity ) )
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:446:1: (lv_start_8_0= ruleEntity )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:445:1: ( (lv_start_8_0= RULE_ID ) )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:446:1: (lv_start_8_0= RULE_ID )
                     {
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:446:1: (lv_start_8_0= ruleEntity )
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:447:3: lv_start_8_0= ruleEntity
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:446:1: (lv_start_8_0= RULE_ID )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:447:3: lv_start_8_0= RULE_ID
                     {
-                     
-                    	        newCompositeNode(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); 
-                    	    
-                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship_945);
-                    lv_start_8_0=ruleEntity();
+                    lv_start_8_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleRelationship_941); 
 
-                    state._fsp--;
-
+                    			newLeafNode(lv_start_8_0, grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); 
+                    		
 
                     	        if (current==null) {
-                    	            current = createModelElementForParent(grammarAccess.getRelationship_Rule());
+                    	            current = createModelElement(grammarAccess.getRelationship_Rule());
                     	        }
-                           		set(
+                           		setWithLastConsumed(
                            			current, 
                            			"start",
                             		lv_start_8_0, 
-                            		"Entity");
-                    	        afterParserOrEnumRuleCall();
+                            		"ID");
                     	    
 
                     }
@@ -1177,38 +1170,33 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_9=(Token)match(input,20,FOLLOW_20_in_ruleRelationship_957); 
+                    otherlv_9=(Token)match(input,20,FOLLOW_20_in_ruleRelationship_958); 
 
                         	newLeafNode(otherlv_9, grammarAccess.getRelationship_Access().getEndKeyword_3_4());
                         
-                    otherlv_10=(Token)match(input,19,FOLLOW_19_in_ruleRelationship_969); 
+                    otherlv_10=(Token)match(input,19,FOLLOW_19_in_ruleRelationship_970); 
 
                         	newLeafNode(otherlv_10, grammarAccess.getRelationship_Access().getEqualsSignKeyword_3_5());
                         
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:471:1: ( (lv_end_11_0= ruleEntity ) )
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:472:1: (lv_end_11_0= ruleEntity )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:471:1: ( (lv_end_11_0= RULE_ID ) )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:472:1: (lv_end_11_0= RULE_ID )
                     {
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:472:1: (lv_end_11_0= ruleEntity )
-                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:473:3: lv_end_11_0= ruleEntity
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:472:1: (lv_end_11_0= RULE_ID )
+                    // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:473:3: lv_end_11_0= RULE_ID
                     {
-                     
-                    	        newCompositeNode(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); 
-                    	    
-                    pushFollow(FOLLOW_ruleEntity_in_ruleRelationship_990);
-                    lv_end_11_0=ruleEntity();
+                    lv_end_11_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleRelationship_987); 
 
-                    state._fsp--;
-
+                    			newLeafNode(lv_end_11_0, grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); 
+                    		
 
                     	        if (current==null) {
-                    	            current = createModelElementForParent(grammarAccess.getRelationship_Rule());
+                    	            current = createModelElement(grammarAccess.getRelationship_Rule());
                     	        }
-                           		set(
+                           		setWithLastConsumed(
                            			current, 
                            			"end",
                             		lv_end_11_0, 
-                            		"Entity");
-                    	        afterParserOrEnumRuleCall();
+                            		"ID");
                     	    
 
                     }
@@ -1216,7 +1204,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_12=(Token)match(input,15,FOLLOW_15_in_ruleRelationship_1002); 
+                    otherlv_12=(Token)match(input,15,FOLLOW_15_in_ruleRelationship_1004); 
 
                         	newLeafNode(otherlv_12, grammarAccess.getRelationship_Access().getRightCurlyBracketKeyword_3_7());
                         
@@ -1259,13 +1247,13 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:503:2: iv_ruleAttribute= ruleAttribute EOF
             {
              newCompositeNode(grammarAccess.getAttributeRule()); 
-            pushFollow(FOLLOW_ruleAttribute_in_entryRuleAttribute1040);
+            pushFollow(FOLLOW_ruleAttribute_in_entryRuleAttribute1042);
             iv_ruleAttribute=ruleAttribute();
 
             state._fsp--;
 
              current =iv_ruleAttribute; 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleAttribute1050); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleAttribute1052); 
 
             }
 
@@ -1306,7 +1294,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:515:1: (lv_name_0_0= RULE_ID )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:516:3: lv_name_0_0= RULE_ID
             {
-            lv_name_0_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleAttribute1092); 
+            lv_name_0_0=(Token)match(input,RULE_ID,FOLLOW_RULE_ID_in_ruleAttribute1094); 
 
             			newLeafNode(lv_name_0_0, grammarAccess.getAttributeAccess().getNameIDTerminalRuleCall_0_0()); 
             		
@@ -1326,7 +1314,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,19,FOLLOW_19_in_ruleAttribute1109); 
+            otherlv_1=(Token)match(input,19,FOLLOW_19_in_ruleAttribute1111); 
 
                 	newLeafNode(otherlv_1, grammarAccess.getAttributeAccess().getEqualsSignKeyword_1());
                 
@@ -1336,7 +1324,7 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:537:1: (lv_value_2_0= RULE_STRING )
             // ../fr.imag.exschema.dsl/src-gen/fr/imag/exschema/xtext/parser/antlr/internal/InternalExSchema.g:538:3: lv_value_2_0= RULE_STRING
             {
-            lv_value_2_0=(Token)match(input,RULE_STRING,FOLLOW_RULE_STRING_in_ruleAttribute1126); 
+            lv_value_2_0=(Token)match(input,RULE_STRING,FOLLOW_RULE_STRING_in_ruleAttribute1128); 
 
             			newLeafNode(lv_value_2_0, grammarAccess.getAttributeAccess().getValueSTRINGTerminalRuleCall_2_0()); 
             		
@@ -1420,16 +1408,16 @@ public class InternalExSchemaParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_12_in_ruleRelationship_885 = new BitSet(new long[]{0x0000000000004002L});
     public static final BitSet FOLLOW_14_in_ruleRelationship_900 = new BitSet(new long[]{0x0000000000040000L});
     public static final BitSet FOLLOW_18_in_ruleRelationship_912 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_ruleRelationship_924 = new BitSet(new long[]{0x0000000000032000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship_945 = new BitSet(new long[]{0x0000000000100000L});
-    public static final BitSet FOLLOW_20_in_ruleRelationship_957 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_ruleRelationship_969 = new BitSet(new long[]{0x0000000000032000L});
-    public static final BitSet FOLLOW_ruleEntity_in_ruleRelationship_990 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_15_in_ruleRelationship_1002 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleAttribute_in_entryRuleAttribute1040 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleAttribute1050 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_ruleAttribute1092 = new BitSet(new long[]{0x0000000000080000L});
-    public static final BitSet FOLLOW_19_in_ruleAttribute1109 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_RULE_STRING_in_ruleAttribute1126 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_19_in_ruleRelationship_924 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleRelationship_941 = new BitSet(new long[]{0x0000000000100000L});
+    public static final BitSet FOLLOW_20_in_ruleRelationship_958 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_ruleRelationship_970 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleRelationship_987 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_15_in_ruleRelationship_1004 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAttribute_in_entryRuleAttribute1042 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleAttribute1052 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_ID_in_ruleAttribute1094 = new BitSet(new long[]{0x0000000000080000L});
+    public static final BitSet FOLLOW_19_in_ruleAttribute1111 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_RULE_STRING_in_ruleAttribute1128 = new BitSet(new long[]{0x0000000000000002L});
 
 }

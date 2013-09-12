@@ -227,18 +227,18 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cStartKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
 		private final Keyword cEqualsSignKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
 		private final Assignment cStartAssignment_3_3 = (Assignment)cGroup_3.eContents().get(3);
-		private final RuleCall cStartEntityParserRuleCall_3_3_0 = (RuleCall)cStartAssignment_3_3.eContents().get(0);
+		private final RuleCall cStartIDTerminalRuleCall_3_3_0 = (RuleCall)cStartAssignment_3_3.eContents().get(0);
 		private final Keyword cEndKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
 		private final Keyword cEqualsSignKeyword_3_5 = (Keyword)cGroup_3.eContents().get(5);
 		private final Assignment cEndAssignment_3_6 = (Assignment)cGroup_3.eContents().get(6);
-		private final RuleCall cEndEntityParserRuleCall_3_6_0 = (RuleCall)cEndAssignment_3_6.eContents().get(0);
+		private final RuleCall cEndIDTerminalRuleCall_3_6_0 = (RuleCall)cEndAssignment_3_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_3_7 = (Keyword)cGroup_3.eContents().get(7);
 		
 		//Relationship_:
-		//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=Entity "end" "=" end=Entity "}")?;
+		//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=ID "end" "=" end=ID "}")?;
 		public ParserRule getRule() { return rule; }
 
-		//"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=Entity "end" "=" end=Entity "}")?
+		//"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=ID "end" "=" end=ID "}")?
 		public Group getGroup() { return cGroup; }
 
 		//"Relationship"
@@ -265,7 +265,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		//"]"
 		public Keyword getRightSquareBracketKeyword_2_2() { return cRightSquareBracketKeyword_2_2; }
 
-		//("{" "start" "=" start=Entity "end" "=" end=Entity "}")?
+		//("{" "start" "=" start=ID "end" "=" end=ID "}")?
 		public Group getGroup_3() { return cGroup_3; }
 
 		//"{"
@@ -277,11 +277,11 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		//"="
 		public Keyword getEqualsSignKeyword_3_2() { return cEqualsSignKeyword_3_2; }
 
-		//start=Entity
+		//start=ID
 		public Assignment getStartAssignment_3_3() { return cStartAssignment_3_3; }
 
-		//Entity
-		public RuleCall getStartEntityParserRuleCall_3_3_0() { return cStartEntityParserRuleCall_3_3_0; }
+		//ID
+		public RuleCall getStartIDTerminalRuleCall_3_3_0() { return cStartIDTerminalRuleCall_3_3_0; }
 
 		//"end"
 		public Keyword getEndKeyword_3_4() { return cEndKeyword_3_4; }
@@ -289,11 +289,11 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 		//"="
 		public Keyword getEqualsSignKeyword_3_5() { return cEqualsSignKeyword_3_5; }
 
-		//end=Entity
+		//end=ID
 		public Assignment getEndAssignment_3_6() { return cEndAssignment_3_6; }
 
-		//Entity
-		public RuleCall getEndEntityParserRuleCall_3_6_0() { return cEndEntityParserRuleCall_3_6_0; }
+		//ID
+		public RuleCall getEndIDTerminalRuleCall_3_6_0() { return cEndIDTerminalRuleCall_3_6_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_3_7() { return cRightCurlyBracketKeyword_3_7; }
@@ -418,7 +418,7 @@ public class ExSchemaGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Relationship_:
-	//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=Entity "end" "=" end=Entity "}")?;
+	//	"Relationship" name=ID ("[" attributes+=Attribute* "]")? ("{" "start" "=" start=ID "end" "=" end=ID "}")?;
 	public Relationship_Elements getRelationship_Access() {
 		return (pRelationship_ != null) ? pRelationship_ : (pRelationship_ = new Relationship_Elements());
 	}

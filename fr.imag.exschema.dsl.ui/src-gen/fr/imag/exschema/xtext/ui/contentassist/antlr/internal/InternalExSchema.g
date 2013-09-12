@@ -1777,8 +1777,8 @@ rule__Relationship___StartAssignment_3_3
     }
 :
 (
-{ before(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); }
-	ruleEntity{ after(grammarAccess.getRelationship_Access().getStartEntityParserRuleCall_3_3_0()); }
+{ before(grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); }
+	RULE_ID{ after(grammarAccess.getRelationship_Access().getStartIDTerminalRuleCall_3_3_0()); }
 )
 
 ;
@@ -1792,8 +1792,8 @@ rule__Relationship___EndAssignment_3_6
     }
 :
 (
-{ before(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); }
-	ruleEntity{ after(grammarAccess.getRelationship_Access().getEndEntityParserRuleCall_3_6_0()); }
+{ before(grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); }
+	RULE_ID{ after(grammarAccess.getRelationship_Access().getEndIDTerminalRuleCall_3_6_0()); }
 )
 
 ;

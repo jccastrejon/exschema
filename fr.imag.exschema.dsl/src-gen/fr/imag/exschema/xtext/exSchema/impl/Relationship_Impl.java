@@ -2,15 +2,12 @@
  */
 package fr.imag.exschema.xtext.exSchema.impl;
 
-import fr.imag.exschema.xtext.exSchema.Entity;
 import fr.imag.exschema.xtext.exSchema.ExSchemaPackage;
 import fr.imag.exschema.xtext.exSchema.Relationship_;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
@@ -31,24 +28,44 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class Relationship_Impl extends EntityImpl implements Relationship_
 {
   /**
-   * The cached value of the '{@link #getStart() <em>Start</em>}' containment reference.
+   * The default value of the '{@link #getStart() <em>Start</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getStart()
    * @generated
    * @ordered
    */
-  protected Entity start;
+  protected static final String START_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getEnd() <em>End</em>}' containment reference.
+   * The cached value of the '{@link #getStart() <em>Start</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getStart()
+   * @generated
+   * @ordered
+   */
+  protected String start = START_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getEnd()
    * @generated
    * @ordered
    */
-  protected Entity end;
+  protected static final String END_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getEnd() <em>End</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEnd()
+   * @generated
+   * @ordered
+   */
+  protected String end = END_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -76,7 +93,7 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
    * <!-- end-user-doc -->
    * @generated
    */
-  public Entity getStart()
+  public String getStart()
   {
     return start;
   }
@@ -86,16 +103,12 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetStart(Entity newStart, NotificationChain msgs)
+  public void setStart(String newStart)
   {
-    Entity oldStart = start;
+    String oldStart = start;
     start = newStart;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___START, oldStart, newStart);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
+      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___START, oldStart, start));
   }
 
   /**
@@ -103,28 +116,7 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setStart(Entity newStart)
-  {
-    if (newStart != start)
-    {
-      NotificationChain msgs = null;
-      if (start != null)
-        msgs = ((InternalEObject)start).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___START, null, msgs);
-      if (newStart != null)
-        msgs = ((InternalEObject)newStart).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___START, null, msgs);
-      msgs = basicSetStart(newStart, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___START, newStart, newStart));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Entity getEnd()
+  public String getEnd()
   {
     return end;
   }
@@ -134,55 +126,12 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetEnd(Entity newEnd, NotificationChain msgs)
+  public void setEnd(String newEnd)
   {
-    Entity oldEnd = end;
+    String oldEnd = end;
     end = newEnd;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___END, oldEnd, newEnd);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setEnd(Entity newEnd)
-  {
-    if (newEnd != end)
-    {
-      NotificationChain msgs = null;
-      if (end != null)
-        msgs = ((InternalEObject)end).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___END, null, msgs);
-      if (newEnd != null)
-        msgs = ((InternalEObject)newEnd).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ExSchemaPackage.RELATIONSHIP___END, null, msgs);
-      msgs = basicSetEnd(newEnd, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___END, newEnd, newEnd));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-  {
-    switch (featureID)
-    {
-      case ExSchemaPackage.RELATIONSHIP___START:
-        return basicSetStart(null, msgs);
-      case ExSchemaPackage.RELATIONSHIP___END:
-        return basicSetEnd(null, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
+      eNotify(new ENotificationImpl(this, Notification.SET, ExSchemaPackage.RELATIONSHIP___END, oldEnd, end));
   }
 
   /**
@@ -214,10 +163,10 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
     switch (featureID)
     {
       case ExSchemaPackage.RELATIONSHIP___START:
-        setStart((Entity)newValue);
+        setStart((String)newValue);
         return;
       case ExSchemaPackage.RELATIONSHIP___END:
-        setEnd((Entity)newValue);
+        setEnd((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -234,10 +183,10 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
     switch (featureID)
     {
       case ExSchemaPackage.RELATIONSHIP___START:
-        setStart((Entity)null);
+        setStart(START_EDEFAULT);
         return;
       case ExSchemaPackage.RELATIONSHIP___END:
-        setEnd((Entity)null);
+        setEnd(END_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -254,11 +203,30 @@ public class Relationship_Impl extends EntityImpl implements Relationship_
     switch (featureID)
     {
       case ExSchemaPackage.RELATIONSHIP___START:
-        return start != null;
+        return START_EDEFAULT == null ? start != null : !START_EDEFAULT.equals(start);
       case ExSchemaPackage.RELATIONSHIP___END:
-        return end != null;
+        return END_EDEFAULT == null ? end != null : !END_EDEFAULT.equals(end);
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (start: ");
+    result.append(start);
+    result.append(", end: ");
+    result.append(end);
+    result.append(')');
+    return result.toString();
   }
 
 } //Relationship_Impl
