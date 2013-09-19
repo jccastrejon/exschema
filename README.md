@@ -31,7 +31,7 @@ Demonstration on a polyglot persistence application (JPA+Neo4j+MongoDB+HBase) an
 - - - - 
 
 ##### Tests #####
-You can test our tool with the following [test applications](http://exschema.googlecode.com/files/ExSchema-tests-0.1.4.zip) (14 open source+2 industrial). The ExSchema results are inside each project, in the exschema_results directory.
+You can test our tool with the following [test applications](http://exschema.googlecode.com/files/ExSchema-tests-0.1.5.zip). The ExSchema results are inside each project, in the exschema_results directory.
 
 ###### Notes ######
 We have tested the latest implementation on Mac OS X 10.8 and on Ubuntu 12.04
